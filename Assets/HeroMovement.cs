@@ -10,6 +10,7 @@ public class HeroMovement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+        CharacterController cc = GetComponent<CharacterController>();
+        cc.Move(new Vector3(0, 0, 0.5f));
 	}
 }
