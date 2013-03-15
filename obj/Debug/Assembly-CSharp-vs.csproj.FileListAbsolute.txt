@@ -10,3 +10,15 @@ C:\Users\Crismis\Documents\UNI\Kandidat\F2013\MSU\TheSiege\MSU_TheSiege\Temp\bin
 C:\Users\Crismis\Documents\UNI\Kandidat\F2013\MSU\TheSiege\MSU_TheSiege\obj\Debug\ResolveAssemblyReference.cache
 C:\Users\Crismis\Documents\UNI\Kandidat\F2013\MSU\TheSiege\MSU_TheSiege\obj\Debug\Assembly-CSharp.dll
 C:\Users\Crismis\Documents\UNI\Kandidat\F2013\MSU\TheSiege\MSU_TheSiege\obj\Debug\Assembly-CSharp.pdb
+C:\Users\Daniel\Documents\GitHub\MSU_TheSiege\Temp\bin\Debug\Assembly-CSharp.dll
+C:\Users\Daniel\Documents\GitHub\MSU_TheSiege\Temp\bin\Debug\Assembly-CSharp.pdb
+C:\Users\Daniel\Documents\GitHub\MSU_TheSiege\Temp\bin\Debug\Assembly-UnityScript-firstpass.dll
+C:\Users\Daniel\Documents\GitHub\MSU_TheSiege\Temp\bin\Debug\UnityEditor.dll
+C:\Users\Daniel\Documents\GitHub\MSU_TheSiege\Temp\bin\Debug\UnityEngine.dll
+C:\Users\Daniel\Documents\GitHub\MSU_TheSiege\Temp\bin\Debug\Mono.Cecil.dll
+C:\Users\Daniel\Documents\GitHub\MSU_TheSiege\Temp\bin\Debug\nunit.framework.dll
+C:\Users\Daniel\Documents\GitHub\MSU_TheSiege\Temp\bin\Debug\ICSharpCode.NRefactory.dll
+C:\Users\Daniel\Documents\GitHub\MSU_TheSiege\Temp\bin\Debug\Assembly-CSharp-firstpass.pdb
+C:\Users\Daniel\Documents\GitHub\MSU_TheSiege\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Daniel\Documents\GitHub\MSU_TheSiege\obj\Debug\Assembly-CSharp.dll
+C:\Users\Daniel\Documents\GitHub\MSU_TheSiege\obj\Debug\Assembly-CSharp.pdb
