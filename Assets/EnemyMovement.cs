@@ -26,7 +26,7 @@ public class EnemyMovement : MonoBehaviour {
         float bodyZ = body.position.z;
         float playerZ = player.transform.position.z;
 
-     //   Debug.Log("Body: " + bodyZ.ToString());
+      //  Debug.Log("Body: " + bodyZ.ToString());
       //  Debug.Log("Player: " + playerZ.ToString());   
 
         if (bodyZ < playerZ - 5)
