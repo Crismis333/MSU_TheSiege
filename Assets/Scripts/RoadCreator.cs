@@ -31,18 +31,18 @@ public class RoadCreator : MonoBehaviour {
             pos.z = (ModuleLength / 2) + (ModuleLength * i);
 			
 			Vector3 sidePosA = transform.position;
-			sidePosA.x -= ModuleWidth;
-			sidePosA.z = (ModuleLength / 2) + (ModuleLength * i);
+			sidePosA.x -= 24;
+			sidePosA.z = (ModuleLength / 2) + (ModuleLength * i) - 32;
+			Quaternion sideRot = Quaternion.Euler(270,180,0);
 			
 			Vector3 sidePosB = transform.position;
-			sidePosB.x += ModuleWidth;
-			sidePosB.z = (ModuleLength / 2) + (ModuleLength * i);
-			Quaternion sideRot = Quaternion.Euler(270,180,0);
+			sidePosB.x += 8;
+			sidePosB.z = (ModuleLength / 2) + (ModuleLength * i) - 32;
 
             Transform road = Instantiate(Road, pos, transform.rotation) as Transform;
 			
-			Transform sideA = Instantiate(Side, sidePosA, transform.rotation) as Transform;
-			Transform sideB = Instantiate(Side, sidePosB, sideRot) as Transform;
+			Transform sideA = Instantiate(Side, sidePosA, sideRot) as Transform;
+			Transform sideB = Instantiate(Side, sidePosB, transform.rotation) as Transform;
 
             Roads.Enqueue(road);
 			Sides.Enqueue(sideA);

@@ -1,10 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\EnemyCreator.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\EnemyMovement.cs">
     <Files>
-      <File FileName="Assets\Scripts\RoadCreator.cs" Line="40" Column="53" />
+      <File FileName="Assets\Scripts\RoadCreator.cs" Line="46" Column="4" />
       <File FileName="Assets\Scripts\EnemyCreator.cs" Line="27" Column="76" />
       <File FileName="Assets\Scripts\EnemyMovement.cs" Line="18" Column="43" />
+      <File FileName="Assets\Scripts\CameraLock.cs" Line="25" Column="37" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
