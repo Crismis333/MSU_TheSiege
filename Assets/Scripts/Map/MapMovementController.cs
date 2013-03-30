@@ -5,15 +5,36 @@ public class MapMovementController : MonoBehaviour {
 
     bool zoomedIn;
     bool mdown;
+    bool onguidown;
     int mdowncool;
+
+    private Rect GUI_Area;
 
     void Start() {
         zoomedIn = true;
         mdown = false;
+        onguidown = false;
         mdowncool = 0;
+        GUI_Area = new Rect(Screen.width - 400, 50, 350, 450);
     }
 
     void Update() {
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (GUI_Area.Contains(Input.mousePosition))
+            {
+                onguidown = true;
+                return;
+            }
+        }
+        else
+        {
+            if (!GUI_Area.Contains(Input.mousePosition))
+            {
+                onguidown = false;
+            }
+        }
         if (mdowncool > 0)
             mdowncool--;
         float xm = Input.GetAxis("Mouse X");
@@ -24,7 +45,7 @@ public class MapMovementController : MonoBehaviour {
         else
             multiplier = 10.0f;
         Vector3 pos = Camera.main.transform.position;
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && !onguidown)
         {
             if (xm < -0.2f)
                 pos.x += xm / multiplier;
@@ -76,7 +97,8 @@ public class MapMovementController : MonoBehaviour {
         float posx = Camera.main.transform.position.x;
         float posz = Camera.main.transform.position.y;
         float posy = Camera.main.transform.position.z;
-        print(posx + " " + posy + " " + posz);
+        //print(posx + " " + posy + " " + posz);
+        //print(Input.mousePosition.x + " " + Input.mousePosition.y);
         Camera.main.transform.position = pos;
     }
 }
