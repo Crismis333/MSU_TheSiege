@@ -4,6 +4,7 @@ using System.Collections;
 public class MapGui : MonoBehaviour {
 
     public GUISkin gSkin;
+    public Location current_location;
     //public Texture2D circleDiagram;
     //public Texture2D starColor;
     //public Object starDiagram;
@@ -19,16 +20,23 @@ public class MapGui : MonoBehaviour {
 
     void Map_Main()
     {
-        string s = "Blablabla\nBlablabla\nBlablabla\nBlablabla\nBlablabla\nBlablabla\nBlablabla\nBlablabla\nBlablabla\n";
         
         GUI.BeginGroup(new Rect(Screen.width - 400 , Screen.height - 500, Screen.width, Screen.height));
         GUI.Box(new Rect(0, 0, 350, 200), "");
 
-        GUI.Label(new Rect(0, 0, 350, 50), "Placenameistan");
-
-        scrollPos = GUI.BeginScrollView(new Rect(0, 50, 350, 150), scrollPos, new Rect(0, 0, 0, 300), false, true);
-        GUI.Label(new Rect(0, 0, 100, 300), s);
-        GUI.EndScrollView();
+        if (current_location != null)
+        {
+            GUI.Label(new Rect(0, 0, 350, 50), current_location.name);
+            Vector2 sizeOfLabel = GUI.skin.GetStyle("Label").CalcSize(new GUIContent(current_location.description));
+            if (sizeOfLabel.y > 150)
+            {
+                scrollPos = GUI.BeginScrollView(new Rect(0, 50, 350, 150), scrollPos, new Rect(0, 0, 0, sizeOfLabel.y), false, true);
+                GUI.Label(new Rect(15, 0, 335, sizeOfLabel.y), current_location.description);
+                GUI.EndScrollView();
+            }
+            else
+                GUI.Label(new Rect(15, 50, 335, sizeOfLabel.y), current_location.description);
+        }
         GUI.Box(new Rect(0, 200, 350, 250), "");
         //DrawStar(5, 4, 3, 2, 1);
         GUI.Label(new Rect(100 + 40, 215, 128, 128), "Difficulty:");
@@ -37,18 +45,21 @@ public class MapGui : MonoBehaviour {
         GUI.Label(new Rect(100 + 15, 215 + 3 * 20, 128, 128), "Pits:");
         GUI.Label(new Rect(100 + 15, 215 + 4 * 20, 128, 128), "Obstacles:");
         GUI.Label(new Rect(100 + 15, 215 + 5 * 20, 128, 128), "Catapults:");
-        GUI.Label(new Rect(100 + 100, 215 + 1 * 20, 128, 128), "5");
-        GUI.Label(new Rect(100 + 100, 215 + 2 * 20, 128, 128), "5");
-        GUI.Label(new Rect(100 + 100, 215 + 3 * 20, 128, 128), "5");
-        GUI.Label(new Rect(100 + 100, 215 + 4 * 20, 128, 128), "5");
-        GUI.Label(new Rect(100 + 100, 215 + 5 * 20, 128, 128), "5");
-
-        GUI.Label(new Rect(100 + 40, 215 + 7 * 20, 128, 128), "You gain:");
-        GUI.Label(new Rect(100 + 15, 215 + 8 * 20, 128, 128), "+ Soldiers");
-        GUI.Label(new Rect(100 + 15, 215 + 9 * 20, 128, 128), "- Speed");
-        if (GUI.Button(new Rect(200, 215 + 10 * 20, 80, 30), "to battle!"))
+        if (current_location != null)
         {
-            Application.LoadLevel(2);
+            GUI.Label(new Rect(100 + 100, 215 + 1 * 20, 128, 128), "" + current_location.difficulty_soldier);
+            GUI.Label(new Rect(100 + 100, 215 + 2 * 20, 128, 128), "" + current_location.difficulty_length);
+            GUI.Label(new Rect(100 + 100, 215 + 3 * 20, 128, 128), "" + current_location.difficulty_pits);
+            GUI.Label(new Rect(100 + 100, 215 + 4 * 20, 128, 128), "" + current_location.difficulty_obstacles);
+            GUI.Label(new Rect(100 + 100, 215 + 5 * 20, 128, 128), "" + current_location.difficulty_catapults);
+
+            GUI.Label(new Rect(100 + 40, 215 + 7 * 20, 128, 128), "You gain:");
+            GUI.Label(new Rect(100 + 15, 215 + 8 * 20, 128, 128), "+ " + current_location.gains);
+            GUI.Label(new Rect(100 + 15, 215 + 9 * 20, 128, 128), "- " + current_location.losses);
+            if (GUI.Button(new Rect(200, 215 + 10 * 20, 80, 30), "to battle!"))
+            {
+                Application.LoadLevel(2);
+            }
         }
         GUI.EndGroup();
     }
@@ -167,8 +178,13 @@ public class MapGui : MonoBehaviour {
         Map_Main();
     }
 
-    void Start()
+    public void ResetScroll()
     {
         scrollPos = Vector2.zero;
+    }
+
+    void Start()
+    {
+        ResetScroll();
     }
 }
