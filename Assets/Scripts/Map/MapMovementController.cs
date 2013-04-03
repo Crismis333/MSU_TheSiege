@@ -3,11 +3,13 @@ using System.Collections;
 
 public class MapMovementController : MonoBehaviour {
 
+    public Transform topLeftLimit;
+    public Transform bottomRightLimit;
+
     bool zoomedIn;
     bool mdown;
     bool onguidown;
     int mdowncool;
-
     private Rect GUI_Area;
 
     void Start() {
@@ -19,6 +21,87 @@ public class MapMovementController : MonoBehaviour {
     }
 
     void Update() {
+
+        Vector3 pos = Camera.main.transform.position;
+        bool left, right, up, down;
+        left = right = up = down = false;
+
+        Vector2 topleftpos = Camera.mainCamera.WorldToScreenPoint(topLeftLimit.transform.position);
+        Vector2 botrightpos = Camera.mainCamera.WorldToScreenPoint(bottomRightLimit.transform.position);
+        Vector2 newposright = Camera.mainCamera.ScreenToWorldPoint(Camera.mainCamera.WorldToScreenPoint(bottomRightLimit.transform.position));
+
+        float multiplier;
+        if (zoomedIn)
+            multiplier = 40.0f;
+        else
+            multiplier = 20.0f;
+
+        if (topleftpos.x >= -multiplier && botrightpos.x <= Screen.width + multiplier)
+        { }
+        else if (topleftpos.x >= -multiplier)
+        {
+            left = true;
+        }
+        else if (botrightpos.x <= Screen.width + multiplier)
+        {
+            right = true;
+        }
+        if (topleftpos.y <= Screen.height + multiplier && botrightpos.y >= -multiplier)
+        { }
+        else if (topleftpos.y <= Screen.height + multiplier)
+        {
+            up = true;
+        }
+        else if (botrightpos.y >= -multiplier)
+        {
+            down = true;
+        }
+
+        if (topleftpos.x >= 0 && botrightpos.x <= Screen.width)
+        {
+            Vector3 newpos = Camera.mainCamera.WorldToScreenPoint(topLeftLimit.transform.position);
+            Vector3 newpos2 = Camera.mainCamera.WorldToScreenPoint(bottomRightLimit.transform.position);
+            newpos.x += Screen.width / 2f;
+            newpos2.x -= Screen.width / 2f;
+            newpos += newpos2;
+            newpos /= 2;
+            pos.x = Camera.mainCamera.ScreenToWorldPoint(newpos).x;
+        }
+        else if (topleftpos.x >= 0)
+        {
+            Vector3 newpos = Camera.mainCamera.WorldToScreenPoint(topLeftLimit.transform.position);
+            newpos.x += Screen.width / 2f;
+            pos.x = Camera.mainCamera.ScreenToWorldPoint(newpos).x;
+        }
+        else if (botrightpos.x <= Screen.width)
+        {
+            Vector3 newpos = Camera.mainCamera.WorldToScreenPoint(bottomRightLimit.transform.position);
+            newpos.x -= Screen.width / 2f;
+            pos.x = Camera.mainCamera.ScreenToWorldPoint(newpos).x;
+        }
+        if (topleftpos.y <= Screen.height && botrightpos.y >= 0)
+        {
+            Vector3 newpos = Camera.mainCamera.WorldToScreenPoint(topLeftLimit.transform.position);
+            Vector3 newpos2 = Camera.mainCamera.WorldToScreenPoint(bottomRightLimit.transform.position);
+            newpos.y -= Screen.height / 2f;
+            newpos2.y += Screen.height / 2f;
+            newpos += newpos2;
+            newpos /= 2;
+            pos.z = Camera.mainCamera.ScreenToWorldPoint(newpos).z;
+        }
+        else if (topleftpos.y <= Screen.height)
+        {
+            Vector3 newpos = Camera.mainCamera.WorldToScreenPoint(topLeftLimit.transform.position);
+            newpos.y -= Screen.height / 2f;
+            pos.z = Camera.mainCamera.ScreenToWorldPoint(newpos).z;
+        }
+        else if (botrightpos.y >= 0)
+        {
+            Vector3 newpos = Camera.mainCamera.WorldToScreenPoint(bottomRightLimit.transform.position);
+            newpos.y += Screen.height / 2f;
+            pos.z = Camera.mainCamera.ScreenToWorldPoint(newpos).z;
+        }
+
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -39,21 +122,16 @@ public class MapMovementController : MonoBehaviour {
             mdowncool--;
         float xm = Input.GetAxis("Mouse X");
         float ym = Input.GetAxis("Mouse Y");
-        float multiplier;
-        if (zoomedIn)
-            multiplier = 40.0f;
-        else
-            multiplier = 20.0f;
-        Vector3 pos = Camera.main.transform.position;
+
         if (Input.GetMouseButton(0) && !onguidown)
         {
-            if (xm < -0.02f)
+            if (xm < -0.02f && !right)
                 pos.x += xm / multiplier;
-            else if (xm > 0.02f)
+            else if (xm > 0.02f && !left)
                 pos.x += xm / multiplier;
-            if (ym < -0.02f)
+            if (ym < -0.02f && !up)
                 pos.z += ym / multiplier;
-            else if (ym > 0.02f)
+            else if (ym > 0.02f && !down)
                 pos.z += ym / multiplier;
         }
 
@@ -70,7 +148,10 @@ public class MapMovementController : MonoBehaviour {
             if (mdowncool == 0)
                 mdown = false;
         }
+
         if (zoomedIn) {
+            pos.y = 1.361f;
+            /*
             float upper = -2f;
             float lower = 2f;
             pos.y = 1.361f;
@@ -82,8 +163,11 @@ public class MapMovementController : MonoBehaviour {
                 pos.z = -1.79f;
             else if (pos.z > 1.9f)
                 pos.z = 1.9f;
+             */
         }
         else {
+            pos.y = 5f;
+            /*
             float upper = -0.58f;
             float lower = 0.4f;
             pos.y = 5f;
@@ -95,13 +179,15 @@ public class MapMovementController : MonoBehaviour {
                 pos.z = -1.05f;
             else if (pos.z > 1.28f)
                 pos.z = 1.28f;
+             */
+
         }
 
 
         float posx = Camera.main.transform.position.x;
         float posz = Camera.main.transform.position.y;
         float posy = Camera.main.transform.position.z;
-        print(posx + " " + posy + " " + posz);
+        print(topleftpos.x + " " + topleftpos.y + " " + botrightpos.x + " " + botrightpos.y);
         //print(Input.mousePosition.x + " " + Input.mousePosition.y);
         Camera.main.transform.position = pos;
     }

@@ -5,6 +5,7 @@ public class MapGui : MonoBehaviour {
 
     public GUISkin gSkin;
     public Location current_location;
+
     //public Texture2D circleDiagram;
     //public Texture2D starColor;
     //public Object starDiagram;
