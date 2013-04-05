@@ -9,8 +9,6 @@ public class HeroMovement : MonoBehaviour {
     public float SpeedUp = 2.0f;
     public float SpeedDown = 2.0f;
 
-    public float Gravity = 5.0f;
-
     private CollisionFlags collisionFlag;
 
     private float verticalSpeed;
@@ -19,7 +17,22 @@ public class HeroMovement : MonoBehaviour {
 	private float slowTimer = 0.0f;
 	private float slowMax = 0.0f;
 	private float slowAmount = 0.0f;
-	
+
+    private bool isControllable = true;
+
+    private Vector3 moveDirection = Vector3.zero;
+
+    //Jumping
+    public float JumpHeight = 0.5f;
+    public float Gravity = 5.0f;
+
+    private bool jumping = false;
+    private bool jumpingReachedApex = false;
+    private float lastJumpTime = -1.0f;
+    private float lastJumpStartHeight = 0.0f;
+    private float lastJumpButtonTime = -10.0f;
+    private float jumpRepeatTime = 0.05f;
+    private float jumpTimeout = 0.15f;
 
 	// Use this for initialization
 	void Start () {
@@ -28,7 +41,30 @@ public class HeroMovement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+        if (Input.GetButtonDown("Jump"))
+        {
+            lastJumpButtonTime = Time.time;
+        }
+
 		Run();
+
+        ApplyGravity();
+
+        ApplyJumping();
+
+        moveDirection.y = verticalSpeed;
+
+        moveDirection *= Time.deltaTime;
+
+        CharacterController cc = GetComponent<CharacterController>();
+        collisionFlag = cc.Move(moveDirection);
+
+        if (IsGrounded() && jumping)
+        {
+            jumping = false;
+            SendMessage("DidLand", SendMessageOptions.DontRequireReceiver);
+        }
 		
 		if (Slowed) {			
 			slowTimer -= Time.deltaTime;
@@ -40,7 +76,7 @@ public class HeroMovement : MonoBehaviour {
 	}
 	
 	private void Run() {
-        Vector3 moveDirection = new Vector3();
+        moveDirection = Vector3.zero;
 
         float v = Input.GetAxisRaw("Vertical");
         float h = Input.GetAxisRaw("Horizontal");
@@ -58,19 +94,46 @@ public class HeroMovement : MonoBehaviour {
 		}
         
         moveDirection.x = StrafeSpeed * h;
+	}
+
+    public void ApplyGravity()
+    {
+        if (isControllable)
+        {
+            bool jumpButton = Input.GetButton("Jump");
+
+            if (jumping && !jumpingReachedApex && verticalSpeed <= 0.0)
+            {
+                jumpingReachedApex = true;
+                SendMessage("DidJumpReachApex", SendMessageOptions.DontRequireReceiver);
+            }
+
+            if (IsGrounded())
+                verticalSpeed = 0.0f;
+            else
+                verticalSpeed -= Gravity * Time.deltaTime;
+        }
+    }
+
+    public void ApplyJumping()
+    {
+        if (lastJumpTime + jumpRepeatTime > Time.time)
+            return;
 
         if (IsGrounded())
-            verticalSpeed = 0.0f;
-        else
-            verticalSpeed -= Gravity * Time.deltaTime;
+        {
+            if (Time.time < lastJumpButtonTime + jumpTimeout)
+            {
+                verticalSpeed = CalculateJumpVerticalSpeed(JumpHeight);
+                SendMessage("DidJump", SendMessageOptions.DontRequireReceiver);
+            }
+        }
+    }
 
-        moveDirection.y = verticalSpeed;
-
-        moveDirection *= Time.deltaTime;
-
-        CharacterController cc = GetComponent<CharacterController>();
-        collisionFlag = cc.Move(moveDirection);
-	}
+    private float CalculateJumpVerticalSpeed(float targetJumpHeight)
+    {
+        return Mathf.Sqrt(2 * targetJumpHeight * Gravity);
+    }
 	
 	public void SlowHero(float time, float amount) {
 		Slowed = true;
@@ -83,5 +146,16 @@ public class HeroMovement : MonoBehaviour {
     private bool IsGrounded()
     {
         return (collisionFlag & CollisionFlags.CollidedBelow) != 0;
+    }
+
+    private void DidJump()
+    {
+        jumping = true;
+        jumpingReachedApex = false;
+        lastJumpTime = Time.time;
+        lastJumpStartHeight = transform.position.y;
+        lastJumpButtonTime -= 10;
+
+        //State = jumping;
     }
 }
