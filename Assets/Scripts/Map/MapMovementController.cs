@@ -194,7 +194,7 @@ public class MapMovementController : MonoBehaviour {
         float posx = Camera.main.transform.position.x;
         float posz = Camera.main.transform.position.y;
         float posy = Camera.main.transform.position.z;
-        print(topleftpos.x + " " + topleftpos.y + " " + botrightpos.x + " " + botrightpos.y);
+        //print(topleftpos.x + " " + topleftpos.y + " " + botrightpos.x + " " + botrightpos.y);
         //print(Input.mousePosition.x + " " + Input.mousePosition.y);
         Camera.main.transform.position = pos;
         Camera.mainCamera.transform.Rotate(new Vector3(-30, 0, 0));
