@@ -10,19 +10,43 @@ public class MapMovementController : MonoBehaviour {
     bool mdown;
     bool onguidown;
     int mdowncool;
-    private Rect GUI_Area;
 
     void Start() {
         zoomedIn = true;
         mdown = false;
         onguidown = false;
         mdowncool = 0;
-        GUI_Area = new Rect(Screen.width - 400, 50, 350, 450);
+        //Camera.mainCamera.transform.Rotate(new Vector3(-40, 0, 0));
     }
 
     void Update() {
+        Rect GUI_Area = new Rect(Screen.width - 400, 50, 350, 450);
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (GUI_Area.Contains(Input.mousePosition))
+            {
+                onguidown = true;
+                return;
+            }
+        }
+        else
+        {
+            if (!GUI_Area.Contains(Input.mousePosition))
+            {
+                //onguidown = false;
+            }
+        }
 
-        Vector3 pos = Camera.main.transform.position;
+        if (Input.GetMouseButtonUp(0))
+        {
+            if (!GUI_Area.Contains(Input.mousePosition))
+            {
+                onguidown = false;
+            }
+        }
+
+        Camera.mainCamera.transform.Rotate(new Vector3(40, 0, 0));
+        Vector3 pos = Camera.mainCamera.transform.position;
         bool left, right, up, down;
         left = right = up = down = false;
 
@@ -102,22 +126,6 @@ public class MapMovementController : MonoBehaviour {
             pos.z = Camera.mainCamera.ScreenToWorldPoint(newpos).z;
         }
 
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (GUI_Area.Contains(Input.mousePosition))
-            {
-                onguidown = true;
-                return;
-            }
-        }
-        else
-        {
-            if (!GUI_Area.Contains(Input.mousePosition))
-            {
-                onguidown = false;
-            }
-        }
         if (mdowncool > 0)
             mdowncool--;
         float xm = Input.GetAxis("Mouse X");
@@ -150,7 +158,8 @@ public class MapMovementController : MonoBehaviour {
         }
 
         if (zoomedIn) {
-            pos.y = 1.361f;
+            //Camera.mainCamera.fieldOfView = 40;
+            //pos.y = 1.361f;
             /*
             float upper = -2f;
             float lower = 2f;
@@ -166,7 +175,8 @@ public class MapMovementController : MonoBehaviour {
              */
         }
         else {
-            pos.y = 5f;
+            //Camera.mainCamera.fieldOfView = 80;
+            //pos.y = 5f;
             /*
             float upper = -0.58f;
             float lower = 0.4f;
@@ -190,5 +200,6 @@ public class MapMovementController : MonoBehaviour {
         print(topleftpos.x + " " + topleftpos.y + " " + botrightpos.x + " " + botrightpos.y);
         //print(Input.mousePosition.x + " " + Input.mousePosition.y);
         Camera.main.transform.position = pos;
+        Camera.mainCamera.transform.Rotate(new Vector3(-40, 0, 0));
     }
 }
