@@ -42,6 +42,15 @@ public class MapMovementController : MonoBehaviour {
             onguidown = false;
         }
 
+        if (Input.GetMouseButton(1))
+        {
+            if (!GUI_Area.Contains(Input.mousePosition))
+            {
+                Camera.mainCamera.GetComponent<MapGui>().current_location = null;
+                Camera.mainCamera.GetComponent<MapGui>().ResetScroll();
+            }
+        }
+
         Camera.mainCamera.transform.Rotate(new Vector3(30, 0, 0));
         Vector3 pos = Camera.mainCamera.transform.position;
         bool left, right, up, down;
