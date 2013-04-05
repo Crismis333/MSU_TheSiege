@@ -39,13 +39,10 @@ public class MapMovementController : MonoBehaviour {
 
         if (Input.GetMouseButtonUp(0))
         {
-            if (!GUI_Area.Contains(Input.mousePosition))
-            {
-                onguidown = false;
-            }
+            onguidown = false;
         }
 
-        Camera.mainCamera.transform.Rotate(new Vector3(40, 0, 0));
+        Camera.mainCamera.transform.Rotate(new Vector3(30, 0, 0));
         Vector3 pos = Camera.mainCamera.transform.position;
         bool left, right, up, down;
         left = right = up = down = false;
@@ -200,6 +197,6 @@ public class MapMovementController : MonoBehaviour {
         print(topleftpos.x + " " + topleftpos.y + " " + botrightpos.x + " " + botrightpos.y);
         //print(Input.mousePosition.x + " " + Input.mousePosition.y);
         Camera.main.transform.position = pos;
-        Camera.mainCamera.transform.Rotate(new Vector3(-40, 0, 0));
+        Camera.mainCamera.transform.Rotate(new Vector3(-30, 0, 0));
     }
 }
