@@ -14,7 +14,7 @@ public class EnemyAttack : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        player = GameObject.Find("HeroTemp");
+        player = ObstacleController.PLAYER;
     }
 
     void enterInRange()

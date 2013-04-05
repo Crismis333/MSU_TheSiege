@@ -100,7 +100,7 @@ public class HeroMovement : MonoBehaviour {
     {
         if (isControllable)
         {
-            bool jumpButton = Input.GetButton("Jump");
+            //bool jumpButton = Input.GetButton("Jump");
 
             if (jumping && !jumpingReachedApex && verticalSpeed <= 0.0)
             {

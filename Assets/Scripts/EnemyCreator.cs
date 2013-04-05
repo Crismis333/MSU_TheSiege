@@ -7,14 +7,11 @@ public class EnemyCreator : MonoBehaviour
     private float countDown;
     private float CountDownTime;
     public GameObject Enemy;
-	
-	private ObstacleController obsCon;
 
     // Use this for initialization
     void Start()
     {
-		obsCon = GameObject.Find("ObstacleController").GetComponent<ObstacleController>();
-		CountDownTime = RatioToSeconds(obsCon.SoldierRatio);
+		CountDownTime = RatioToSeconds(ObstacleController.SOLDIER_RATIO);
     }
 
     // Update is called once per frame
@@ -22,7 +19,7 @@ public class EnemyCreator : MonoBehaviour
     {
         if (countDown <= 0)
         {
-            float z = obsCon.Player.transform.position.z;
+            float z = ObstacleController.PLAYER.transform.position.z;
             countDown = CountDownTime;
            // Enemy.transform.RotateAround(new Vector3(0, 1, 0), 180);
         //    Vector3 rot = new Vector3(Enemy.transform.eulerAngles.x, Enemy.transform.eulerAngles.y + 180, Enemy.transform.eulerAngles.z);

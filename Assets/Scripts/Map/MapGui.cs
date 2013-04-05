@@ -59,6 +59,7 @@ public class MapGui : MonoBehaviour {
             GUI.Label(new Rect(100 + 15, 215 + 9 * 20, 128, 128), "- " + current_location.losses);
             if (GUI.Button(new Rect(200, 215 + 10 * 20, 80, 30), "to battle!"))
             {
+                ObstacleController.SOLDIER_RATIO = (int)current_location.difficulty_soldier;
                 Application.LoadLevel(2);
             }
         }
