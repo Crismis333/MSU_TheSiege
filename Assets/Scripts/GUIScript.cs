@@ -23,6 +23,13 @@ public class GUIScript : MonoBehaviour {
 
         }
 
+        if (GUI.Button(new Rect(100, 10, 80, 30), "To Menu"))
+        {
+
+            Application.LoadLevel(1);
+
+        }
+
         GUI.Label(new Rect(10, 50, 80, 30), "" + Time.timeSinceLevelLoad);
     }
 }

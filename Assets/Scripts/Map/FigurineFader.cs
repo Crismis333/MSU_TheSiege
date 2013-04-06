@@ -29,6 +29,6 @@ public class FigurineFader : MonoBehaviour {
         rs = this.gameObject.GetComponentsInChildren<Renderer>();
         for (int i = 0; i < rs.Length; i++)
             rs[i].material.SetFloat("_Blend", lerp);
-        print(lerp);
+        //print(lerp);
 	}
 }
