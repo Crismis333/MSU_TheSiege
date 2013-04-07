@@ -13,11 +13,9 @@ public class RoadCreator : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		player = GameObject.Find("HeroTemp");
+        player = ObstacleController.PLAYER;
 		
 		int rIndex = Random.Range(0,Roads.Count);
-		print (rIndex);
-		print (Roads.Count);
 		
 		thisRoad = Instantiate(Roads[rIndex],transform.position,Roads[rIndex].transform.rotation) as GameObject;
 	}
