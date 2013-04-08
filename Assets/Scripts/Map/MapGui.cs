@@ -5,7 +5,8 @@ public class MapGui : MonoBehaviour {
 
     public GUISkin gSkin;
     public Location current_location;
-    public bool stopped;
+    public Texture2D black;
+    public bool stopped,started,startReset;
     public float countdown;
 
     //public Texture2D circleDiagram;
@@ -108,8 +109,6 @@ public class MapGui : MonoBehaviour {
                     ObstacleController.OBSTACLE_RATIO = 1;
                 else
                     ObstacleController.OBSTACLE_RATIO = current_location.difficulty_obstacles - CurrentGameState.obstacleModifier;
-                CurrentGameState.IncreaseModifier(current_location.plus1);
-                CurrentGameState.IncreaseModifier(current_location.plus2);
                 CurrentGameState.loc = null;
                 CurrentGameState.locID = current_location.levelID;
                 current_location.ActivateRigidBody();
@@ -122,6 +121,21 @@ public class MapGui : MonoBehaviour {
         }
         GUI.color = Color.white;
         GUI.EndGroup();
+        if (stopped)
+        {
+            GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
+            GUI.color = new Color(1,1,1,Mathf.Lerp(1, 0, countdown / 2f));
+            GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), black);
+            GUI.EndGroup();
+        }
+
+        if (started)
+        {
+            GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
+            GUI.color = new Color(1, 1, 1, Mathf.Lerp(0, 1, countdown / 2f));
+            GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), black);
+            GUI.EndGroup();
+        }
     }
     /*
     Vector2 DeterminePoints(Vector2 tip, float size) {
@@ -247,17 +261,47 @@ public class MapGui : MonoBehaviour {
     {
         ResetScroll();
         stopped = false;
+        startReset = true;
+        started = true;
+        Time.timeScale = 50;
+        countdown = 50;
+        Screen.lockCursor = true;
     }
 
     void Update()
     {
-        if (stopped)
+        if (stopped || started)
         {
             countdown -= Time.deltaTime;
-            print(countdown);
+            //print(countdown);
+
+            if (started)
+            {
+                if (startReset)
+                {
+                    if (countdown < 3)
+                    {
+                        Camera.mainCamera.GetComponent<MapMovementController>().CenterCamera(CurrentGameState.loc.transform);
+                        Time.timeScale = 1;
+                        startReset = false;
+                        Screen.lockCursor = false;
+                    }
+                }
+                if (countdown < 0)
+                {
+                    countdown = 0;
+                    started = false;
+                }
+
+            }
+
+            if (stopped && countdown < 0)
+            {
+                CurrentGameState.IncreaseModifier(current_location.plus1);
+                CurrentGameState.IncreaseModifier(current_location.plus2);
+                Application.LoadLevel(2);
+            }
         }
-        if (countdown < 0)
-            Application.LoadLevel(2);
     }
 
     void SetColor(int val)

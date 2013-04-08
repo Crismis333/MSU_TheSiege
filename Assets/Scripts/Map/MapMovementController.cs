@@ -19,6 +19,73 @@ public class MapMovementController : MonoBehaviour {
         //Camera.mainCamera.transform.Rotate(new Vector3(-40, 0, 0));
     }
 
+    public void CenterCamera(Transform t)
+    {
+        /*
+        Camera.mainCamera.transform.Rotate(new Vector3(30, 0, 0));
+        Vector3 pos = Camera.mainCamera.transform.position;
+        Vector3 newpos = Camera.mainCamera.WorldToScreenPoint(t.position);
+        newpos.x += Screen.width / 2f;
+        newpos.y -= Screen.height / 2f;
+        pos.x = Camera.mainCamera.ScreenToWorldPoint(newpos).x;
+        pos.z = Camera.mainCamera.ScreenToWorldPoint(newpos).z;
+        Camera.mainCamera.transform.position = pos;// ClampToMap(pos);
+        Camera.mainCamera.transform.Rotate(new Vector3(-30, 0, 0));
+        print("moved: " + t.position + " " + pos);
+         */
+    }
+
+    private Vector3 ClampToMap(Vector3 pos)
+    {
+        Vector2 topleftpos = Camera.mainCamera.WorldToScreenPoint(topLeftLimit.transform.position);
+        Vector2 botrightpos = Camera.mainCamera.WorldToScreenPoint(bottomRightLimit.transform.position);
+        if (topleftpos.x >= 0 && botrightpos.x <= Screen.width)
+        {
+            Vector3 newpos = Camera.mainCamera.WorldToScreenPoint(topLeftLimit.transform.position);
+            Vector3 newpos2 = Camera.mainCamera.WorldToScreenPoint(bottomRightLimit.transform.position);
+            newpos.x += Screen.width / 2f;
+            newpos2.x -= Screen.width / 2f;
+            newpos += newpos2;
+            newpos /= 2;
+            pos.x = Camera.mainCamera.ScreenToWorldPoint(newpos).x;
+        }
+        else if (topleftpos.x >= 0)
+        {
+            Vector3 newpos = Camera.mainCamera.WorldToScreenPoint(topLeftLimit.transform.position);
+            newpos.x += Screen.width / 2f;
+            pos.x = Camera.mainCamera.ScreenToWorldPoint(newpos).x;
+        }
+        else if (botrightpos.x <= Screen.width)
+        {
+            Vector3 newpos = Camera.mainCamera.WorldToScreenPoint(bottomRightLimit.transform.position);
+            newpos.x -= Screen.width / 2f;
+            pos.x = Camera.mainCamera.ScreenToWorldPoint(newpos).x;
+        }
+        if (topleftpos.y <= Screen.height && botrightpos.y >= 0)
+        {
+            Vector3 newpos = Camera.mainCamera.WorldToScreenPoint(topLeftLimit.transform.position);
+            Vector3 newpos2 = Camera.mainCamera.WorldToScreenPoint(bottomRightLimit.transform.position);
+            newpos.y -= Screen.height / 2f;
+            newpos2.y += Screen.height / 2f;
+            newpos += newpos2;
+            newpos /= 2;
+            pos.z = Camera.mainCamera.ScreenToWorldPoint(newpos).z;
+        }
+        else if (topleftpos.y <= Screen.height)
+        {
+            Vector3 newpos = Camera.mainCamera.WorldToScreenPoint(topLeftLimit.transform.position);
+            newpos.y -= Screen.height / 2f;
+            pos.z = Camera.mainCamera.ScreenToWorldPoint(newpos).z;
+        }
+        else if (botrightpos.y >= 0)
+        {
+            Vector3 newpos = Camera.mainCamera.WorldToScreenPoint(bottomRightLimit.transform.position);
+            newpos.y += Screen.height / 2f;
+            pos.z = Camera.mainCamera.ScreenToWorldPoint(newpos).z;
+        }
+        return pos;
+    }
+
     void Update() {
         Rect GUI_Area = new Rect(Screen.width - 400, 50, 350, 450);
         if (Screen.lockCursor)
@@ -89,50 +156,7 @@ public class MapMovementController : MonoBehaviour {
             down = true;
         }
 
-        if (topleftpos.x >= 0 && botrightpos.x <= Screen.width)
-        {
-            Vector3 newpos = Camera.mainCamera.WorldToScreenPoint(topLeftLimit.transform.position);
-            Vector3 newpos2 = Camera.mainCamera.WorldToScreenPoint(bottomRightLimit.transform.position);
-            newpos.x += Screen.width / 2f;
-            newpos2.x -= Screen.width / 2f;
-            newpos += newpos2;
-            newpos /= 2;
-            pos.x = Camera.mainCamera.ScreenToWorldPoint(newpos).x;
-        }
-        else if (topleftpos.x >= 0)
-        {
-            Vector3 newpos = Camera.mainCamera.WorldToScreenPoint(topLeftLimit.transform.position);
-            newpos.x += Screen.width / 2f;
-            pos.x = Camera.mainCamera.ScreenToWorldPoint(newpos).x;
-        }
-        else if (botrightpos.x <= Screen.width)
-        {
-            Vector3 newpos = Camera.mainCamera.WorldToScreenPoint(bottomRightLimit.transform.position);
-            newpos.x -= Screen.width / 2f;
-            pos.x = Camera.mainCamera.ScreenToWorldPoint(newpos).x;
-        }
-        if (topleftpos.y <= Screen.height && botrightpos.y >= 0)
-        {
-            Vector3 newpos = Camera.mainCamera.WorldToScreenPoint(topLeftLimit.transform.position);
-            Vector3 newpos2 = Camera.mainCamera.WorldToScreenPoint(bottomRightLimit.transform.position);
-            newpos.y -= Screen.height / 2f;
-            newpos2.y += Screen.height / 2f;
-            newpos += newpos2;
-            newpos /= 2;
-            pos.z = Camera.mainCamera.ScreenToWorldPoint(newpos).z;
-        }
-        else if (topleftpos.y <= Screen.height)
-        {
-            Vector3 newpos = Camera.mainCamera.WorldToScreenPoint(topLeftLimit.transform.position);
-            newpos.y -= Screen.height / 2f;
-            pos.z = Camera.mainCamera.ScreenToWorldPoint(newpos).z;
-        }
-        else if (botrightpos.y >= 0)
-        {
-            Vector3 newpos = Camera.mainCamera.WorldToScreenPoint(bottomRightLimit.transform.position);
-            newpos.y += Screen.height / 2f;
-            pos.z = Camera.mainCamera.ScreenToWorldPoint(newpos).z;
-        }
+        pos = ClampToMap(pos);
 
         if (mdowncool > 0)
             mdowncool--;
@@ -201,13 +225,9 @@ public class MapMovementController : MonoBehaviour {
 
         }
 
-
-        float posx = Camera.main.transform.position.x;
-        float posz = Camera.main.transform.position.y;
-        float posy = Camera.main.transform.position.z;
         //print(topleftpos.x + " " + topleftpos.y + " " + botrightpos.x + " " + botrightpos.y);
         //print(Input.mousePosition.x + " " + Input.mousePosition.y);
-        Camera.main.transform.position = pos;
+        Camera.mainCamera.transform.position = pos;
         Camera.mainCamera.transform.Rotate(new Vector3(-30, 0, 0));
     }
 }

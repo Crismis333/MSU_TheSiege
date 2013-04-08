@@ -49,6 +49,7 @@ public class Location : MonoBehaviour {
         }
         if (CurrentGameState.locID == this.levelID)
         {
+            print("current location: " + this.levelID);
             CurrentGameState.loc = this;
             GameObject lr;
             linerenderes = new GameObject[locations.Length];
