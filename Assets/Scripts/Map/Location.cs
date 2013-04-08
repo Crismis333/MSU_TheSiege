@@ -14,11 +14,20 @@ public class Location : MonoBehaviour {
     public Modifier plus2;
     private GameObject[] linerenderes;
     private int offset;
+    public bool RB_activated;
 
     void Update()
     {
         if (linerenderes.Length > 0)
         {
+            if (Camera.mainCamera.GetComponent<MapGui>().stopped)
+            {
+                for (int i = 0; i < linerenderes.Length; i++)
+                {
+                    linerenderes[i].SetActive(false);
+                }
+                linerenderes = new GameObject[0];
+            }
             for (int i = 0; i < linerenderes.Length; i++)
             {
                 linerenderes[i].GetComponent<LineRenderer>().material.mainTextureOffset = new Vector2(-Time.time * 0.4f, 0);
@@ -32,7 +41,7 @@ public class Location : MonoBehaviour {
     void Start()
     {
         offset = 0;
-
+        RB_activated = false;
         if (CurrentGameState.JustStarted && levelID == 0)
         {
             CurrentGameState.JustStarted = false;
@@ -55,6 +64,8 @@ public class Location : MonoBehaviour {
         {
             linerenderes = new GameObject[0];
         }
+        if (CurrentGameState.completedlevels.Contains(this.levelID))
+            ActivateRigidBody();
     }
 
     private void SetupLineRenderer(LineRenderer lr, Location lo)
@@ -80,8 +91,6 @@ public class Location : MonoBehaviour {
     public bool isChildOfCurrent()
     {
         bool found = false;
-        Location l = CurrentGameState.loc;
-        int il = l.levelID;
         for (int i = 0; i < CurrentGameState.loc.locations.Length; i++)
         {
             if (CurrentGameState.loc.locations[i] == this)
@@ -91,5 +100,14 @@ public class Location : MonoBehaviour {
             }
         }
         return found;
+    }
+
+    public void ActivateRigidBody()
+    {
+        if (!RB_activated)
+        {
+            this.gameObject.AddComponent<Rigidbody>();
+            RB_activated = true;
+        }
     }
 }

@@ -21,6 +21,8 @@ public class MapMovementController : MonoBehaviour {
 
     void Update() {
         Rect GUI_Area = new Rect(Screen.width - 400, 50, 350, 450);
+        if (Screen.lockCursor)
+            return;
         if (Input.GetMouseButtonDown(0))
         {
             if (GUI_Area.Contains(Input.mousePosition))

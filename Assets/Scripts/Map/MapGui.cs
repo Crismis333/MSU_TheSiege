@@ -5,6 +5,8 @@ public class MapGui : MonoBehaviour {
 
     public GUISkin gSkin;
     public Location current_location;
+    public bool stopped;
+    public float countdown;
 
     //public Texture2D circleDiagram;
     //public Texture2D starColor;
@@ -21,7 +23,6 @@ public class MapGui : MonoBehaviour {
 
     void Map_Main()
     {
-        
         GUI.BeginGroup(new Rect(Screen.width - 400 , Screen.height - 500, Screen.width, Screen.height));
         GUI.Box(new Rect(0, 0, 350, 200), "");
 
@@ -60,15 +61,15 @@ public class MapGui : MonoBehaviour {
         if (current_location != null)
         {
             SetColor(CurrentGameState.soldierModifier);
-            GUI.Label(new Rect(15 + 100, 215 + 1 * 20, 128, 128), toNumerals(current_location.difficulty_soldier + CurrentGameState.soldierModifier));
-            SetColor(CurrentGameState.lengthModifier);
-            GUI.Label(new Rect(15 + 100, 215 + 2 * 20, 128, 128), toNumerals(current_location.difficulty_length + CurrentGameState.lengthModifier));
+            GUI.Label(new Rect(15 + 100, 215 + 1 * 20, 128, 128), toNumerals(current_location.difficulty_soldier - CurrentGameState.soldierModifier));
+            GUI.color = Color.white;
+            GUI.Label(new Rect(15 + 100, 215 + 2 * 20, 128, 128), toNumerals(current_location.difficulty_length));
             SetColor(CurrentGameState.pitModifier);
-            GUI.Label(new Rect(15 + 100, 215 + 3 * 20, 128, 128), toNumerals(current_location.difficulty_pits + CurrentGameState.pitModifier));
+            GUI.Label(new Rect(15 + 100, 215 + 3 * 20, 128, 128), toNumerals(current_location.difficulty_pits - CurrentGameState.pitModifier));
             SetColor(CurrentGameState.obstacleModifier);
-            GUI.Label(new Rect(15 + 100, 215 + 4 * 20, 128, 128), toNumerals(current_location.difficulty_obstacles + CurrentGameState.obstacleModifier));
+            GUI.Label(new Rect(15 + 100, 215 + 4 * 20, 128, 128), toNumerals(current_location.difficulty_obstacles - CurrentGameState.obstacleModifier));
             SetColor(CurrentGameState.catapultModifier);
-            GUI.Label(new Rect(15 + 100, 215 + 5 * 20, 128, 128), toNumerals(current_location.difficulty_catapults + CurrentGameState.catapultModifier));
+            GUI.Label(new Rect(15 + 100, 215 + 5 * 20, 128, 128), toNumerals(current_location.difficulty_catapults - CurrentGameState.catapultModifier));
 
             GUI.color = Color.red;
             if ((current_location.plus1 == Modifier.Soldier) ||
@@ -96,15 +97,27 @@ public class MapGui : MonoBehaviour {
                 (current_location.plus2 == Modifier.SlowDown))
                 GUI.Label(new Rect(15, 215 + 10 * 20, 128, 128), "+");
             GUI.color = Color.white;
+            
             if (GUI.Button(new Rect(200, 215 + 10 * 20, 80, 30), "to battle!"))
             {
-                ObstacleController.SOLDIER_RATIO = (int)current_location.difficulty_soldier + CurrentGameState.soldierModifier;
-                ObstacleController.OBSTACLE_RATIO = (int)current_location.difficulty_obstacles + CurrentGameState.obstacleModifier;
+                if (current_location.difficulty_soldier - CurrentGameState.soldierModifier < 1)
+                    ObstacleController.SOLDIER_RATIO = 1;
+                else
+                   ObstacleController.SOLDIER_RATIO = current_location.difficulty_soldier - CurrentGameState.soldierModifier;
+                if (current_location.difficulty_obstacles - CurrentGameState.obstacleModifier < 1)
+                    ObstacleController.OBSTACLE_RATIO = 1;
+                else
+                    ObstacleController.OBSTACLE_RATIO = current_location.difficulty_obstacles - CurrentGameState.obstacleModifier;
                 CurrentGameState.IncreaseModifier(current_location.plus1);
                 CurrentGameState.IncreaseModifier(current_location.plus2);
                 CurrentGameState.loc = null;
                 CurrentGameState.locID = current_location.levelID;
-                Application.LoadLevel(2);
+                current_location.ActivateRigidBody();
+                CurrentGameState.completedlevels.Add(current_location.levelID);
+                Screen.lockCursor = true;
+                stopped = true;
+                countdown = 5;
+                //Application.LoadLevel(2);
             }
         }
         GUI.color = Color.white;
@@ -233,6 +246,18 @@ public class MapGui : MonoBehaviour {
     void Start()
     {
         ResetScroll();
+        stopped = false;
+    }
+
+    void Update()
+    {
+        if (stopped)
+        {
+            countdown -= Time.deltaTime;
+            print(countdown);
+        }
+        if (countdown < 0)
+            Application.LoadLevel(2);
     }
 
     void SetColor(int val)
@@ -252,7 +277,13 @@ public class MapGui : MonoBehaviour {
     {
         switch (val)
         {
-            case 0: return "Ø";
+            case -6: return "I";
+            case -5: return "I";
+            case -4: return "I";
+            case -3: return "I";
+            case -2: return "I";
+            case -1: return "I";
+            case 0: return "I";
             case 1: return "I";
             case 2: return "II";
             case 3: return "III";
@@ -273,7 +304,7 @@ public class MapGui : MonoBehaviour {
             case 18: return "XVIII";
             case 19: return "XIX";
             case 20: return "XX";
-            default: return "XX";
+            default: return "I";
         }
     }
 }

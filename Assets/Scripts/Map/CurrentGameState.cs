@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public enum Modifier { None, Soldier, Obstacle, Pit, Catapult, Length, Jump, MoveSpeed, SlowDown }
 
@@ -12,10 +13,10 @@ public class CurrentGameState : MonoBehaviour {
     public static int obstacleModifier = 0;
     public static int pitModifier = 0;
     public static int catapultModifier = 0;
-    public static int lengthModifier = 0;
     public static float jumpLengthModifier = 1.0f;
     public static float moveSpeedModifier = 1.0f;
     public static float slowDownModifier = 1.0f;
+    public static List<int> completedlevels = new List<int>();
 
     public static void IncreaseModifier(Modifier type) 
     {
@@ -25,7 +26,6 @@ public class CurrentGameState : MonoBehaviour {
             case Modifier.Obstacle: obstacleModifier++; break;
             case Modifier.Pit: pitModifier++; break;
             case Modifier.Catapult: catapultModifier++; break;
-            case Modifier.Length: lengthModifier++; break;
             case Modifier.Jump:
                 {
                     if (jumpLengthModifier < 1.5f)

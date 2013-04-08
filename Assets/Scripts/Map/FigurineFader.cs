@@ -16,8 +16,8 @@ public class FigurineFader : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        
-	    if (Camera.main.GetComponent<MapGui>().current_location == this.GetComponent<Location>())
+
+        if (Camera.main.GetComponent<MapGui>().current_location == this.GetComponent<Location>() && !this.GetComponent<Location>().RB_activated)
         {
             counter++;
             lerp = Mathf.PingPong(counter, duration) / duration;
