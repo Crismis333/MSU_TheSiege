@@ -7,9 +7,11 @@ public class Location : MonoBehaviour {
     public string name, gains, losses;
     [Multiline]
     public string description;
-    public float difficulty_soldier, difficulty_length, difficulty_pits, difficulty_obstacles, difficulty_catapults;
+    public int difficulty_soldier, difficulty_length, difficulty_pits, difficulty_obstacles, difficulty_catapults;
     public Location[] locations;
     public Material Line_Material;
+    public Modifier plus1;
+    public Modifier plus2;
     private GameObject[] linerenderes;
     private int offset;
 
@@ -31,14 +33,14 @@ public class Location : MonoBehaviour {
     {
         offset = 0;
 
-        if (CurrentLocation.JustStarted && levelID == 0)
+        if (CurrentGameState.JustStarted && levelID == 0)
         {
-            CurrentLocation.JustStarted = false;
-            CurrentLocation.locID = this.levelID;
+            CurrentGameState.JustStarted = false;
+            CurrentGameState.locID = this.levelID;
         }
-        if (CurrentLocation.locID == this.levelID)
+        if (CurrentGameState.locID == this.levelID)
         {
-            CurrentLocation.loc = this;
+            CurrentGameState.loc = this;
             GameObject lr;
             linerenderes = new GameObject[locations.Length];
             for (int i = 0; i < locations.Length; i++)
@@ -78,11 +80,11 @@ public class Location : MonoBehaviour {
     public bool isChildOfCurrent()
     {
         bool found = false;
-        Location l = CurrentLocation.loc;
+        Location l = CurrentGameState.loc;
         int il = l.levelID;
-        for (int i = 0; i < CurrentLocation.loc.locations.Length; i++)
+        for (int i = 0; i < CurrentGameState.loc.locations.Length; i++)
         {
-            if (CurrentLocation.loc.locations[i] == this)
+            if (CurrentGameState.loc.locations[i] == this)
             {
                 found = true;
                 break;
