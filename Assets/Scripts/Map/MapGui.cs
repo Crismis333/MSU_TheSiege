@@ -51,7 +51,7 @@ public class MapGui : MonoBehaviour {
         GUI.Label(new Rect(15 + 15, 215 + 3 * 20, 128, 128), "Obstacles:");
         GUI.Label(new Rect(15 + 15, 215 + 4 * 20, 128, 128), "Catapults:");
 
-        GUI.Label(new Rect(15 + 15, 215 + 6 * 20, 128, 128), "Stats:");
+        GUI.Label(new Rect(15 + 40, 215 + 6 * 20, 128, 128), "Stats:");
         GUI.Label(new Rect(15 + 15, 215 + 7 * 20, 128, 128), "Jump Length:");
         GUI.Label(new Rect(15 + 15, 215 + 8 * 20, 128, 128), "Running Speed:");
         GUI.Label(new Rect(15 + 15, 215 + 9 * 20, 128, 128), "Adrenaline Rush:");
@@ -77,26 +77,19 @@ public class MapGui : MonoBehaviour {
             GUI.Label(new Rect(15 + 100, 215 + 4 * 20, 128, 128), toNumerals(current_location.difficulty_catapults));
 
             GUI.color = Color.red;
-            if ((current_location.plus1 == Modifier.Soldier) ||
-                (current_location.plus2 == Modifier.Soldier))
+            if ((current_location.modifiers.Contains(Modifier.Soldier)))
                 GUI.Label(new Rect(15, 215 + 1 * 20, 128, 128), "-");
-            if ((current_location.plus1 == Modifier.Pit) ||
-                (current_location.plus2 == Modifier.Pit))
+            if ((current_location.modifiers.Contains(Modifier.Pit)))
                 GUI.Label(new Rect(15, 215 + 2 * 20, 128, 128), "-");
-            if ((current_location.plus1 == Modifier.Obstacle) ||
-                (current_location.plus2 == Modifier.Obstacle))
+            if ((current_location.modifiers.Contains(Modifier.Obstacle)))
                 GUI.Label(new Rect(15, 215 + 3 * 20, 128, 128), "-");
-            if ((current_location.plus1 == Modifier.Catapult) ||
-                (current_location.plus2 == Modifier.Catapult))
+            if ((current_location.modifiers.Contains(Modifier.Catapult)))
                 GUI.Label(new Rect(15, 215 + 4 * 20, 128, 128), "-");
-            if ((current_location.plus1 == Modifier.Jump) ||
-                (current_location.plus2 == Modifier.Jump))
+            if ((current_location.modifiers.Contains(Modifier.Jump)))
                 GUI.Label(new Rect(15, 215 + 7 * 20, 128, 128), "+");
-            if ((current_location.plus1 == Modifier.MoveSpeed) ||
-                (current_location.plus2 == Modifier.MoveSpeed))
+            if ((current_location.modifiers.Contains(Modifier.MoveSpeed)))
                 GUI.Label(new Rect(15, 215 + 8 * 20, 128, 128), "+");
-            if ((current_location.plus1 == Modifier.SlowDown) ||
-                (current_location.plus2 == Modifier.SlowDown))
+            if ((current_location.modifiers.Contains(Modifier.SlowDown)))
                 GUI.Label(new Rect(15, 215 + 9 * 20, 128, 128), "+");
             GUI.color = Color.white;
             
@@ -118,9 +111,9 @@ public class MapGui : MonoBehaviour {
 				LevelCreator.LEVEL_LENGTH = current_location.difficulty_length;
 				
                 CurrentGameState.loc = null;
-                CurrentGameState.locID = current_location.levelID;
+                //CurrentGameState.locID = current_location.levelID;
                 current_location.ActivateRigidBody();
-                CurrentGameState.completedlevels.Add(current_location.levelID);
+                //CurrentGameState.completedlevels.Add(current_location.levelID);
                 Screen.lockCursor = true;
 				
 				foreach(GameObject go in current_location.PitModules) {
@@ -213,8 +206,7 @@ public class MapGui : MonoBehaviour {
 
             if (stopped && countdown < 0)
             {
-                CurrentGameState.IncreaseModifier(current_location.plus1);
-                CurrentGameState.IncreaseModifier(current_location.plus2);
+                CurrentGameState.SetWinModifiers(current_location.modifiers,current_location.levelID);
                 Application.LoadLevel(2);
             }
         }

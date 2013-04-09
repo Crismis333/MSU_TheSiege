@@ -11,8 +11,7 @@ public class Location : MonoBehaviour {
     public int difficulty_soldier, difficulty_length, difficulty_pits, difficulty_obstacles, difficulty_catapults;
     public Location[] locations;
     public Material Line_Material;
-    public Modifier plus1;
-    public Modifier plus2;
+    public List<Modifier> modifiers;
 	
 	public List<GameObject> PitModules;
 	public List<GameObject> SideModules;

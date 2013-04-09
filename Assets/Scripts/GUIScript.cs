@@ -49,7 +49,7 @@ public class GUIScript : MonoBehaviour {
 
         if (GUI.Button(new Rect(100, 10, 80, 30), "To Menu"))
         {
-
+            //CurrentGameState.SetWin();
             Application.LoadLevel(1);
 
         }
