@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public enum Modifier { None, Soldier, Obstacle, Pit, Catapult, Length, Jump, MoveSpeed, SlowDown }
+public enum Modifier { None, Soldier, Obstacle, Pit, Catapult, Jump, MoveSpeed, SlowDown }
 
 public class CurrentGameState : MonoBehaviour {
 

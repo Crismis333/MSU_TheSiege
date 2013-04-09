@@ -33,6 +33,7 @@ public class MapMovementController : MonoBehaviour {
         Camera.mainCamera.transform.Rotate(new Vector3(-30, 0, 0));
         print("moved: " + t.position + " " + pos);
          */
+        this.transform.position = new Vector3(t.position.x,this.transform.position.y,t.position.z);
     }
 
     private Vector3 ClampToMap(Vector3 pos)
@@ -121,7 +122,7 @@ public class MapMovementController : MonoBehaviour {
         }
 
         Camera.mainCamera.transform.Rotate(new Vector3(30, 0, 0));
-        Vector3 pos = Camera.mainCamera.transform.position;
+        Vector3 pos = this.transform.position;
         bool left, right, up, down;
         left = right = up = down = false;
 
@@ -227,7 +228,7 @@ public class MapMovementController : MonoBehaviour {
 
         //print(topleftpos.x + " " + topleftpos.y + " " + botrightpos.x + " " + botrightpos.y);
         //print(Input.mousePosition.x + " " + Input.mousePosition.y);
-        Camera.mainCamera.transform.position = pos;
+        this.transform.position = pos;
         Camera.mainCamera.transform.Rotate(new Vector3(-30, 0, 0));
     }
 }
