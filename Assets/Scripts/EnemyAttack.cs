@@ -10,6 +10,7 @@ public class EnemyAttack : MonoBehaviour {
     public float AwareRange;
     public GameObject Indicator;
     private GameObject selectedIndicator;
+    public bool AttackDone;
 
     // Use this for initialization
     void Start()
@@ -43,6 +44,16 @@ public class EnemyAttack : MonoBehaviour {
     void OnDestroy()
     {
         player.GetComponent<HeroAttack>().RemoveFromList(gameObject, isChosen);
+    }
+
+    public void KillSelf()
+    {
+        inRange = false;
+        isDone = true;
+        player.GetComponent<HeroAttack>().RemoveFromList(gameObject, isChosen);
+        Destroy(selectedIndicator);
+        // Add crazy death animation
+        Destroy(gameObject);
     }
 	
 	// Update is called once per frame

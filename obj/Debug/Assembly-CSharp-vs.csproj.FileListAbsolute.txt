@@ -32,3 +32,13 @@ C:\Users\Mikker\Documents\GitHub\MSU_TheSiege\Temp\bin\Debug\ICSharpCode.NRefact
 C:\Users\Mikker\Documents\GitHub\MSU_TheSiege\obj\Debug\ResolveAssemblyReference.cache
 C:\Users\Mikker\Documents\GitHub\MSU_TheSiege\obj\Debug\Assembly-CSharp.dll
 C:\Users\Mikker\Documents\GitHub\MSU_TheSiege\obj\Debug\Assembly-CSharp.pdb
+C:\Users\daja\GitHub\MSU_TheSiege\Temp\bin\Debug\Assembly-CSharp.dll
+C:\Users\daja\GitHub\MSU_TheSiege\Temp\bin\Debug\Assembly-CSharp.pdb
+C:\Users\daja\GitHub\MSU_TheSiege\Temp\bin\Debug\UnityEditor.dll
+C:\Users\daja\GitHub\MSU_TheSiege\Temp\bin\Debug\UnityEngine.dll
+C:\Users\daja\GitHub\MSU_TheSiege\Temp\bin\Debug\Mono.Cecil.dll
+C:\Users\daja\GitHub\MSU_TheSiege\Temp\bin\Debug\nunit.framework.dll
+C:\Users\daja\GitHub\MSU_TheSiege\Temp\bin\Debug\ICSharpCode.NRefactory.dll
+C:\Users\daja\GitHub\MSU_TheSiege\obj\Debug\Assembly-CSharp-vs.csprojResolveAssemblyReference.cache
+C:\Users\daja\GitHub\MSU_TheSiege\obj\Debug\Assembly-CSharp.dll
+C:\Users\daja\GitHub\MSU_TheSiege\obj\Debug\Assembly-CSharp.pdb

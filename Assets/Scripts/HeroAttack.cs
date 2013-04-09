@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class HeroAttack : MonoBehaviour {
 
@@ -9,12 +10,15 @@ public class HeroAttack : MonoBehaviour {
     private int selectedIndex;
 
     private GameObject selectedEnemy;
+    private GUIScript GUI;
+    
 
 
 	// Use this for initialization
 	void Start () {
         AttackList = new List<GameObject>();
-     //   Time.timeScale = 0.5f;
+        GUI = GameObject.Find("GUI").GetComponent<GUIScript>();
+      //  Time.timeScale = 0.5f;
 	}
 
     public void AddToList(GameObject go)
@@ -88,9 +92,228 @@ public class HeroAttack : MonoBehaviour {
         Destroy(enemy);
     }
 
-    bool engaged;
+    bool engaged, firePressed, inEngageBox, inReleaseBox;
+    float engagePercent, releasePercent;
+
+    //private void handleAttack()
+    //{
+    //    if (selectedEnemy != null)
+    //    {
+    //        float p = gameObject.transform.localPosition.z;
+    //        Bounds engageBounds = selectedEnemy.transform.Find("EngageBox").GetComponent<BoxCollider>().bounds;
+    //        Bounds releaseBounds = selectedEnemy.transform.Find("ReleaseBox").GetComponent<BoxCollider>().bounds;
+
+    //        float min = engageBounds.min.z;
+    //        float max = engageBounds.max.z;
+
+    //        if (p > min && p < max)
+    //        {
+    //            // In engage box
+
+    //            float range = max - min;
+
+    //            float dist = p - min;         
+
+    //            float percentage = dist / range * 100;
+    //            handleEngage(percentage);
+    //        }
+    //        else
+    //        {
+                
+    //            min = releaseBounds.min.z;
+    //            max = releaseBounds.max.z;
+
+    //            if (p > min && p < max)
+    //            {
+    //                // In release box
+    //                print("Release");
+    //                float range = max - min;
+    //                float dist = p - min;
+
+    //                float percentage = dist / range * 100;
+    //                handleRelease(percentage);
+    //            }
+               
+    //        }
+    //        if (firePressed && Input.GetButtonUp("Fire1"))
+    //        {
+    //            GUI.ResetBar();
+    //            firePressed = false;
+    //        }
+    //    }
+    //}
+
+    //private void handleEngage(float percentage)
+    //{
+    //    inEngageBox = true;
+    //    GUI.BarActive = true;
+
+    //    GUI.engagePercent = percentage;
+    //    engagePercent = percentage;
+
+    //    if (!firePressed)
+    //    {
+    //        if (Input.GetButtonDown("Fire1"))
+    //        {
+    //            firePressed = true;
+    //            GUI.engageFixed = true;
+    //            GUI.fixedEngagePercent = percentage;
+    //            engaged = true;
+    //        }
+    //    }
+    //    else
+    //    {
+    //        // Too quick release - penalty
+    //        print("Penalty - too quick");
+    //        selectedEnemy.GetComponent<EnemyAttack>().Indicator.renderer.material.color = Color.red;
+    //        firePressed = false;
+    //    }
+    //}
+
+    //private void handleRelease(float percentage)
+    //{
+    //    if (firePressed)
+    //    {
+    //        print("Release");
+    //        GUI.releasePercent = percentage;
+    //        if (Input.GetButtonUp("Fire1"))
+    //        {
+    //            selectedEnemy.GetComponent<EnemyAttack>().KillSelf();
+    //        }
+    //    }
+    //}
+
+    //private void handleAttack2()
+    //{
+    //    float p = gameObject.transform.localPosition.z;
+    //    Bounds engageBounds = selectedEnemy.transform.Find("EngageBox").GetComponent<BoxCollider>().bounds;
+    //    Bounds releaseBounds = selectedEnemy.transform.Find("ReleaseBox").GetComponent<BoxCollider>().bounds;
+
+    //    float eMin = engageBounds.min.z;
+    //    float eMax = engageBounds.max.z;
+    //    float rMax = releaseBounds.max.z;
+
+    //    int c = 0; // 0: Outside boxes, 1: Engage box, 2: Release box, 3: Outside boxes
+
+    //    if (p > eMin)
+    //    {
+    //        c++;
+    //        if (p > eMax)
+    //        {
+    //            c++;
+    //            if (p > rMax)
+    //            {
+    //                c++;
+    //            }
+    //        }            
+    //    }
+
+    //    switch (c)
+    //    {
+    //        case 0:
+    //           // print("Before boxes");
+    //            break;
+    //        case 1:
+    //          //  print("In engage box");
+    //            float min = engageBounds.min.z;
+    //            float max = engageBounds.max.z;
+
+    //            float range = max - min;                                
+
+    //            float dist = p - min;
+    //            //   print("Engage: min: " + min + ", p: " + p + ", max: " + max + ", range: " + range + ", dist: " + dist);
+
+
+    //            float percentage = dist / range * 100;
+
+    //            if (percentage > 0 && percentage < 100)
+    //            {
+    //                inEngageBox = true;
+    //                GUI.BarActive = true;
+
+    //                GUI.engagePercent = percentage;
+    //                engagePercent = percentage;
+    //                if (!firePressed)
+    //                {
+
+    //                    if (Input.GetButtonDown("Fire1"))
+    //                    {
+    //                        firePressed = true;
+    //                        GUI.engageFixed = true;
+    //                        GUI.fixedEngagePercent = percentage;
+    //                        engaged = true;
+    //                    }
+    //                }
+    //                else
+    //                {
+    //                    if (Input.GetButtonUp("Fire1"))
+    //                    {
+    //                        // Too quick release - penalty
+    //                        print("Penalty - too quick");
+    //                        selectedEnemy.GetComponent<EnemyAttack>().Indicator.renderer.material.color = Color.red;
+    //                        firePressed = false;
+    //                    }
+    //                }
+
+    //            }
+    //            break;
+    //        case 2:
+    //          //  print("In release box");
+    //            break;
+    //        case 3:
+    //          //  print("After boxes");
+    //            break;
+    //    }
+    //}
 	
 	// Update is called once per frame
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.name.Equals("EngageBox") && other.transform.parent.gameObject.Equals(selectedEnemy))
+        {
+            print("Enter engage box");
+            inEngageBox = true;
+        }
+        if (other.gameObject.name.Equals("ReleaseBox") && other.transform.parent.gameObject.Equals(selectedEnemy))
+        {
+            print("Enter release box");
+            inReleaseBox = true;
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.name.Equals("EngageBox") && other.transform.parent.gameObject.Equals(selectedEnemy))
+        {
+            print("Leaving engage box");
+            inEngageBox = false;
+        }
+        if (other.gameObject.name.Equals("ReleaseBox") && other.transform.parent.gameObject.Equals(selectedEnemy))
+        {
+            print("Leaving release box");
+            inReleaseBox = false;
+        }
+    }
+
+    void CalculateHit()
+    {
+        if (engagePercent > 0 && releasePercent > 0)
+        {
+            float engageAccuracy = Math.Abs(engagePercent - 50);
+            float releaseAccuracy = Math.Abs(releasePercent - 50);
+
+            int engageRate = (int)engageAccuracy / 10;
+            int releaseRate = (int)releaseAccuracy / 10;
+
+            int hitRate = engageRate + releaseRate;
+
+            float similarity = Math.Abs(engagePercent - (100 - releasePercent));
+
+            print("Hit rate: " + hitRate + ", similarity: " + similarity);
+        }
+    }
+
 	void Update () {
         if (Input.GetButtonUp("Fire2")) // On keyboard: Alt
         {
@@ -99,51 +322,118 @@ public class HeroAttack : MonoBehaviour {
                 chooseNext();                
             }
         }
-        if (!engaged && Input.GetButtonDown("Fire1")) // On keyboard: Left Ctrl
+       
+        else
         {
-            if (selectedEnemy != null)
+            if (selectedEnemy != null && !selectedEnemy.GetComponent<EnemyAttack>().AttackDone)
             {
-                print("Engaging");
-                Bounds bounds = selectedEnemy.transform.Find("EngageBox").GetComponent<BoxCollider>().bounds;
-
-
-                float min = bounds.min.z;
-                float max = bounds.max.z;
-
-                float range = max - min;
-
-                float p = gameObject.transform.localPosition.z;
-
-                if (p > min && p < max)
+                if (inEngageBox)
                 {
-                    engaged = true;
+                    //   print("Engaging");
+                    Bounds bounds = selectedEnemy.transform.Find("EngageBox").GetComponent<BoxCollider>().bounds;
+
+
+                    float min = bounds.min.z;
+                    float max = bounds.max.z;                  
+
+                    //  print("xMin: " + xMin + ", xMax: " + xMax);
+
+                    float range = max - min;
+
+                    float p = gameObject.transform.localPosition.z;
+
+                    float dist = p - min;
+                    //   print("Engage: min: " + min + ", p: " + p + ", max: " + max + ", range: " + range + ", dist: " + dist);
+
+
+                    float percentage = dist / range * 100;
+
+                    if (percentage > 0 && percentage < 100)
+                    {
+
+                        GUI.BarActive = true;
+
+                        GUI.engagePercent = percentage;
+                     //   engagePercent = percentage;
+                        if (!firePressed)
+                        {
+
+                            if (Input.GetButtonDown("Fire1"))
+                            {
+                                firePressed = true;
+                                GUI.engageFixed = true;
+                                GUI.fixedEngagePercent = percentage;
+                                engagePercent = percentage;
+                                engaged = true;
+                            }
+                        }
+                        else
+                        {
+                            if (inEngageBox && Input.GetButtonUp("Fire1"))
+                            {
+                                // Too quick release - penalty
+                                print("Penalty - too quick");
+                                selectedEnemy.GetComponent<EnemyAttack>().AttackDone = true;
+                                firePressed = false;
+                                GUI.ResetBar();
+                            }
+                        }
+
+                    }
                 }
 
-              //  KillEnemy(selectedEnemy);
             }
-        }
-        if (engaged && Input.GetButtonUp("Fire1"))
-        {
-            if (selectedEnemy != null)
+
+
+
+            if (engaged)
             {
-                Bounds bounds = selectedEnemy.transform.Find("ReleaseBox").GetComponent<BoxCollider>().bounds;
-
-                print("Releasing");
-                float min = bounds.min.z;
-                float max = bounds.max.z;
-
-                float range = max - min;
-
-                float p = gameObject.transform.localPosition.z;
-
-                if (p > min && p < max)
+                if (inReleaseBox)
                 {
-                    KillEnemy(selectedEnemy);
-                }
+                    Bounds bounds = selectedEnemy.transform.Find("ReleaseBox").GetComponent<BoxCollider>().bounds;
 
-                //  
+
+                    float min = bounds.min.z;
+                    float max = bounds.max.z;
+
+                    float range = max - min;
+
+                    float p = gameObject.transform.localPosition.z;
+                    float dist = p - min;
+                    //     print("Release: min: " + min + ", p: " + p + ", max: " + max + ", range: " + range + ", dist: " + dist);
+
+
+                    float percentage = dist / range * 100;
+
+                    releasePercent = percentage;
+
+                    if (firePressed && percentage > 0 && percentage < 100)
+                    {
+                        inReleaseBox = true;
+                        GUI.releasePercent = percentage;
+                    }
+                    else
+                    {
+                        inReleaseBox = false;
+                    }
+                    if (firePressed && Input.GetButtonUp("Fire1"))
+                    {
+                        GUI.ResetBar();
+                        firePressed = false;
+                        if (percentage > 0 & percentage < 100)
+                        {
+                            selectedEnemy.GetComponent<EnemyAttack>().KillSelf();
+
+                            engaged = false;
+                            releasePercent = percentage;
+                            CalculateHit();
+                        }
+                    }
+
+                }
             }
-            engaged = false;
         }
+
+       
 	}
 }
