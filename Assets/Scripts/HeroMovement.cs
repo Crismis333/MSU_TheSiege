@@ -5,6 +5,12 @@ public class HeroMovement : MonoBehaviour {
 
     public float MoveSpeed = 5.0f;
     public float StrafeSpeed = 3.0f;
+	
+	private float currentSpeed = 0.0f;
+	
+	public float CurrentSpeed {
+		get { return currentSpeed; }
+	}
 
     public float SpeedUp = 2.0f;
     public float SpeedDown = 2.0f;
@@ -73,6 +79,10 @@ public class HeroMovement : MonoBehaviour {
 				slowTimer = 0.0f;
 			}
 		}
+		
+		if (transform.position.z >= LevelCreator.LengthConverter(LevelCreator.LEVEL_LENGTH)*64-32) {
+			Application.LoadLevel(1);
+		}
 	}
 	
 	private void Run() {
@@ -82,12 +92,18 @@ public class HeroMovement : MonoBehaviour {
         float h = Input.GetAxisRaw("Horizontal");
 		
 		if(!Slowed) {
-	        if (v > 0.1)
+	        if (v > 0.1) {
 	            moveDirection.z = MoveSpeed + SpeedUp * v;
-	        else if (v < -0.1)
+				currentSpeed = MoveSpeed + SpeedUp * v;
+			}
+	        else if (v < -0.1) {
 	            moveDirection.z = MoveSpeed + SpeedDown * v;
-	        else
+				currentSpeed = MoveSpeed + SpeedDown * v;
+			}
+	        else {
 	            moveDirection.z = MoveSpeed;
+				currentSpeed = MoveSpeed;
+			}
 		}
 		else {
 			moveDirection.z = MoveSpeed - slowAmount * (slowTimer / slowMax);

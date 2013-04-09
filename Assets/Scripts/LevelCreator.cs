@@ -5,15 +5,14 @@ using System.Text.RegularExpressions;
 
 public class LevelCreator : MonoBehaviour {
 	
-	public int LEVEL_LENGTH = 1; //static
+	public static int LEVEL_LENGTH = 1;
 	public static int PIT_RATIO = 1;
 
-	public List<string> SIDE_MODULE_LIST = new List<string>(); //static
-	public List<string> ROAD_MODULE_LIST = new List<string>(); //static
-	public List<string> SPECIAL_MODULE_LIST = new List<string>(); //static
+	public static List<string> SIDE_MODULE_LIST = new List<string>();
+	public static List<string> ROAD_MODULE_LIST = new List<string>();
+	public static List<string> SPECIAL_MODULE_LIST = new List<string>();
 	
-	public string DEFAULT_ROAD = ""; //static
-	public string DEFAULT_SIDE = ""; //static
+	public static string DEFAULT_ROAD = "";
 	
 	private List<GameObject> sideModules;
 	private List<GameObject> roadModules;
@@ -97,7 +96,7 @@ public class LevelCreator : MonoBehaviour {
 				continue;
 			}
 			
-			if (IsDefaultRoad())
+			if (IsDefaultRoad() || i == 0)
 			{
 				tmp = Instantiate(defaultRoad, pos, defaultRoad.transform.rotation) as GameObject;
 			}
@@ -212,7 +211,7 @@ public class LevelCreator : MonoBehaviour {
 		}
 	}
 	
-	private float LengthConverter(int length)	{
+	public static float LengthConverter(int length)	{
 		return Mathf.Round(2.8333f*length + 8.5f);
 	}
 	

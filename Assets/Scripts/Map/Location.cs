@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Location : MonoBehaviour {
 
@@ -12,6 +13,13 @@ public class Location : MonoBehaviour {
     public Material Line_Material;
     public Modifier plus1;
     public Modifier plus2;
+	
+	public List<GameObject> PitModules;
+	public List<GameObject> SideModules;
+	public List<GameObject> SpecialModules;
+	
+	public GameObject DefaultRoad;
+	
     private GameObject[] linerenderes;
     private int offset;
     public bool RB_activated;

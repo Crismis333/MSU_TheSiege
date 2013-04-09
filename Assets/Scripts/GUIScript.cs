@@ -5,14 +5,19 @@ public class GUIScript : MonoBehaviour {
 
     public GUISkin gSkin;
     public Texture2D runningSoldiers, runningGoal, damagebar, swordLeft, swordRight, bloodsplatter;
+	
+	private float currentZ;
+	private float minZ = 0;
+	private float maxZ;
 
 	// Use this for initialization
 	void Start () {
+		maxZ = (LevelCreator.LengthConverter(LevelCreator.LEVEL_LENGTH)*64)-32;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+		currentZ = ObstacleController.PLAYER.transform.position.z;
 	}
 
     void Level_Interface()
@@ -23,7 +28,7 @@ public class GUIScript : MonoBehaviour {
         GUI.Label(new Rect(Screen.width - 225 + 15, 25 + 15*2, 200, 75), "Multiplier: x2");
 
         GUI.Box(new Rect(15, Screen.height - 65, Screen.width - 30, 50), "");
-        GUI.DrawTexture(new Rect(15, Screen.height - 64, 50, 50), runningSoldiers);
+        GUI.DrawTexture(new Rect(15+currentZ/(maxZ-minZ)*Screen.width-50, Screen.height - 64, 50, 50), runningSoldiers);
         GUI.DrawTexture(new Rect(Screen.width-65, Screen.height - 64, 50, 50), runningSoldiers);
 
         GUI.DrawTexture(new Rect(Screen.width / 2 - 250, Screen.height - 90, 500, 12), damagebar);

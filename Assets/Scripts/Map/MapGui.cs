@@ -110,11 +110,33 @@ public class MapGui : MonoBehaviour {
                     ObstacleController.OBSTACLE_RATIO = 1;
                 else
                     ObstacleController.OBSTACLE_RATIO = current_location.difficulty_obstacles - CurrentGameState.obstacleModifier;
+                if (current_location.difficulty_pits - CurrentGameState.pitModifier < 1)
+                    LevelCreator.PIT_RATIO = 1;
+                else
+                    LevelCreator.PIT_RATIO = current_location.difficulty_pits - CurrentGameState.pitModifier;
+				
+				LevelCreator.LEVEL_LENGTH = current_location.difficulty_length;
+				
                 CurrentGameState.loc = null;
                 CurrentGameState.locID = current_location.levelID;
                 current_location.ActivateRigidBody();
                 CurrentGameState.completedlevels.Add(current_location.levelID);
                 Screen.lockCursor = true;
+				
+				foreach(GameObject go in current_location.PitModules) {
+					LevelCreator.ROAD_MODULE_LIST.Add(go.name);
+				}
+				
+				foreach(GameObject go in current_location.SideModules) {
+					LevelCreator.SIDE_MODULE_LIST.Add(go.name);
+				}
+				
+				foreach(GameObject go in current_location.SpecialModules) {
+					LevelCreator.SPECIAL_MODULE_LIST.Add(go.name);
+				}
+				
+				LevelCreator.DEFAULT_ROAD = current_location.DefaultRoad.name;
+				
                 stopped = true;
                 countdown = 5;
                 //Application.LoadLevel(2);
