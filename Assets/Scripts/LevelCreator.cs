@@ -13,6 +13,7 @@ public class LevelCreator : MonoBehaviour {
 	public List<string> SPECIAL_MODULE_LIST = new List<string>(); //static
 	
 	public string DEFAULT_ROAD = ""; //static
+	public string DEFAULT_SIDE = ""; //static
 	
 	private List<GameObject> sideModules;
 	private List<GameObject> roadModules;
@@ -74,6 +75,16 @@ public class LevelCreator : MonoBehaviour {
 		if (tmpRoad.transform.position.z <= ObstacleController.PLAYER.transform.position.z - 64) {
 			Destroy(roads.Dequeue());
 		}
+		
+		GameObject tmpSideA = sidesA.Peek();
+		if (tmpSideA.transform.position.z <= ObstacleController.PLAYER.transform.position.z - 64) {
+			Destroy(sidesA.Dequeue());
+		}
+		
+		GameObject tmpSideB = sidesB.Peek();
+		if (tmpSideB.transform.position.z <= ObstacleController.PLAYER.transform.position.z - 64) {
+			Destroy(sidesB.Dequeue());
+		}
 	}
 	
 	private void CreateRoads() {
@@ -101,7 +112,13 @@ public class LevelCreator : MonoBehaviour {
 	}
 	
 	private void CreateSides(Queue<GameObject> sides, bool left) {
+		int transitionState = -1;
 		int prevSide = -1;
+		int randomSide = 0;
+		int variationCounter = 0;
+		int variationCap = 7;
+		bool end = false;
+		bool start = false;
 		for (int i = 0; i < moduleCount; i++) {
 			GameObject tmp;
 			Vector3 pos = transform.position;
@@ -111,35 +128,87 @@ public class LevelCreator : MonoBehaviour {
 				pos.x -= 40;
 			}
 			else {
-				pos.x += 24;
+				pos.x += 40;
 			}
 			
 			if (specialModuleIndices.Contains(i)){	
 				continue;
 			}
 			
-			int randomSide = Random.Range(0,sideModules.Count);
+
+			if (transitionState == -1) {
+				randomSide = Random.Range(0,sideModules.Count);
+				if (variationCounter >= variationCap) {
+					int q = randomSide;
+					while(q == randomSide) {
+						randomSide = Random.Range (0,sideModules.Count);
+					}
+				}
+			}
 			
 			if (prevSide != -1)
 			{
-				//string tmpName = Regex.Replace(sideModules[randomSide].name, @"[\d-]", string.Empty);
-				//string prevName = Regex.Replace(sideModules[prevSide].name, @"[\d-]", string.Empty);
+				string tmpName = Regex.Replace(sideModules[randomSide].name, @"[\d-]", string.Empty);
+				string prevName = Regex.Replace(sideModules[prevSide].name, @"[\d-]", string.Empty);
+				GameObject side = null;
 				
-				tmp = Instantiate(sideModules[randomSide],pos,sideModules[randomSide].transform.rotation) as GameObject;
+				if (!tmpName.Equals(prevName) && transitionState == -1) {
+					transitionState = 0;
+					variationCounter = 0;
+				}
+				else{
+					variationCounter++;
+				}
+			
+				switch (transitionState)
+				{
+				case -1:
+					side = Resources.LoadAssetAtPath("Assets/Prefabs/Modules/SideModules/"+tmpName+".prefab", typeof(GameObject)) as GameObject;
+					break;
+				case 0: 
+					side = Resources.LoadAssetAtPath("Assets/Prefabs/Modules/SideModules/"+prevName+"_start.prefab", typeof(GameObject)) as GameObject;
+					end = true;
+					transitionState++;
+					break;
+				case 1:
+					side = Resources.LoadAssetAtPath("Assets/Prefabs/Modules/SideModules/"+prevName + "_to_" + tmpName+".prefab", typeof(GameObject)) as GameObject;
+					transitionState++;
+					break;
+				case 2:
+					side = Resources.LoadAssetAtPath("Assets/Prefabs/Modules/SideModules/"+tmpName+"_start.prefab", typeof(GameObject)) as GameObject;
+					transitionState++;
+					start = true;
+					break;
+				case 3:
+					side = Resources.LoadAssetAtPath("Assets/Prefabs/Modules/SideModules/"+tmpName+".prefab", typeof(GameObject)) as GameObject;
+					transitionState = -1;
+					break;
+				}
+				
+				tmp = Instantiate(side,pos,side.transform.rotation) as GameObject;
+				
+				if ((end && left) || (start && !left)) {
+					Vector3 tmpScale = tmp.transform.localScale;
+					tmpScale.y = -1;
+					tmp.transform.localScale = tmpScale;
+				}
+				
+				end = false;
+				start = false;
 			}
 			else {
 				tmp = Instantiate(sideModules[randomSide],pos,sideModules[randomSide].transform.rotation) as GameObject;
 			}
 			
-			if (left) {
-				tmp.transform.localScale = new Vector3(-1,1,1);
-				Vector3 newCent = new Vector3(-16,5,0);
-				tmp.GetComponent<BoxCollider>().center = newCent;
+			if (!left) {
+				tmp.transform.rotation *= Quaternion.Euler(0, 0, 180);
 			}
 			
 			sides.Enqueue(tmp);
 			
-			prevSide = randomSide;
+			if (transitionState == -1 || transitionState == 3) {
+				prevSide = randomSide;
+			}
 		}
 	}
 	
