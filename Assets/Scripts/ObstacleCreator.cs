@@ -19,18 +19,22 @@ public class ObstacleCreator : MonoBehaviour {
         if (countDown <= 0)
         {
             float z = ObstacleController.PLAYER.transform.position.z;
-            countDown = CountDownTime;
+            
+            HeroMovement hm = ObstacleController.PLAYER.GetComponent<HeroMovement>();
+            if (hm.CurrentSpeed > 0)
+                countDown = CountDownTime * (hm.MoveSpeed / hm.CurrentSpeed);
 
             int rIndex = Random.Range(0, ObstacleList.Count);
 			
 			if (z+70 < LevelCreator.LengthConverter(LevelCreator.LEVEL_LENGTH)*64-32)
-    	    	Instantiate(ObstacleList[rIndex], new Vector3(Random.Range(-6, 6), 0.1f, z + 70), Quaternion.AngleAxis(180, Vector3.up));
+    	    	Instantiate(ObstacleList[rIndex], new Vector3(Random.Range(-6, 7), 0.1f, z + 70), Quaternion.AngleAxis(180, Vector3.up));
         }
         countDown -= Time.deltaTime;
 	}
 
     public float RatioToSeconds(int ratio)
     {
-        return (5.333f * Mathf.Pow(10, -0.125076810788137f * ratio));
+        //return (5.333f * Mathf.Pow(10, -0.125076810788137f * ratio));
+        return (5.333f * Mathf.Pow(10, -0.1f * ratio));
     }
 }

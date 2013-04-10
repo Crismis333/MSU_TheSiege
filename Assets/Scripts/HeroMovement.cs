@@ -6,7 +6,7 @@ public class HeroMovement : MonoBehaviour {
     public float MoveSpeed = 5.0f;
     public float StrafeSpeed = 3.0f;
 	
-	private float currentSpeed = 0.0f;
+	private float currentSpeed;
 	
 	public float CurrentSpeed {
 		get { return currentSpeed; }
@@ -42,7 +42,7 @@ public class HeroMovement : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+        currentSpeed = MoveSpeed;
 	}
 	
 	// Update is called once per frame
