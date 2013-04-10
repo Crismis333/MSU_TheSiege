@@ -107,6 +107,10 @@ public class MapGui : MonoBehaviour {
                     LevelCreator.PIT_RATIO = 1;
                 else
                     LevelCreator.PIT_RATIO = current_location.difficulty_pits - CurrentGameState.pitModifier;
+                if (current_location.difficulty_catapults - CurrentGameState.catapultModifier < 1)
+                    ObstacleController.CATAPULT_RATIO = 1;
+                else
+                    ObstacleController.CATAPULT_RATIO = current_location.difficulty_catapults - CurrentGameState.catapultModifier;
 				
 				LevelCreator.LEVEL_LENGTH = current_location.difficulty_length;
 				
