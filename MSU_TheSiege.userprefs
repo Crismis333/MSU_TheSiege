@@ -2,19 +2,19 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\ObstacleBehaviour.cs">
     <Files>
-      <File FileName="Assets\Scripts\GUIScript.cs" Line="13" Column="32" />
+      <File FileName="Assets\Scripts\ObstacleBehaviour.cs" Line="31" Column="1" />
+      <File FileName="Assets\Scripts\GUIScript.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\EnemyCreator.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\EnemyMovement.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\CameraLock.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\ObstacleController.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\HeroMovement.cs" Line="94" Column="16" />
+      <File FileName="Assets\Scripts\HeroMovement.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\MainMenu\MainMenuScript.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\MainMenu\OptionsMenuScript.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\LevelCreator.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\ObstacleCreator.cs" Line="27" Column="74" />
+      <File FileName="Assets\Scripts\ObstacleCreator.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Map\MapGui.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Map\Location.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\ObstacleBehaviour.cs" Line="12" Column="10" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
