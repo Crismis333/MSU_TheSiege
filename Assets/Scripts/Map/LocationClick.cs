@@ -8,7 +8,10 @@ public class LocationClick : MonoBehaviour {
 	// Update is called once per frame
     void OnMouseDown()
     {
-        Camera.main.GetComponent<MapGui>().current_location = this.GetComponent<Location>();
-        Camera.main.GetComponent<MapGui>().ResetScroll();
+        if (this.GetComponent<Location>().isChildOfCurrent())
+        {
+            Camera.main.GetComponent<MapGui>().current_location = this.GetComponent<Location>();
+            Camera.main.GetComponent<MapGui>().ResetScroll();
+        }
 	}
 }

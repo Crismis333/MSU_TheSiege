@@ -44,16 +44,25 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Imported Unity Assets\ATS\ats vertexLitShader Package\Script\setupVertexLitShaderV2.js" />
      <Compile Include="Assets\Imported Unity Assets\Particles\Legacy Particles\TimedObjectDestructor.js" />
      <Compile Include="Assets\Imported Unity Assets\Scripts\Camera Scripts\MouseOrbit.js" />
      <Compile Include="Assets\Imported Unity Assets\Scripts\Camera Scripts\SmoothFollow.js" />
      <Compile Include="Assets\Imported Unity Assets\Scripts\Camera Scripts\SmoothLookAt.js" />
      <Compile Include="Assets\Imported Unity Assets\Scripts\General Scripts\DragRigidbody.js" />
+     <None Include="Assets\Imported Unity Assets\ATS\readme_treeBarkShader.txt" />
+     <None Include="Assets\Imported Unity Assets\ATS\readme_grassShader.txt" />
+     <None Include="Assets\FadeShade.shader" />
      <None Include="Assets\Imported Unity Assets\Tessellation Shaders\BumpedSpecularSmooth.shader" />
+     <None Include="Assets\Imported Unity Assets\ATS\ats pathShader Package\Shader\ats Road Path bumped diffuse alphatest.shader" />
      <None Include="Assets\Imported Unity Assets\Particles\Sources\Shaders\Particle Alpha Blend (Queue +100).shader" />
+     <None Include="Assets\Imported Unity Assets\ATS\ats vertexLitShader Package\Shader\atsv2 vertexlit.shader" />
      <None Include="Assets\Imported Unity Assets\Skyboxes\_skybox info.txt" />
+     <None Include="Assets\Imported Unity Assets\ATS\readme_billboardShader.txt" />
+     <None Include="Assets\Imported Unity Assets\ATS\readme_terrainBumpShader.txt" />
      <None Include="Assets\Imported Unity Assets\Water (Basic)\Sources\Shaders\FX-Water Simple.shader" />
      <None Include="Assets\Imported Unity Assets\Tessellation Shaders\BumpedSpecularDisplacement.shader" />
+     <None Include="Assets\Imported Unity Assets\ATS\readme_vertexLitShader.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

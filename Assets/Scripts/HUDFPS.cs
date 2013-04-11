@@ -21,6 +21,7 @@ public class HUDFPS : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        Screen.lockCursor = false;
         if (!guiText)
         {
             Debug.Log("UtilityFramesPerSecond needs a GUIText component!");
