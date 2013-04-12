@@ -21,22 +21,22 @@ public class MainMenuScript : MonoBehaviour {
     }
 
     void Menu_Main_Options() {
-        MainMenuScript script = GetComponent<MainMenuScript>();
-        script.enabled = false;
-        OptionsMenuScript script2 = GetComponent<OptionsMenuScript>();
-        script2.Menu_Options_Startup();
-        script2.enabled = true;
+        this.enabled = false;
+        GetComponent<OptionsMenuScript>().Menu_Options_Startup();
     }
 
     void Menu_Main_Quit() {
-        MainMenuScript script = GetComponent<MainMenuScript>();
-        script.enabled = false;
-        QuitAcceptMenu script2 = GetComponent<QuitAcceptMenu>();
-        script2.enabled = true;
+        this.enabled = false;
+        GetComponent<QuitAcceptMenu>().enabled = true;
     }
 
 	void OnGUI() {
 		GUI.skin = gSkin;
-		Menu_Main();
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Menu_Main_Quit();
+        }
+        else
+            Menu_Main();
 	}
 }

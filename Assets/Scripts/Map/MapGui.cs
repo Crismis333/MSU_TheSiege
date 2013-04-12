@@ -4,27 +4,22 @@ using System.Collections;
 public class MapGui : MonoBehaviour {
 
     public GUISkin gSkin;
+    [HideInInspector]
     public Location current_location;
     public Texture2D black;
     public MapMovementController mapmove;
-    public bool stopped,started,startReset,startHero;
+    [HideInInspector]
+    public bool stopped,started;
+    [HideInInspector]
     public float countdown;
 
-    //public Texture2D circleDiagram;
-    //public Texture2D starColor;
-    //public Object starDiagram;
-    Vector2 scrollPos;
+    private bool startHero, startReset;
 
-    /*private Vector2 starCenter = new Vector2(64, 63);
-    private Vector2 starTip1 = new Vector2(64, 2);
-    private Vector2 starTip2 = new Vector2(121, 42);
-    private Vector2 starTip3 = new Vector2(103, 110);
-    private Vector2 starTip4 = new Vector2(24, 110);
-    private Vector2 starTip5 = new Vector2(6, 42);
-    private int counter;*/
+    Vector2 scrollPos;
 
     void Map_Main()
     {
+        print("Timescale:" + Time.timeScale + " Countdown: " + countdown + " prevloc: " + CurrentGameState.previousPosition.x);
         GUI.BeginGroup(new Rect(Screen.width - 400 , Screen.height - 500, Screen.width, Screen.height));
         GUI.Box(new Rect(0, 0, 350, 200), "");
 
@@ -43,7 +38,6 @@ public class MapGui : MonoBehaviour {
                 GUI.Label(new Rect(15, 50, 335, sizeOfLabel.y), current_location.description);
         }
         GUI.Box(new Rect(0, 200, 350, 250), "");
-        //DrawStar(5, 4, 3, 2, 1);
         GUI.Label(new Rect(15 + 40, 215, 128, 128), "Difficulty:");
         
         GUI.Label(new Rect(15 + 15, 215 + 1 * 20, 128, 128), "Soldiers:");
@@ -93,55 +87,8 @@ public class MapGui : MonoBehaviour {
                 GUI.Label(new Rect(15, 215 + 9 * 20, 128, 128), "+");
             GUI.color = Color.white;
             
-            if (GUI.Button(new Rect(200, 215 + 10 * 20, 80, 30), "to battle!"))
-            {
-                if (current_location.difficulty_soldier - CurrentGameState.soldierModifier < 1)
-                    ObstacleController.SOLDIER_RATIO = 1;
-                else
-                   ObstacleController.SOLDIER_RATIO = current_location.difficulty_soldier - CurrentGameState.soldierModifier;
-                if (current_location.difficulty_obstacles - CurrentGameState.obstacleModifier < 1)
-                    ObstacleController.OBSTACLE_RATIO = 1;
-                else
-                    ObstacleController.OBSTACLE_RATIO = current_location.difficulty_obstacles - CurrentGameState.obstacleModifier;
-                if (current_location.difficulty_pits - CurrentGameState.pitModifier < 1)
-                    LevelCreator.PIT_RATIO = 1;
-                else
-                    LevelCreator.PIT_RATIO = current_location.difficulty_pits - CurrentGameState.pitModifier;
-                if (current_location.difficulty_catapults - CurrentGameState.catapultModifier < 1)
-                    ObstacleController.CATAPULT_RATIO = 1;
-                else
-                    ObstacleController.CATAPULT_RATIO = current_location.difficulty_catapults - CurrentGameState.catapultModifier;
-				
-				LevelCreator.LEVEL_LENGTH = current_location.difficulty_length;
+            if (GUI.Button(new Rect(200, 215 + 10 * 20, 80, 30), "to battle!")) { Battle_Pressed(); }
 
-                CurrentGameState.previousPosition = current_location.transform.position;
-                CurrentGameState.hero.MoveToLoc(current_location);
-                CurrentGameState.loc = null;
-                
-                //CurrentGameState.locID = current_location.levelID;
-                current_location.ActivateRigidBody();
-                //CurrentGameState.completedlevels.Add(current_location.levelID);
-                Screen.lockCursor = true;
-				
-				foreach(GameObject go in current_location.PitModules) {
-					LevelCreator.ROAD_MODULE_LIST.Add(go.name);
-				}
-				
-				foreach(GameObject go in current_location.SideModules) {
-					LevelCreator.SIDE_MODULE_LIST.Add(go.name);
-				}
-				
-				foreach(GameObject go in current_location.SpecialModules) {
-					LevelCreator.SPECIAL_MODULE_LIST.Add(go.name);
-				}
-				
-				LevelCreator.DEFAULT_ROAD = current_location.DefaultRoad.name;
-
-                started = false;
-                stopped = true;
-                countdown = 5;
-                //Application.LoadLevel(2);
-            }
         }
         GUI.color = Color.white;
         GUI.EndGroup();
@@ -161,11 +108,73 @@ public class MapGui : MonoBehaviour {
             GUI.EndGroup();
         }
     }
-    
+
+    void Battle_Pressed()
+    {
+        if (current_location.difficulty_soldier - CurrentGameState.soldierModifier < 1)
+            ObstacleController.SOLDIER_RATIO = 1;
+        else
+            ObstacleController.SOLDIER_RATIO = current_location.difficulty_soldier - CurrentGameState.soldierModifier;
+        if (current_location.difficulty_obstacles - CurrentGameState.obstacleModifier < 1)
+            ObstacleController.OBSTACLE_RATIO = 1;
+        else
+            ObstacleController.OBSTACLE_RATIO = current_location.difficulty_obstacles - CurrentGameState.obstacleModifier;
+        if (current_location.difficulty_pits - CurrentGameState.pitModifier < 1)
+            LevelCreator.PIT_RATIO = 1;
+        else
+            LevelCreator.PIT_RATIO = current_location.difficulty_pits - CurrentGameState.pitModifier;
+        if (current_location.difficulty_catapults - CurrentGameState.catapultModifier < 1)
+            ObstacleController.CATAPULT_RATIO = 1;
+        else
+            ObstacleController.CATAPULT_RATIO = current_location.difficulty_catapults - CurrentGameState.catapultModifier;
+
+        LevelCreator.LEVEL_LENGTH = current_location.difficulty_length;
+
+        CurrentGameState.previousPreviousPosition = CurrentGameState.previousPosition;
+        CurrentGameState.previousPosition = current_location.transform.position;
+        CurrentGameState.hero.MoveToLoc(current_location);
+        CurrentGameState.loc = null;
+
+        //CurrentGameState.locID = current_location.levelID;
+        current_location.ActivateRigidBody();
+        //CurrentGameState.completedlevels.Add(current_location.levelID);
+        Screen.lockCursor = true;
+
+        foreach (GameObject go in current_location.PitModules)
+        {
+            LevelCreator.ROAD_MODULE_LIST.Add(go.name);
+        }
+
+        foreach (GameObject go in current_location.SideModules)
+        {
+            LevelCreator.SIDE_MODULE_LIST.Add(go.name);
+        }
+
+        foreach (GameObject go in current_location.SpecialModules)
+        {
+            LevelCreator.SPECIAL_MODULE_LIST.Add(go.name);
+        }
+
+        LevelCreator.DEFAULT_ROAD = current_location.DefaultRoad.name;
+
+        started = false;
+        stopped = true;
+        countdown = 5;
+        //Application.LoadLevel(2);
+
+    }
+
     void OnGUI()
     {
         GUI.skin = gSkin;
-        Map_Main();
+        if (!started && !stopped && Input.GetKeyDown(KeyCode.Escape))
+        {
+            this.enabled = false;
+            transform.parent.gameObject.GetComponent<MapMovementController>().enabled = false;
+            GetComponent<PauseMenuScript>().enabled = true;
+        }
+        else
+            Map_Main();
     }
 
     public void ResetScroll()

@@ -9,7 +9,7 @@ public class QuitAcceptMenu : MonoBehaviour {
     {
         GUI.BeginGroup(new Rect(0, Screen.height / 2 - 100, Screen.width, Screen.height));
 
-        GUI.Label(new Rect(0, 0 * 70, Screen.width, 64), "Do you really want to quit?");
+        GUI.Label(new Rect(0, 0 * 70, Screen.width, 64), "Do you really wish to quit?");
         if (GUI.Button(new Rect(0, 1 * 70, Screen.width, 64), "Yes")) { Menu_Quit_Yes(); }
         if (GUI.Button(new Rect(0, 2 * 70, Screen.width, 64), "No")) { Menu_Quit_No(); }
 
@@ -20,7 +20,12 @@ public class QuitAcceptMenu : MonoBehaviour {
     void OnGUI()
     {
         GUI.skin = gSkin;
-        Menu_Quit();
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Menu_Quit_No();
+        }
+        else
+            Menu_Quit();
     }
 
     void Menu_Quit_Yes()
@@ -30,9 +35,7 @@ public class QuitAcceptMenu : MonoBehaviour {
 
     void Menu_Quit_No()
     {
-        QuitAcceptMenu script = GetComponent<QuitAcceptMenu>();
-        script.enabled = false;
-        MainMenuScript script2 = GetComponent<MainMenuScript>();
-        script2.enabled = true;
+        this.enabled = false;
+        GetComponent<MainMenuScript>().enabled = true;
     }
 }

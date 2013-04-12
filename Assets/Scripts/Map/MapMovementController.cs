@@ -91,6 +91,8 @@ public class MapMovementController : MonoBehaviour {
         Rect GUI_Area = new Rect(Screen.width - 400, 50, 350, 450);
         if (Screen.lockCursor)
             return;
+        if (GetComponentInChildren<MapGui>().started || GetComponentInChildren<MapGui>().stopped)
+            return;
         if (Input.GetMouseButtonDown(0))
         {
             if (GUI_Area.Contains(Input.mousePosition))
@@ -130,29 +132,25 @@ public class MapMovementController : MonoBehaviour {
         Vector2 botrightpos = Camera.mainCamera.WorldToScreenPoint(bottomRightLimit.transform.position);
         Vector2 newposright = Camera.mainCamera.ScreenToWorldPoint(Camera.mainCamera.WorldToScreenPoint(bottomRightLimit.transform.position));
 
-        float multiplier;
-        if (zoomedIn)
-            multiplier = 40.0f;
-        else
-            multiplier = 20.0f;
+        float multiplier = 40.0f;
 
-        if (topleftpos.x >= -multiplier && botrightpos.x <= Screen.width + multiplier)
+        if (topleftpos.x >= -(3 * multiplier + 20) && botrightpos.x <= Screen.width + 3 * multiplier + 20)
         { }
-        else if (topleftpos.x >= -multiplier)
+        else if (topleftpos.x >= -(3*multiplier + 20))
         {
             left = true;
         }
-        else if (botrightpos.x <= Screen.width + multiplier)
+        else if (botrightpos.x <= Screen.width + 3* multiplier + 20)
         {
             right = true;
         }
-        if (topleftpos.y <= Screen.height + multiplier && botrightpos.y >= -multiplier)
+        if (topleftpos.y <= Screen.height + 3 * multiplier + 20 && botrightpos.y >= -(3 * multiplier + 20))
         { }
-        else if (topleftpos.y <= Screen.height + multiplier)
+        else if (topleftpos.y <= Screen.height + 3 * multiplier + 20)
         {
             up = true;
         }
-        else if (botrightpos.y >= -multiplier)
+        else if (botrightpos.y >= -(3 * multiplier + 20))
         {
             down = true;
         }
@@ -164,6 +162,10 @@ public class MapMovementController : MonoBehaviour {
         float xm = Input.GetAxis("Mouse X");
         float ym = Input.GetAxis("Mouse Y");
 
+        if (xm > 3)
+            xm = 4;
+        if (ym > 3)
+            ym = 4;
         if (Input.GetMouseButton(0) && !onguidown)
         {
             if (xm < -0.02f && !right)
@@ -175,6 +177,9 @@ public class MapMovementController : MonoBehaviour {
             else if (ym > 0.02f && !down)
                 pos.z += ym / multiplier;
         }
+
+        pos = ClampToMap(pos);
+        
 
         if (!mdown)
         {
@@ -190,44 +195,6 @@ public class MapMovementController : MonoBehaviour {
                 mdown = false;
         }
 
-        if (zoomedIn) {
-            //Camera.mainCamera.fieldOfView = 40;
-            //pos.y = 1.361f;
-            /*
-            float upper = -2f;
-            float lower = 2f;
-            pos.y = 1.361f;
-            if (pos.x < upper)
-                pos.x = upper;
-            else if (pos.x > lower)
-                pos.x = lower;
-            if (pos.z < -1.79f)
-                pos.z = -1.79f;
-            else if (pos.z > 1.9f)
-                pos.z = 1.9f;
-             */
-        }
-        else {
-            //Camera.mainCamera.fieldOfView = 80;
-            //pos.y = 5f;
-            /*
-            float upper = -0.58f;
-            float lower = 0.4f;
-            pos.y = 5f;
-            if (pos.x < upper)
-                pos.x = upper;
-            else if (pos.x > lower)
-                pos.x = lower;
-            if (pos.z < -1.05f)
-                pos.z = -1.05f;
-            else if (pos.z > 1.28f)
-                pos.z = 1.28f;
-             */
-
-        }
-
-        //print(topleftpos.x + " " + topleftpos.y + " " + botrightpos.x + " " + botrightpos.y);
-        //print(Input.mousePosition.x + " " + Input.mousePosition.y);
         this.transform.position = pos;
         Camera.mainCamera.transform.Rotate(new Vector3(-30, 0, 0));
     }

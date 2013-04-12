@@ -65,25 +65,21 @@ public class GUIScript : MonoBehaviour {
 
     void OnGUI()
     {
-        if (GUI.Button(new Rect(10, 10, 80, 30), "Restart"))
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            this.enabled = false;
+            Time.timeScale = 0;
+            GetComponent<PauseMenuScript>().enabled = true;
+        }
+        else
         {
 
-            Application.LoadLevel(Application.loadedLevel);
+            GUI.Label(new Rect(10, 50, 80, 30), "" + Time.timeSinceLevelLoad);
+            GUI.skin = gSkin;
+            Level_Interface();
 
+            EngageReleaseBar();
         }
-
-        if (GUI.Button(new Rect(100, 10, 80, 30), "To Menu"))
-        {
-            CurrentGameState.SetWin();
-            Application.LoadLevel(1);
-
-        }
-
-        GUI.Label(new Rect(10, 50, 80, 30), "" + Time.timeSinceLevelLoad);
-        GUI.skin = gSkin;
-        Level_Interface();
-
-        EngageReleaseBar();
     }
 
     void EngageReleaseBar()

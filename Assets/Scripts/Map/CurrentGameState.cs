@@ -18,7 +18,7 @@ public class CurrentGameState : MonoBehaviour {
     public static float slowDownModifier = 1.0f;
     public static List<int> completedlevels = new List<int>();
     public static Hero hero;
-    public static Vector3 previousPosition;
+    public static Vector3 previousPosition, previousPreviousPosition;
     private static List<Modifier> wins;
     private static int nextLevel;
     
@@ -46,6 +46,19 @@ public class CurrentGameState : MonoBehaviour {
         CurrentGameState.completedlevels.Add(locID);
         foreach (Modifier m in wins)
             IncreaseModifier(m);
+    }
+
+    public static void Restart()
+    {
+        locID = 0;
+        loc = null;
+        JustStarted = true;
+        soldierModifier = obstacleModifier = pitModifier = catapultModifier = 0;
+        jumpLengthModifier = moveSpeedModifier = slowDownModifier = 1.0f;
+        completedlevels = new List<int>();
+        hero = null;
+        wins = null;
+        nextLevel = 0;
     }
 
     private static void IncreaseModifier(Modifier mod) 
