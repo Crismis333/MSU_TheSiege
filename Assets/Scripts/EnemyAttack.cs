@@ -52,8 +52,13 @@ public class EnemyAttack : MonoBehaviour {
         isDone = true;
         player.GetComponent<HeroAttack>().RemoveFromList(gameObject, isChosen);
         Destroy(selectedIndicator);
-        // Add crazy death animation
-        Destroy(gameObject);
+        
+        foreach (Rigidbody rs in this.gameObject.GetComponentsInChildren<Rigidbody>())
+        {
+            rs.isKinematic = false;
+            rs.WakeUp();
+            rs.AddExplosionForce(ObstacleController.PLAYER.GetComponent<HeroMovement>().CurrentSpeed / 4 * 500, ObstacleController.PLAYER.transform.position + Vector3.up, 0);
+        }
     }
 	
 	// Update is called once per frame
