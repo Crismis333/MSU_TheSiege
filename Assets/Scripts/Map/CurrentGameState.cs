@@ -17,9 +17,23 @@ public class CurrentGameState : MonoBehaviour {
     public static float moveSpeedModifier = 1.0f;
     public static float slowDownModifier = 1.0f;
     public static List<int> completedlevels = new List<int>();
+    public static Hero hero;
+    public static Vector3 previousPosition;
     private static List<Modifier> wins;
     private static int nextLevel;
+    
 
+    public static void CreateHero()
+    {
+        GameObject o = Resources.LoadAssetAtPath("Assets/Prefabs/Map/HeroFigure.prefab", typeof(GameObject)) as GameObject;
+        hero = (Instantiate(o) as GameObject).GetComponent<Hero>();
+        hero.transform.position = loc.startLocation;
+
+        if (loc.locations.Length > 0)
+        {
+            hero.LookAtLoc(loc.locations[0]);
+        }
+    }
     public static void SetWinModifiers(List<Modifier> modifiers, int levelID)
     {
         wins = modifiers;

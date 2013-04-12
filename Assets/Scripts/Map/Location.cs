@@ -5,14 +5,14 @@ using System.Collections.Generic;
 public class Location : MonoBehaviour {
 
     public int levelID;
-    public string name, gains, losses;
+    public string name;
     [Multiline]
     public string description;
     public int difficulty_soldier, difficulty_length, difficulty_pits, difficulty_obstacles, difficulty_catapults;
     public Location[] locations;
     public Material Line_Material;
     public List<Modifier> modifiers;
-	
+    public Vector3 startLocation;
 	public List<GameObject> PitModules;
 	public List<GameObject> SideModules;
 	public List<GameObject> SpecialModules;
@@ -47,12 +47,20 @@ public class Location : MonoBehaviour {
 
     void Start()
     {
+        startLocation = this.transform.position;
         offset = 0;
         RB_activated = false;
+        if (levelID == 0)
+        {
+            this.GetComponent<CapsuleCollider>().enabled = false;
+            foreach (MeshRenderer mr in this.GetComponentsInChildren<MeshRenderer>())
+                mr.enabled = false;
+        }
         if (CurrentGameState.JustStarted && levelID == 0)
         {
             CurrentGameState.JustStarted = false;
             CurrentGameState.locID = this.levelID;
+            CurrentGameState.previousPosition = this.transform.position;
         }
         if (CurrentGameState.locID == this.levelID)
         {

@@ -7,7 +7,7 @@ public class MapGui : MonoBehaviour {
     public Location current_location;
     public Texture2D black;
     public MapMovementController mapmove;
-    public bool stopped,started,startReset;
+    public bool stopped,started,startReset,startHero;
     public float countdown;
 
     //public Texture2D circleDiagram;
@@ -113,8 +113,11 @@ public class MapGui : MonoBehaviour {
                     ObstacleController.CATAPULT_RATIO = current_location.difficulty_catapults - CurrentGameState.catapultModifier;
 				
 				LevelCreator.LEVEL_LENGTH = current_location.difficulty_length;
-				
+
+                CurrentGameState.previousPosition = current_location.transform.position;
+                CurrentGameState.hero.MoveToLoc(current_location);
                 CurrentGameState.loc = null;
+                
                 //CurrentGameState.locID = current_location.levelID;
                 current_location.ActivateRigidBody();
                 //CurrentGameState.completedlevels.Add(current_location.levelID);
@@ -133,7 +136,8 @@ public class MapGui : MonoBehaviour {
 				}
 				
 				LevelCreator.DEFAULT_ROAD = current_location.DefaultRoad.name;
-				
+
+                started = false;
                 stopped = true;
                 countdown = 5;
                 //Application.LoadLevel(2);
@@ -152,7 +156,7 @@ public class MapGui : MonoBehaviour {
         if (started)
         {
             GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
-            GUI.color = new Color(1, 1, 1, Mathf.Lerp(0, 1, countdown / 2f));
+            GUI.color = new Color(1, 1, 1, Mathf.Lerp(0, 1, countdown / 2f-1));
             GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), black);
             GUI.EndGroup();
         }
@@ -174,14 +178,23 @@ public class MapGui : MonoBehaviour {
         ResetScroll();
         stopped = false;
         startReset = true;
+        startHero = true;
         started = true;
         Time.timeScale = 50;
         countdown = 50;
         Screen.lockCursor = true;
+
     }
 
     void Update()
     {
+        if (startHero)
+        {
+            startHero = false;
+            CurrentGameState.CreateHero();
+            CurrentGameState.hero.transform.position = CurrentGameState.previousPosition;
+            CurrentGameState.hero.MoveToLoc(CurrentGameState.loc);
+        }
         if (stopped || started)
         {
             countdown -= Time.deltaTime;
@@ -189,6 +202,7 @@ public class MapGui : MonoBehaviour {
 
             if (started)
             {
+                
                 if (startReset)
                 {
                     if (countdown < 3)
@@ -196,6 +210,7 @@ public class MapGui : MonoBehaviour {
                         if (mapmove != null)
                             mapmove.CenterCamera(CurrentGameState.loc.transform);
                         Time.timeScale = 1;
+                        
                         startReset = false;
                         Screen.lockCursor = false;
                     }
@@ -211,6 +226,7 @@ public class MapGui : MonoBehaviour {
             if (stopped && countdown < 0)
             {
                 CurrentGameState.SetWinModifiers(current_location.modifiers,current_location.levelID);
+                CurrentGameState.hero = null;
                 Application.LoadLevel(2);
             }
         }
