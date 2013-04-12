@@ -10,14 +10,14 @@ public class HeroAttack : MonoBehaviour {
     private int selectedIndex;
 
     private GameObject selectedEnemy;
-    private GUIScript2 GUI;
+    private GUIScript GUI;
     
 
 
 	// Use this for initialization
 	void Start () {
         AttackList = new List<GameObject>();
-        GUI = GameObject.Find("GUI").GetComponent<GUIScript2>();
+        GUI = GameObject.Find("GUI").GetComponent<GUIScript>();
       //  Time.timeScale = 0.5f;
 	}
 
