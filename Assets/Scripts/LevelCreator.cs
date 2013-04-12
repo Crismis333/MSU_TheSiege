@@ -164,7 +164,7 @@ public class LevelCreator : MonoBehaviour {
 				switch (transitionState)
 				{
 				case -1:
-                        side = Resources.LoadAssetAtPath("Assets/Prefabs/Modules/SideModules/" + realName + ".prefab", typeof(GameObject)) as GameObject;
+                    side = Resources.LoadAssetAtPath("Assets/Prefabs/Modules/SideModules/" + realName + ".prefab", typeof(GameObject)) as GameObject;
 					break;
 				case 0: 
 					side = Resources.LoadAssetAtPath("Assets/Prefabs/Modules/SideModules/"+prevName+"_start.prefab", typeof(GameObject)) as GameObject;
