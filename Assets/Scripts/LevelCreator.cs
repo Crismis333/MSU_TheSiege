@@ -32,7 +32,7 @@ public class LevelCreator : MonoBehaviour {
 	void Start () {
 		sideModules = new List<GameObject>();
 		foreach(string s in SIDE_MODULE_LIST) {
-			sideModules.Add(Resources.LoadAssetAtPath("Assets/Prefabs/Modules/SideModules/"+s+".prefab", typeof(GameObject)) as GameObject);
+			sideModules.Add(Resources.LoadAssetAtPath("Assets/Prefabs/Modules/SideModules/Sides/"+s+".prefab", typeof(GameObject)) as GameObject);
 		}
 		
 		roadModules = new List<GameObject>();
@@ -164,24 +164,24 @@ public class LevelCreator : MonoBehaviour {
 				switch (transitionState)
 				{
 				case -1:
-                    side = Resources.LoadAssetAtPath("Assets/Prefabs/Modules/SideModules/" + realName + ".prefab", typeof(GameObject)) as GameObject;
+                    side = Resources.LoadAssetAtPath("Assets/Prefabs/Modules/SideModules/Sides/" + realName + ".prefab", typeof(GameObject)) as GameObject;
 					break;
 				case 0: 
-					side = Resources.LoadAssetAtPath("Assets/Prefabs/Modules/SideModules/"+prevName+"_start.prefab", typeof(GameObject)) as GameObject;
+					side = Resources.LoadAssetAtPath("Assets/Prefabs/Modules/SideModules/SideStarts/"+prevName+"_start.prefab", typeof(GameObject)) as GameObject;
 					end = true;
 					transitionState++;
 					break;
 				case 1:
-					side = Resources.LoadAssetAtPath("Assets/Prefabs/Modules/SideModules/"+prevName + "_to_" + tmpName+".prefab", typeof(GameObject)) as GameObject;
+					side = Resources.LoadAssetAtPath("Assets/Prefabs/Modules/SideModules/SideTransitions/"+prevName + "_to_" + tmpName+".prefab", typeof(GameObject)) as GameObject;
 					transitionState++;
 					break;
 				case 2:
-					side = Resources.LoadAssetAtPath("Assets/Prefabs/Modules/SideModules/"+tmpName+"_start.prefab", typeof(GameObject)) as GameObject;
+					side = Resources.LoadAssetAtPath("Assets/Prefabs/Modules/SideModules/SideStarts/"+tmpName+"_start.prefab", typeof(GameObject)) as GameObject;
 					transitionState++;
 					start = true;
 					break;
 				case 3:
-                    side = Resources.LoadAssetAtPath("Assets/Prefabs/Modules/SideModules/" + realName + ".prefab", typeof(GameObject)) as GameObject;
+                    side = Resources.LoadAssetAtPath("Assets/Prefabs/Modules/SideModules/Sides/" + realName + ".prefab", typeof(GameObject)) as GameObject;
 					transitionState = -1;
 					break;
 				}
