@@ -10,7 +10,7 @@ public class GUIScript2 : MonoBehaviour
 
     GUIStyle style = new GUIStyle();
     GUIStyle bar = new GUIStyle();
-    public Texture2D texture = new Texture2D(128, 128);
+    public Texture2D texture;
     public bool BarActive;
 
     public float ShowLingerTime = 1.0f;
@@ -25,6 +25,7 @@ public class GUIScript2 : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+		texture = new Texture2D(128, 128);
         texture.Apply();
 
         style.normal.background = texture;

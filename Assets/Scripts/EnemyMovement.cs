@@ -29,7 +29,7 @@ public class EnemyMovement : MonoBehaviour {
       //  Debug.Log("Body: " + bodyZ.ToString());
       //  Debug.Log("Player: " + playerZ.ToString());   
 
-        if (bodyZ < playerZ - 5)
+        if (bodyZ < playerZ - 64)
         {
             Destroy(gameObject);
         }

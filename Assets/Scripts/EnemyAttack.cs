@@ -43,7 +43,8 @@ public class EnemyAttack : MonoBehaviour {
 
     void OnDestroy()
     {
-        player.GetComponent<HeroAttack>().RemoveFromList(gameObject, isChosen);
+		if (player != null && gameObject != null)
+        	player.GetComponent<HeroAttack>().RemoveFromList(gameObject, isChosen);
     }
 
     public void KillSelf()
@@ -52,14 +53,17 @@ public class EnemyAttack : MonoBehaviour {
         isDone = true;
         player.GetComponent<HeroAttack>().RemoveFromList(gameObject, isChosen);
         Destroy(selectedIndicator);
-        
-        foreach (Rigidbody rs in this.gameObject.GetComponentsInChildren<Rigidbody>())
+    }
+	
+	public void AddExplosion(float power, Vector3 pos) {
+		
+    foreach (Rigidbody rs in this.gameObject.GetComponentsInChildren<Rigidbody>())
         {
             rs.isKinematic = false;
             rs.WakeUp();
-            rs.AddExplosionForce(ObstacleController.PLAYER.GetComponent<HeroMovement>().CurrentSpeed / 4 * 500, ObstacleController.PLAYER.transform.position + Vector3.up, 0);
+            rs.AddExplosionForce(power, pos, 0);
         }
-    }
+	}
 	
 	// Update is called once per frame
 	void Update () {

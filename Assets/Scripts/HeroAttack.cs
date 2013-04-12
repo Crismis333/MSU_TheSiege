@@ -422,8 +422,10 @@ public class HeroAttack : MonoBehaviour {
                         firePressed = false;
                         if (percentage > 0 & percentage < 100)
                         {
+							selectedEnemy.GetComponent<EnemyAttack>().
+								AddExplosion(ObstacleController.PLAYER.GetComponent<HeroMovement>().CurrentSpeed / 4 * 500, ObstacleController.PLAYER.transform.position + Vector3.up);
                             selectedEnemy.GetComponent<EnemyAttack>().KillSelf();
-
+							
                             engaged = false;
                             releasePercent = percentage;
                             CalculateHit();

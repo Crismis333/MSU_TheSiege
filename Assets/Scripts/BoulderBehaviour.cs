@@ -23,5 +23,11 @@ public class BoulderBehaviour : MonoBehaviour {
             Physics.IgnoreCollision(gameObject.collider, other);
             other.GetComponent<HeroMovement>().SlowHero(SlowTime, SlowAmount);
         }
+		
+		if (other.tag.Equals("Soldier"))
+		{
+			other.GetComponent<EnemyAttack>().KillSelf();
+			other.GetComponent<EnemyAttack>().AddExplosion(600,this.transform.position);
+		}
     }
 }
