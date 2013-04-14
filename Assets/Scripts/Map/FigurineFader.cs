@@ -6,7 +6,6 @@ public class FigurineFader : MonoBehaviour {
 
     private static float duration = 10f;
     private float lerp;
-    private Renderer[] rs;
     private int counter;
 	// Use this for initialization
 	void Start () {
@@ -21,14 +20,23 @@ public class FigurineFader : MonoBehaviour {
         {
             counter++;
             lerp = Mathf.PingPong(counter, duration) / duration;
+            foreach (Renderer rs in this.gameObject.GetComponentsInChildren<Renderer>())
+                foreach (Material m in rs.materials) 
+                    m.SetColor("_OutlineColor", new Color(255, 255, 255, 255));
         }
         else {
             lerp = 0f;
             counter = 0;
+            lerp = Mathf.PingPong(counter, duration) / duration;
+            foreach (Renderer rs in this.gameObject.GetComponentsInChildren<Renderer>())
+                foreach (Material m in rs.materials)
+                    m.SetColor("_OutlineColor", new Color(255, 255, 255, 0));
         }
-        rs = this.gameObject.GetComponentsInChildren<Renderer>();
-        for (int i = 0; i < rs.Length; i++)
-            rs[i].material.SetFloat("_Blend", lerp);
+
+        //foreach(Renderer rs in this.gameObject.GetComponentsInChildren<Renderer>())
+            //foreach(Material m in rs.materials)
+                //rs[i].material.SetFloat("_Blend", lerp);
+                //rs.material.SetColor("_OutlineColor", new Color(255,255,255,255));
         //print(lerp);
 	}
 }
