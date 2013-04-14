@@ -6,7 +6,7 @@ public class MainMenuScript : MonoBehaviour {
 	
 	public GUISkin gSkin;
     public Texture2D black;
-    public AudioSource music;
+    public MusicVolumeSetter music;
 
     private float countdown;
     private bool stopped, started;
@@ -27,8 +27,7 @@ public class MainMenuScript : MonoBehaviour {
             GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), black);
             GUI.EndGroup();
         }
-
-        if (started)
+        else if (started)
         {
             GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
             GUI.color = new Color(1, 1, 1, Mathf.Lerp(1, 0, 1-countdown));
@@ -36,6 +35,8 @@ public class MainMenuScript : MonoBehaviour {
             GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), black);
             GUI.EndGroup();
         }
+        else
+            music.volume = OptionsValues.musicVolume;
 	}
 
     void Menu_Main_Start_Game() {
@@ -45,6 +46,7 @@ public class MainMenuScript : MonoBehaviour {
             started = false;
             stopped = true;
             countdown = 1f;
+            music.useGlobal = false;
         }
     }
 
@@ -76,6 +78,7 @@ public class MainMenuScript : MonoBehaviour {
 
     void Start()
     {
+        music.useGlobal = false;
         started = true;
         countdown = 1f;
     }
@@ -86,7 +89,6 @@ public class MainMenuScript : MonoBehaviour {
         {
             
             countdown -= 0.02f;
-            //print(countdown);
 
             if (started)
             {
@@ -94,6 +96,7 @@ public class MainMenuScript : MonoBehaviour {
                 {
                     countdown = 0;
                     started = false;
+                    music.useGlobal = true;
                 }
 
             }

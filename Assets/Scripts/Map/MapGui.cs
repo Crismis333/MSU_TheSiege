@@ -184,6 +184,7 @@ public class MapGui : MonoBehaviour {
 
     void Start()
     {
+        
         ResetScroll();
         stopped = false;
         startReset = true;
