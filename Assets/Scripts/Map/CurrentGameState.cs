@@ -25,7 +25,7 @@ public class CurrentGameState : MonoBehaviour {
 
     public static void CreateHero()
     {
-        GameObject o = Resources.LoadAssetAtPath("Assets/Prefabs/Map/HeroFigure.prefab", typeof(GameObject)) as GameObject;
+        GameObject o = Resources.Load("HeroFigure", typeof(GameObject)) as GameObject;
         hero = (Instantiate(o) as GameObject).GetComponent<Hero>();
         hero.transform.position = loc.startLocation;
 
