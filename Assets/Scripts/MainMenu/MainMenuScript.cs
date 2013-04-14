@@ -5,6 +5,11 @@ public class MainMenuScript : MonoBehaviour {
 	
 	
 	public GUISkin gSkin;
+    public Texture2D black;
+    public AudioSource music;
+
+    private float countdown;
+    private bool stopped, started;
 
 	void Menu_Main() {
         GUI.BeginGroup(new Rect(0, Screen.height / 2 - 100, Screen.width, Screen.height));
@@ -14,20 +19,49 @@ public class MainMenuScript : MonoBehaviour {
         if (GUI.Button(new Rect(0, 2*70, Screen.width-30, 64), "Quit")) { Menu_Main_Quit(); }
 		
 		GUI.EndGroup();
+        if (stopped)
+        {
+            GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
+            GUI.color = new Color(1, 1, 1, Mathf.Lerp(0, 1, 1 - countdown));
+            music.volume = Mathf.Lerp(OptionsValues.musicVolume, 0, 1 - countdown);
+            GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), black);
+            GUI.EndGroup();
+        }
+
+        if (started)
+        {
+            GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
+            GUI.color = new Color(1, 1, 1, Mathf.Lerp(1, 0, 1-countdown));
+            music.volume = Mathf.Lerp(0, OptionsValues.musicVolume, 1 - countdown);
+            GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), black);
+            GUI.EndGroup();
+        }
 	}
 
     void Menu_Main_Start_Game() {
-        Application.LoadLevel(1);
+        if (!started && !stopped)
+        {
+            //Application.LoadLevel(1);
+            started = false;
+            stopped = true;
+            countdown = 1f;
+        }
     }
 
     void Menu_Main_Options() {
-        this.enabled = false;
-        GetComponent<OptionsMenuScript>().Menu_Options_Startup();
+        if (!started && !stopped)
+        {
+            this.enabled = false;
+            GetComponent<OptionsMenuScript>().Menu_Options_Startup();
+        }
     }
 
     void Menu_Main_Quit() {
-        this.enabled = false;
-        GetComponent<QuitAcceptMenu>().enabled = true;
+        if (!started && !stopped)
+        {
+            this.enabled = false;
+            GetComponent<QuitAcceptMenu>().enabled = true;
+        }
     }
 
 	void OnGUI() {
@@ -39,4 +73,35 @@ public class MainMenuScript : MonoBehaviour {
         else
             Menu_Main();
 	}
+
+    void Start()
+    {
+        started = true;
+        countdown = 1f;
+    }
+
+    void Update()
+    {
+        if (stopped || started)
+        {
+            
+            countdown -= 0.02f;
+            //print(countdown);
+
+            if (started)
+            {
+                if (countdown < 0)
+                {
+                    countdown = 0;
+                    started = false;
+                }
+
+            }
+
+            if (stopped && countdown < 0)
+            {
+                Application.LoadLevel(1);
+            }
+        }
+    }
 }

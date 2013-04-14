@@ -10,16 +10,15 @@ public class MapGui : MonoBehaviour {
     public MapMovementController mapmove;
     [HideInInspector]
     public bool stopped,started;
-    [HideInInspector]
-    public float countdown;
 
+    private float countdown,startcountdown;
     private bool startHero, startReset;
 
     Vector2 scrollPos;
 
     void Map_Main()
     {
-        print("Timescale:" + Time.timeScale + " Countdown: " + countdown + " prevloc: " + CurrentGameState.previousPosition.x);
+        //print("Timescale:" + Time.timeScale + " Countdown: " + countdown + " prevloc: " + CurrentGameState.previousPosition.x);
         GUI.BeginGroup(new Rect(Screen.width - 400 , Screen.height - 500, Screen.width, Screen.height));
         GUI.Box(new Rect(0, 0, 350, 200), "");
 
@@ -95,7 +94,7 @@ public class MapGui : MonoBehaviour {
         if (stopped)
         {
             GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
-            GUI.color = new Color(1,1,1,Mathf.Lerp(1, 0, countdown / 2f));
+            GUI.color = new Color(1,1,1,Mathf.Lerp(0, 1, 1-countdown));
             GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), black);
             GUI.EndGroup();
         }
@@ -103,7 +102,7 @@ public class MapGui : MonoBehaviour {
         if (started)
         {
             GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
-            GUI.color = new Color(1, 1, 1, Mathf.Lerp(0, 1, countdown / 2f-1));
+            GUI.color = new Color(1, 1, 1, Mathf.Lerp(1, 0, 1-countdown));
             GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), black);
             GUI.EndGroup();
         }
@@ -159,7 +158,8 @@ public class MapGui : MonoBehaviour {
 
         started = false;
         stopped = true;
-        countdown = 5;
+        countdown = 1f;
+        startcountdown = 3f;
         //Application.LoadLevel(2);
 
     }
@@ -190,7 +190,8 @@ public class MapGui : MonoBehaviour {
         startHero = true;
         started = true;
         Time.timeScale = 50;
-        countdown = 50;
+        countdown = 1f;
+        startcountdown = 50f;
         Screen.lockCursor = true;
 
     }
@@ -206,15 +207,15 @@ public class MapGui : MonoBehaviour {
         }
         if (stopped || started)
         {
-            countdown -= Time.deltaTime;
-            //print(countdown);
+            startcountdown -= Time.deltaTime;
+            if (startcountdown < 0)
+                countdown -= 0.02f;
 
             if (started)
             {
-                
                 if (startReset)
                 {
-                    if (countdown < 3)
+                    if (startcountdown < 0)
                     {
                         if (mapmove != null)
                             mapmove.CenterCamera(CurrentGameState.loc.transform);
@@ -234,19 +235,11 @@ public class MapGui : MonoBehaviour {
 
             if (stopped && countdown < 0)
             {
-                CurrentGameState.SetWinModifiers(current_location.modifiers,current_location.levelID);
+                CurrentGameState.SetWinModifiers(current_location.modifiers, current_location.levelID);
                 CurrentGameState.hero = null;
                 Application.LoadLevel(2);
             }
         }
-    }
-
-    void SetColor(int val)
-    {
-        if (val == 0)
-            GUI.color = Color.white;
-        else
-            GUI.color = Color.red;
     }
 
     int fromFloatToInt(float val)
@@ -258,13 +251,6 @@ public class MapGui : MonoBehaviour {
     {
         switch (val)
         {
-            case -6: return "I";
-            case -5: return "I";
-            case -4: return "I";
-            case -3: return "I";
-            case -2: return "I";
-            case -1: return "I";
-            case 0: return "I";
             case 1: return "I";
             case 2: return "II";
             case 3: return "III";
@@ -275,16 +261,6 @@ public class MapGui : MonoBehaviour {
             case 8: return "VIII";
             case 9: return "IX";
             case 10: return "X";
-            case 11: return "XI";
-            case 12: return "XII";
-            case 13: return "XIII";
-            case 14: return "XIV";
-            case 15: return "XV";
-            case 16: return "XVI";
-            case 17: return "XVII";
-            case 18: return "XVIII";
-            case 19: return "XIX";
-            case 20: return "XX";
             default: return "I";
         }
     }

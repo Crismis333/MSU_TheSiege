@@ -11,6 +11,8 @@ public class OptionsMenuScript : MonoBehaviour {
     private Resolution mres;
 
 	void Menu_Options() {
+        float musicvolstart = musicvol;
+        float effectvolstart = effectvol;
         Resolution[] res = Screen.resolutions;
         float f = 0.0f;
         if (res.Length > 1)
@@ -20,9 +22,9 @@ public class OptionsMenuScript : MonoBehaviour {
         GUI.BeginGroup(new Rect(Screen.width/2-395, Screen.height / 2 - 3*70, 790, 6*70));
         GUI.Box(new Rect(0, 0, 790, 6 * 70), "");
         GUI.Label(new Rect(0, 0*70, 790, 64), "Music volume");
-        musicvol = GUI.HorizontalSlider(new Rect(250, 0 * 70, 512, 64), musicvol, 0.0f, 10.0f);
+        musicvol = GUI.HorizontalSlider(new Rect(250, 0 * 70, 512, 64), musicvol, 0.0f, 1.0f);
         GUI.Label(new Rect(0, 1 * 70, 790, 64), "Effect volume");
-        effectvol = GUI.HorizontalSlider(new Rect(250, 1 * 70, 512, 64), effectvol, 0.0f, 10.0f);
+        effectvol = GUI.HorizontalSlider(new Rect(250, 1 * 70, 512, 64), effectvol, 0.0f, 1.0f);
         GUI.Label(new Rect(0, 2 * 70, 790, 64), "FullScreen");
         fullscreen = GUI.Toggle(new Rect(350, 2 * 70, 64, 64),fullscreen, " ");
         GUI.Label(new Rect(0, 3 * 70, 790, 64), "Resolution");
@@ -37,6 +39,10 @@ public class OptionsMenuScript : MonoBehaviour {
         if (GUI.Button(new Rect(0, 5 * 70, 790, 64), "Accept")) { Menu_Options_Back(); }
 
 		GUI.EndGroup();
+        if (musicvolstart != musicvol)
+            OptionsValues.musicVolume = musicvol;
+        if (effectvolstart != effectvol)
+            OptionsValues.sfxVolume = effectvol;
 	}
 	
 	void OnGUI() {
