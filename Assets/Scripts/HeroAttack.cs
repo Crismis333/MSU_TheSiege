@@ -280,6 +280,17 @@ public class HeroAttack : MonoBehaviour {
             print("Enter release box");
             inReleaseBox = true;
         }
+		if (other.gameObject.name.Equals("EnemyBox")) {
+			other.transform.parent.GetComponent<EnemyAttack>().
+				AddExplosion(ObstacleController.PLAYER.GetComponent<HeroMovement>().CurrentSpeed / 4 * 500, ObstacleController.PLAYER.transform.position + Vector3.up);
+            other.transform.parent.GetComponent<EnemyAttack>().KillSelf();
+			
+			foreach (Collider c in other.transform.parent.GetComponentsInChildren<Collider>())
+			{
+				if (c.enabled && ObstacleController.PLAYER.collider.enabled)
+					Physics.IgnoreCollision(c,ObstacleController.PLAYER.collider);
+			}
+		}
     }
 
     void OnTriggerExit(Collider other)
