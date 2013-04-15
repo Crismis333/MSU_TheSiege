@@ -100,7 +100,7 @@ public class Location : MonoBehaviour {
         //lr.material = m;
 
         lr.receiveShadows = false;
-        lr.SetWidth(0.01F, 0.01F);
+        lr.SetWidth(0.02F, 0.02F);
         lr.SetVertexCount(2);
         Vector3 nl = this.gameObject.transform.position;
         nl.y += 0.1f;
@@ -110,7 +110,7 @@ public class Location : MonoBehaviour {
         float diff = Vector3.Distance(this.gameObject.transform.position,lo.gameObject.transform.position);
         lr.SetPosition(1, nl);
         lr.material = Line_Material;
-        lr.material.mainTextureScale = new Vector2(1F*(diff)*2f, 1F);
+        lr.material.mainTextureScale = new Vector2(1F*(diff)*5f, 1F);
     }
 
     public bool isChildOfCurrent()

@@ -8,12 +8,8 @@ public class EnemyMovement : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-<<<<<<< HEAD
-        player = GameObject.Find("HeroTemp");
-        GetComponent<ObjectFader>().FadeIn(40f);
-=======
         player = ObstacleController.PLAYER;
->>>>>>> Fixed issues with enemy
+        GetComponent<ObjectFader>().FadeIn(40f);
 	}
 	
 	// Update is called once per frame
