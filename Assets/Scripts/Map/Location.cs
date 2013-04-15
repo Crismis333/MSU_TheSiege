@@ -22,9 +22,18 @@ public class Location : MonoBehaviour {
     private GameObject[] linerenderes;
     private int offset;
     public bool RB_activated;
+    private bool pushed;
 
     void Update()
     {
+        if (RB_activated && !pushed)
+        {
+            if (transform.position.y > startLocation.y + 0.5f)
+            {
+                GetComponent<Rigidbody>().AddForce(new Vector3(3, 0, 3));
+                pushed = true;
+            }
+        }
         if (linerenderes.Length > 0)
         {
             if (Camera.mainCamera.GetComponent<MapGui>().stopped)
@@ -50,6 +59,7 @@ public class Location : MonoBehaviour {
         startLocation = this.transform.position;
         offset = 0;
         RB_activated = false;
+        pushed = false;
         if (levelID == 0)
         {
             this.GetComponent<CapsuleCollider>().enabled = false;
