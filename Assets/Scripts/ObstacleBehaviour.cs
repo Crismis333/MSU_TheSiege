@@ -15,7 +15,13 @@ public class ObstacleBehaviour : MonoBehaviour {
             Destroy(gameObject);
         }
 	}
-	
+
+
+    void Start()
+    {
+        GetComponent<ObjectFader>().FadeIn(40f);
+    }
+
 	void OnTriggerEnter(Collider other) {
 		if (!destroyed && other.tag.Equals("Player")) {
 			foreach(Rigidbody rb in this.GetComponentsInChildren<Rigidbody>())

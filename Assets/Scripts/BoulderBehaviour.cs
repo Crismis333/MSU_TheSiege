@@ -6,6 +6,11 @@ public class BoulderBehaviour : MonoBehaviour {
     public float SlowTime = 2;
     public float SlowAmount = 5;
 
+    void Start()
+    {
+        GetComponent<ObjectFader>().FadeIn(40f);
+    }
+
     // Update is called once per frame
     void Update()
     {

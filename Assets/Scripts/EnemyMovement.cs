@@ -9,6 +9,7 @@ public class EnemyMovement : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         player = GameObject.Find("HeroTemp");
+        GetComponent<ObjectFader>().FadeIn(40f);
 	}
 
 
