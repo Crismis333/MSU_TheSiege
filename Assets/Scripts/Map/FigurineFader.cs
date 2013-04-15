@@ -5,11 +5,11 @@ using System.Collections;
 public class FigurineFader : MonoBehaviour {
 
     private static float duration = 10f;
-    private float lerp;
+    //private float lerp;
     private int counter;
 	// Use this for initialization
 	void Start () {
-        lerp = 0f;
+        //lerp = 0f;
         counter = 0;
 	}
 	
@@ -19,15 +19,15 @@ public class FigurineFader : MonoBehaviour {
         if (Camera.main.GetComponent<MapGui>().current_location == this.GetComponent<Location>() && !this.GetComponent<Location>().RB_activated)
         {
             counter++;
-            lerp = Mathf.PingPong(counter, duration) / duration;
+            //lerp = Mathf.PingPong(counter, duration) / duration;
             foreach (Renderer rs in this.gameObject.GetComponentsInChildren<Renderer>())
                 foreach (Material m in rs.materials) 
                     m.SetColor("_OutlineColor", new Color(255, 255, 255, 255));
         }
         else {
-            lerp = 0f;
+            //lerp = 0f;
             counter = 0;
-            lerp = Mathf.PingPong(counter, duration) / duration;
+            //lerp = Mathf.PingPong(counter, duration) / duration;
             foreach (Renderer rs in this.gameObject.GetComponentsInChildren<Renderer>())
                 foreach (Material m in rs.materials)
                     m.SetColor("_OutlineColor", new Color(255, 255, 255, 0));

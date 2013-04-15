@@ -103,7 +103,7 @@ public class MapMovementController : MonoBehaviour {
 
         Vector2 topleftpos = Camera.mainCamera.WorldToScreenPoint(topLeftLimit.transform.position);
         Vector2 botrightpos = Camera.mainCamera.WorldToScreenPoint(bottomRightLimit.transform.position);
-        Vector2 newposright = Camera.mainCamera.ScreenToWorldPoint(Camera.mainCamera.WorldToScreenPoint(bottomRightLimit.transform.position));
+        //Vector2 newposright = Camera.mainCamera.ScreenToWorldPoint(Camera.mainCamera.WorldToScreenPoint(bottomRightLimit.transform.position));
 
         float multiplier = 40.0f;
 
