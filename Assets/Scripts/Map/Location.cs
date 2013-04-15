@@ -15,8 +15,9 @@ public class Location : MonoBehaviour {
     public Vector3 startLocation;
 	public List<GameObject> PitModules;
 	public List<GameObject> SideModules;
-	public List<GameObject> SpecialModules;
-	
+
+	public GameObject SpecialModule;
+    public int SpecialPartCount;
 	public GameObject DefaultRoad;
 	
     private GameObject[] linerenderes;

@@ -7,6 +7,8 @@ public class ObstacleBehaviour : MonoBehaviour {
 	public float SlowAmount = 5;
 	
 	bool destroyed = false;
+
+    private ParticleSystem ps;
 	
 	// Update is called once per frame
 	void Update () {
@@ -20,6 +22,10 @@ public class ObstacleBehaviour : MonoBehaviour {
     void Start()
     {
         GetComponent<ObjectFader>().FadeIn(40f);
+
+        ps = gameObject.GetComponentInChildren<ParticleSystem>();
+        if (ps != null)
+            ps.Pause();
     }
 
 	void OnTriggerEnter(Collider other) {
@@ -33,6 +39,8 @@ public class ObstacleBehaviour : MonoBehaviour {
 			}
 			
 			other.GetComponent<HeroMovement>().SlowHero(SlowTime,SlowAmount);
+            if (ps != null)
+                ps.Play();
 			destroyed = true;
 		}
 		
@@ -45,6 +53,8 @@ public class ObstacleBehaviour : MonoBehaviour {
 				Physics.IgnoreCollision(rb.gameObject.collider, ObstacleController.PLAYER.collider);
 				Physics.IgnoreCollision(other.collider, ObstacleController.PLAYER.collider);
 			}
+            if (ps != null)
+                ps.Play();
 			destroyed = true;
 		}
 	}

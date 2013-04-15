@@ -10,14 +10,16 @@ public class LevelCreator : MonoBehaviour {
 
 	public static List<string> SIDE_MODULE_LIST = new List<string>();
 	public static List<string> ROAD_MODULE_LIST = new List<string>();
-	public static List<string> SPECIAL_MODULE_LIST = new List<string>();
-	
+
+    public static string SPECIAL_MODULE = "";
 	public static string DEFAULT_ROAD = "";
+
+    public static int SPECIAL_PART_COUNT = 0;
 	
 	private List<GameObject> sideModules;
 	private List<GameObject> roadModules;
-	private List<GameObject> specialModules;
-	
+
+	private GameObject specialModule;
 	private GameObject defaultRoad;
 
 	private float moduleCount = 0;
@@ -26,7 +28,7 @@ public class LevelCreator : MonoBehaviour {
 	private Queue<GameObject> sidesB;
 	private Queue<GameObject> roads;
 	
-	private List<int> specialModuleIndices;
+	private int specialModuleIndex = -1;
 	
 	// Use this for initialization
 	void Start () {
@@ -41,22 +43,12 @@ public class LevelCreator : MonoBehaviour {
 		}
 		
 		moduleCount = LengthConverter(LEVEL_LENGTH);
-		
-		specialModules = new List<GameObject>();
-		specialModuleIndices = new List<int>();
-		int i = 0;
-		foreach(string s in SPECIAL_MODULE_LIST) {
-			specialModules.Add(Resources.Load("SpecialModules/"+s, typeof(GameObject)) as GameObject);	
-			
-			int sectionWidth = Mathf.RoundToInt(moduleCount / SPECIAL_MODULE_LIST.Count);
-			float sectionStart = sectionWidth * i;
-			float sectionEnd = sectionWidth * i+1;
 
-			i++;
-			
-			specialModuleIndices.Add(RandomGaussian(sectionStart,sectionEnd));
-		}
-		
+        specialModule = Resources.Load("SpecialModules/" + SPECIAL_MODULE, typeof(GameObject)) as GameObject;
+
+        if (specialModule != null)
+            specialModuleIndex = RandomGaussian(0, moduleCount);
+
 		defaultRoad = Resources.Load("RoadModules/"+DEFAULT_ROAD, typeof(GameObject)) as GameObject;
 		
 		roads = new Queue<GameObject>();
@@ -92,7 +84,7 @@ public class LevelCreator : MonoBehaviour {
 			Vector3 pos = transform.position;
 			pos.z = 64*i;
 			
-			if (specialModuleIndices.Contains(i)){	
+			if (i >= specialModuleIndex && i < specialModuleIndex + SPECIAL_PART_COUNT){	
 				continue;
 			}
 			
@@ -129,10 +121,11 @@ public class LevelCreator : MonoBehaviour {
 			else {
 				pos.x += 40;
 			}
-			
-			if (specialModuleIndices.Contains(i)){	
-				continue;
-			}
+
+            if (i >= specialModuleIndex && i < specialModuleIndex + SPECIAL_PART_COUNT)
+            {
+                continue;
+            }
 			
 
 			if (transitionState == -1) {
