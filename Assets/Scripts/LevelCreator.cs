@@ -32,12 +32,12 @@ public class LevelCreator : MonoBehaviour {
 	void Start () {
 		sideModules = new List<GameObject>();
 		foreach(string s in SIDE_MODULE_LIST) {
-			sideModules.Add(Resources.LoadAssetAtPath("Assets/Prefabs/Modules/SideModules/Sides/"+s+".prefab", typeof(GameObject)) as GameObject);
+			sideModules.Add(Resources.Load("SideModules/Sides/"+s, typeof(GameObject)) as GameObject);
 		}
 		
 		roadModules = new List<GameObject>();
 		foreach(string s in ROAD_MODULE_LIST)	{
-			roadModules.Add(Resources.LoadAssetAtPath("Assets/Prefabs/Modules/RoadModules/"+s+".prefab", typeof(GameObject)) as GameObject);
+			roadModules.Add(Resources.Load("RoadModules/"+s, typeof(GameObject)) as GameObject);
 		}
 		
 		moduleCount = LengthConverter(LEVEL_LENGTH);
@@ -46,7 +46,7 @@ public class LevelCreator : MonoBehaviour {
 		specialModuleIndices = new List<int>();
 		int i = 0;
 		foreach(string s in SPECIAL_MODULE_LIST) {
-			specialModules.Add(Resources.LoadAssetAtPath("Assets/Prefabs/Modules/SpecialModules/"+s+".prefab", typeof(GameObject)) as GameObject);	
+			specialModules.Add(Resources.Load("SpecialModules/"+s, typeof(GameObject)) as GameObject);	
 			
 			int sectionWidth = Mathf.RoundToInt(moduleCount / SPECIAL_MODULE_LIST.Count);
 			float sectionStart = sectionWidth * i;
@@ -57,7 +57,7 @@ public class LevelCreator : MonoBehaviour {
 			specialModuleIndices.Add(RandomGaussian(sectionStart,sectionEnd));
 		}
 		
-		defaultRoad = Resources.LoadAssetAtPath("Assets/Prefabs/Modules/RoadModules/"+DEFAULT_ROAD+".prefab", typeof(GameObject)) as GameObject;
+		defaultRoad = Resources.Load("RoadModules/"+DEFAULT_ROAD, typeof(GameObject)) as GameObject;
 		
 		roads = new Queue<GameObject>();
 		sidesA = new Queue<GameObject>();
@@ -164,24 +164,24 @@ public class LevelCreator : MonoBehaviour {
 				switch (transitionState)
 				{
 				case -1:
-                    side = Resources.LoadAssetAtPath("Assets/Prefabs/Modules/SideModules/Sides/" + realName + ".prefab", typeof(GameObject)) as GameObject;
+                    side = Resources.Load("SideModules/Sides/"+realName, typeof(GameObject)) as GameObject;
 					break;
 				case 0: 
-					side = Resources.LoadAssetAtPath("Assets/Prefabs/Modules/SideModules/SideStarts/"+prevName+"_start.prefab", typeof(GameObject)) as GameObject;
+					side = Resources.Load("SideModules/SideStarts/"+prevName+"_start", typeof(GameObject)) as GameObject;
 					end = true;
 					transitionState++;
 					break;
 				case 1:
-					side = Resources.LoadAssetAtPath("Assets/Prefabs/Modules/SideModules/SideTransitions/"+prevName + "_to_" + tmpName+".prefab", typeof(GameObject)) as GameObject;
+					side = Resources.Load("SideModules/SideTransitions/"+prevName + "_to_" + tmpName, typeof(GameObject)) as GameObject;
 					transitionState++;
 					break;
 				case 2:
-					side = Resources.LoadAssetAtPath("Assets/Prefabs/Modules/SideModules/SideStarts/"+tmpName+"_start.prefab", typeof(GameObject)) as GameObject;
+					side = Resources.Load("SideModules/SideStarts/"+tmpName+"_start", typeof(GameObject)) as GameObject;
 					transitionState++;
 					start = true;
 					break;
 				case 3:
-                    side = Resources.LoadAssetAtPath("Assets/Prefabs/Modules/SideModules/Sides/" + realName + ".prefab", typeof(GameObject)) as GameObject;
+                    side = Resources.Load("SideModules/Sides/" + realName, typeof(GameObject)) as GameObject;
 					transitionState = -1;
 					break;
 				}

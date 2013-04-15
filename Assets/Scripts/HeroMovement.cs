@@ -82,6 +82,7 @@ public class HeroMovement : MonoBehaviour {
 		
 		if (transform.position.z >= LevelCreator.LengthConverter(LevelCreator.LEVEL_LENGTH)*64-32) {
             CurrentGameState.SetWin();
+			Debug.Log("End Score: "+ GUIScript.SCORE);
 			Application.LoadLevel(1);
 		}
 	}

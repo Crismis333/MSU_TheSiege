@@ -128,6 +128,10 @@ public class MapGui : MonoBehaviour {
             ObstacleController.CATAPULT_RATIO = current_location.difficulty_catapults - CurrentGameState.catapultModifier;
 
         LevelCreator.LEVEL_LENGTH = current_location.difficulty_length;
+		
+		ObstacleController.JUMP_MODIFIER = CurrentGameState.jumpLengthModifier;
+		ObstacleController.MOVEMENT_MODIFIER = CurrentGameState.moveSpeedModifier;
+		ObstacleController.QUICKTIME_MODIFIER = CurrentGameState.slowDownModifier;
 
         CurrentGameState.previousPreviousPosition = CurrentGameState.previousPosition;
         CurrentGameState.previousPosition = current_location.transform.position;

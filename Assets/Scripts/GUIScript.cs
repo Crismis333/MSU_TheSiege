@@ -2,7 +2,9 @@ using UnityEngine;
 using System.Collections;
 
 public class GUIScript : MonoBehaviour {
-
+	
+	public static long SCORE;
+	
     public GUISkin gSkin;
     public Texture2D runningSoldiers, runningGoal, damagebar, swordLeft, swordRight, bloodsplatter;
 
@@ -16,6 +18,7 @@ public class GUIScript : MonoBehaviour {
     private bool showLinger;
 
 	private float currentZ;
+	private float armyZ;
 	private float minZ = 0;
 	private float maxZ;
 
@@ -27,6 +30,7 @@ public class GUIScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		currentZ = ObstacleController.PLAYER.transform.position.z;
+		armyZ = ObstacleController.ARMY.transform.position.z;
 
         if (showLinger)
         {
@@ -49,11 +53,12 @@ public class GUIScript : MonoBehaviour {
     {
         GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
         GUI.Box(new Rect(Screen.width-225, 25, 200, 75), "");
-        GUI.Label(new Rect(Screen.width - 225 + 15, 25 + 15, 200, 75), "Score: 9756");
+        GUI.Label(new Rect(Screen.width - 225 + 15, 25 + 15, 200, 75), "Score: "+ SCORE);
         GUI.Label(new Rect(Screen.width - 225 + 15, 25 + 15*2, 200, 75), "Multiplier: x2");
 
         GUI.Box(new Rect(15, Screen.height - 65, Screen.width - 30, 50), "");
         GUI.DrawTexture(new Rect(15+currentZ/(maxZ-minZ)*Screen.width-50, Screen.height - 64, 50, 50), runningSoldiers);
+        GUI.DrawTexture(new Rect(15+armyZ/(maxZ-minZ)*Screen.width-50, Screen.height - 64, 50, 50), runningSoldiers);
         GUI.DrawTexture(new Rect(Screen.width-65, Screen.height - 64, 50, 50), runningSoldiers);
 
         GUI.DrawTexture(new Rect(Screen.width / 2 - 250, Screen.height - 90, 500, 12), damagebar);
