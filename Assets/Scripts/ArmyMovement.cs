@@ -31,6 +31,11 @@ public class ArmyMovement : MonoBehaviour {
 		}
 		else {
 			speedMod = 1.05f;
+			
+			if (dZ <= 0)
+			{
+				//TODO fail level
+			}
 		}
 		
 		
