@@ -28,7 +28,7 @@ public class Location : MonoBehaviour {
     {
         if (RB_activated && !pushed)
         {
-            if (transform.position.y > startLocation.y + 0.5f)
+            if (transform.position.y > startLocation.y + 0.1f)
             {
                 GetComponent<Rigidbody>().AddForce(new Vector3(3, 0, 3));
                 pushed = true;

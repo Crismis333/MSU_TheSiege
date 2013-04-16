@@ -11,6 +11,8 @@ public class EnemyAttack : MonoBehaviour {
     public GameObject Indicator;
     private GameObject selectedIndicator;
     public bool AttackDone;
+	
+	private bool destroyed = false;
 
     // Use this for initialization
     void Start()
@@ -57,13 +59,22 @@ public class EnemyAttack : MonoBehaviour {
 
     public void AddExplosion(float power, Vector3 pos)
     {
-
-        foreach (Rigidbody rs in this.gameObject.GetComponentsInChildren<Rigidbody>())
-        {
-            rs.isKinematic = false;
-            rs.WakeUp();
-            rs.AddExplosionForce(power, pos, 0);
-        }
+		if (!destroyed) {
+        	foreach (Rigidbody rs in this.gameObject.GetComponentsInChildren<Rigidbody>())
+        	{
+            	rs.isKinematic = false;
+            	rs.WakeUp();
+	            rs.AddExplosionForce(power, pos, 0);
+        	}
+			
+			foreach (Collider c in gameObject.GetComponentsInChildren<Collider>())
+			{
+				if (c.enabled && ObstacleController.PLAYER.collider.enabled)
+					Physics.IgnoreCollision(c,ObstacleController.PLAYER.collider);
+			}
+		}
+		
+		destroyed = true;
     }
 	
 	// Update is called once per frame
