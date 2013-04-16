@@ -142,12 +142,14 @@ public class MapGui : MonoBehaviour {
         current_location.ActivateRigidBody();
         //CurrentGameState.completedlevels.Add(current_location.levelID);
         Screen.lockCursor = true;
-
+		
+		LevelCreator.ROAD_MODULE_LIST.Clear();
         foreach (GameObject go in current_location.PitModules)
         {
             LevelCreator.ROAD_MODULE_LIST.Add(go.name);
         }
-
+		
+		LevelCreator.SIDE_MODULE_LIST.Clear();
         foreach (GameObject go in current_location.SideModules)
         {
             LevelCreator.SIDE_MODULE_LIST.Add(go.name);
