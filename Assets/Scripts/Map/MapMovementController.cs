@@ -31,7 +31,7 @@ public class MapMovementController : MonoBehaviour {
         {
             Vector3 newpos = Camera.mainCamera.WorldToScreenPoint(topLeftLimit.transform.position);
             Vector3 newpos2 = Camera.mainCamera.WorldToScreenPoint(bottomRightLimit.transform.position);
-            newpos.x += Screen.width / 2f + 10;
+            newpos.x += Screen.width / 2f + 20;
             newpos2.x -= Screen.width / 2f;
             newpos += newpos2;
             newpos /= 2;
@@ -40,35 +40,35 @@ public class MapMovementController : MonoBehaviour {
         if (topleftpos.x >= 0)
         {
             Vector3 newpos = Camera.mainCamera.WorldToScreenPoint(topLeftLimit.transform.position);
-            newpos.x += Screen.width / 2f + 10;
+            newpos.x += Screen.width / 2f + 20;
             pos.x = Camera.mainCamera.ScreenToWorldPoint(newpos).x;
         }
         else if (botrightpos.x <= Screen.width)
         {
             Vector3 newpos = Camera.mainCamera.WorldToScreenPoint(bottomRightLimit.transform.position);
-            newpos.x -= Screen.width / 2f - 10;
+            newpos.x -= Screen.width / 2f - 20;
             pos.x = Camera.mainCamera.ScreenToWorldPoint(newpos).x;
         }
         if (topleftpos.y <= Screen.height && botrightpos.y >= 0)
         {
             Vector3 newpos = Camera.mainCamera.WorldToScreenPoint(topLeftLimit.transform.position);
             Vector3 newpos2 = Camera.mainCamera.WorldToScreenPoint(bottomRightLimit.transform.position);
-            newpos.y -= Screen.height / 2f-10;
+            newpos.y -= Screen.height / 2f-20;
             newpos2.y += Screen.height / 2f;
             newpos += newpos2;
-            newpos /= 2-10;
+            newpos /= 2;
             pos.z = Camera.mainCamera.ScreenToWorldPoint(newpos).z;
         }
         else if (topleftpos.y <= Screen.height)
         {
             Vector3 newpos = Camera.mainCamera.WorldToScreenPoint(topLeftLimit.transform.position);
-            newpos.y -= Screen.height / 2f - 10;
+            newpos.y -= Screen.height / 2f - 20;
             pos.z = Camera.mainCamera.ScreenToWorldPoint(newpos).z;
         }
         else if (botrightpos.y >= 0)
         {
             Vector3 newpos = Camera.mainCamera.WorldToScreenPoint(bottomRightLimit.transform.position);
-            newpos.y += Screen.height / 2f + 10;
+            newpos.y += Screen.height / 2f + 20;
             pos.z = Camera.mainCamera.ScreenToWorldPoint(newpos).z;
         }
         return pos;
@@ -105,17 +105,17 @@ public class MapMovementController : MonoBehaviour {
         Vector2 botrightpos = Camera.mainCamera.WorldToScreenPoint(bottomRightLimit.transform.position);
         //Vector2 newposright = Camera.mainCamera.ScreenToWorldPoint(Camera.mainCamera.WorldToScreenPoint(bottomRightLimit.transform.position));
 
-        float multiplier = 40.0f;
+        float multiplier = 20.0f;
 
-        if (topleftpos.x >= -(3 * multiplier + 20) && botrightpos.x <= Screen.width + 3 * multiplier + 20) { }
-        else if (topleftpos.x >= -(3*multiplier + 20))
+        if (topleftpos.x >= -(3 * multiplier + 30) && botrightpos.x <= Screen.width + 3 * multiplier + 30) { }
+        else if (topleftpos.x >= -(3*multiplier + 30))
             left = true;
-        else if (botrightpos.x <= Screen.width + 3* multiplier + 20)
+        else if (botrightpos.x <= Screen.width + 3 * multiplier + 30)
             right = true;
-        if (topleftpos.y <= Screen.height + 3 * multiplier + 20 && botrightpos.y >= -(3 * multiplier + 20)) { }
-        else if (topleftpos.y <= Screen.height + 3 * multiplier + 20)
+        if (topleftpos.y <= Screen.height + 3 * multiplier + 20 && botrightpos.y >= -(3 * multiplier + 30)) { }
+        else if (topleftpos.y <= Screen.height + 3 * multiplier + 30)
             up = true;
-        else if (botrightpos.y >= -(3 * multiplier + 20))
+        else if (botrightpos.y >= -(3 * multiplier + 30))
             down = true;
 
         pos = ClampToMap(pos);
@@ -126,9 +126,13 @@ public class MapMovementController : MonoBehaviour {
         float ym = Input.GetAxis("Mouse Y");
 
         if (xm > 3)
-            xm = 4;
+            xm = 3;
+        else if (xm < -3)
+            xm = -3;
         if (ym > 3)
-            ym = 4;
+            ym = 3;
+        else if (ym < -3)
+            ym = -3;
         if (!GetComponentInChildren<MapGui>().started && !GetComponentInChildren<MapGui>().stopped)
             if (Input.GetMouseButton(0) && !onguidown)
             {
