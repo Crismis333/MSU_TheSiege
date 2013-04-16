@@ -23,7 +23,7 @@ public class Location : MonoBehaviour {
     private GameObject[] linerenderes;
     private int offset;
     public bool RB_activated;
-    private bool pushed;
+    public bool pushed;
 
     void Update()
     {
