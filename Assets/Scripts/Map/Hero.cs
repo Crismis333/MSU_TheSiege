@@ -33,7 +33,7 @@ public class Hero : MonoBehaviour {
         if (canmove)
         {
             this.transform.position = Vector3.Lerp(startLocation, endLocation, move);
-            move += Time.deltaTime/3;
+            move += Time.deltaTime/2;
         }
     }
 }

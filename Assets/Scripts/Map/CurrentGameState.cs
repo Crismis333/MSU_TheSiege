@@ -17,10 +17,12 @@ public class CurrentGameState : MonoBehaviour {
     public static float moveSpeedModifier = 1.0f;
     public static float slowDownModifier = 1.0f;
     public static List<int> completedlevels = new List<int>();
+    public static List<Vector3> completedLevelLocations = new List<Vector3>();
     public static Hero hero;
     public static Vector3 previousPosition, previousPreviousPosition;
     private static List<Modifier> wins;
     private static int nextLevel;
+    private static long currentScore;
     
 
     public static void CreateHero()
@@ -43,7 +45,8 @@ public class CurrentGameState : MonoBehaviour {
     public static void SetWin() 
     {
         locID = nextLevel;
-        CurrentGameState.completedlevels.Add(locID);
+        completedlevels.Add(locID);
+        completedLevelLocations.Add(previousPosition);
         foreach (Modifier m in wins)
             IncreaseModifier(m);
     }
@@ -56,10 +59,15 @@ public class CurrentGameState : MonoBehaviour {
         soldierModifier = obstacleModifier = pitModifier = catapultModifier = 0;
         jumpLengthModifier = moveSpeedModifier = slowDownModifier = 1.0f;
         completedlevels = new List<int>();
+        completedLevelLocations = new List<Vector3>();
         hero = null;
         wins = null;
         nextLevel = 0;
+        currentScore = 0;
     }
+
+
+
 
     private static void IncreaseModifier(Modifier mod) 
     {

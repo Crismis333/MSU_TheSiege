@@ -71,6 +71,7 @@ public class Location : MonoBehaviour {
             CurrentGameState.JustStarted = false;
             CurrentGameState.locID = this.levelID;
             CurrentGameState.previousPosition = this.transform.position;
+            CurrentGameState.completedLevelLocations.Add(this.transform.position);
         }
         if (CurrentGameState.locID == this.levelID)
         {
@@ -84,6 +85,8 @@ public class Location : MonoBehaviour {
                 SetupLineRenderer(lr.GetComponent<LineRenderer>(), locations[i]);
                 linerenderes[i] = lr;
             }
+            GameObject o = GameObject.Find("PreviousLineCreator");
+            o.GetComponent<PreviousLines>().Init();
         }
         else 
         {
