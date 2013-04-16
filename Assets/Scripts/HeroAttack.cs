@@ -40,7 +40,7 @@ public class HeroAttack : MonoBehaviour {
     void KillEnemy(GameObject enemy)
     {
         
-        enemy.GetComponent<EnemyAttack>().AddExplosion(ObstacleController.PLAYER.GetComponent<HeroMovement>().CurrentSpeed / 4 * 500, ObstacleController.PLAYER.transform.position + Vector3.up);
+        enemy.GetComponent<EnemyAttack>().AddExplosion(ObstacleController.PLAYER.GetComponent<HeroMovement>().CurrentSpeed / 4 * 200, ObstacleController.PLAYER.transform.position + Vector3.up);
 
         enemy.GetComponent<EnemyAttack>().KillSelf();
     }
@@ -66,12 +66,6 @@ public class HeroAttack : MonoBehaviour {
 			other.transform.parent.GetComponent<EnemyAttack>().
 				AddExplosion(ObstacleController.PLAYER.GetComponent<HeroMovement>().CurrentSpeed / 4 * 500, ObstacleController.PLAYER.transform.position + Vector3.up);
             other.transform.parent.GetComponent<EnemyAttack>().KillSelf();
-			
-			foreach (Collider c in other.transform.parent.GetComponentsInChildren<Collider>())
-			{
-				if (c.enabled && ObstacleController.PLAYER.collider.enabled)
-					Physics.IgnoreCollision(c,ObstacleController.PLAYER.collider);
-			}
 		}
     }
 

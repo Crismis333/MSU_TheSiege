@@ -28,8 +28,8 @@ public class BoulderCreator : MonoBehaviour {
             if (z + 70 < LevelCreator.LengthConverter(LevelCreator.LEVEL_LENGTH) * 64 - 32)
             {
                 GameObject go = Instantiate(Boulder, new Vector3(Random.Range(-6, 7), 16f, z + 70), Quaternion.AngleAxis(180, Vector3.up)) as GameObject;
-                go.GetComponent<Rigidbody>().AddForce(Vector3.up * 3);
-                go.GetComponent<Rigidbody>().AddForce(Vector3.back * (4+Random.Range(0,3)));
+                go.GetComponent<Rigidbody>().AddForce(Vector3.up * 30);
+                go.GetComponent<Rigidbody>().AddForce(Vector3.back * (40+Random.Range(0,30)));
                 go.GetComponent<Rigidbody>().angularVelocity = new Vector3(Random.Range(-2, 3), Random.Range(-2, 3), Random.Range(-2, 3));
             }
         }

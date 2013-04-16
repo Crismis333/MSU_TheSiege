@@ -94,22 +94,21 @@ public class HeroMovement : MonoBehaviour {
         float h = Input.GetAxisRaw("Horizontal");
 		
 		if(!Slowed) {
-	        if (v > 0.1) {
+	        if (v > 0.1)
 	            moveDirection.z = MoveSpeed + SpeedUp * v;
-				currentSpeed = MoveSpeed + SpeedUp * v;
-			}
-	        else if (v < -0.1) {
+	        else if (v < -0.1)
 	            moveDirection.z = MoveSpeed + SpeedDown * v;
-				currentSpeed = MoveSpeed + SpeedDown * v;
-			}
-	        else {
+	        else
 	            moveDirection.z = MoveSpeed;
-				currentSpeed = MoveSpeed;
-			}
 		}
 		else {
-			moveDirection.z = MoveSpeed - slowAmount * (slowTimer / slowMax);
+			if (v < -0.1)
+				moveDirection.z = MoveSpeed - Mathf.Max(slowAmount * (slowTimer / slowMax), SpeedDown * -v);
+			else
+				moveDirection.z = MoveSpeed - slowAmount * (slowTimer / slowMax);
+			
 		}
+		currentSpeed = moveDirection.z;
         
         moveDirection.x = StrafeSpeed * h;
 	}
