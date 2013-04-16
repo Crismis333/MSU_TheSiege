@@ -73,7 +73,10 @@ public class OptionsMenuScript : MonoBehaviour {
         if (mres.width != Screen.width || mres.height != Screen.height || fullscreen != Screen.fullScreen)
             Screen.SetResolution(mres.width, mres.height, fullscreen);
         OptionsValues.musicVolume = musicvol;
+        PlayerPrefs.SetFloat("MusicVolume", OptionsValues.musicVolume);
         OptionsValues.sfxVolume = effectvol;
+        PlayerPrefs.SetFloat("SFXVolume", OptionsValues.sfxVolume);
+        PlayerPrefs.Save();
         QualitySettings.SetQualityLevel((int)quality);
         this.enabled = false;
         if (!pauseMenu)
