@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GUIScript : MonoBehaviour {
 	
@@ -13,6 +14,7 @@ public class GUIScript : MonoBehaviour {
     public bool engageFixed, releaseFixed;
     public bool BarActive;
     public float ShowLingerTime = 1.0f;
+    public List<HitAccuracy> HitList;
 
     private float lingerTimer;
     private bool showLinger;
@@ -22,9 +24,12 @@ public class GUIScript : MonoBehaviour {
 	private float minZ = 0;
 	private float maxZ;
 
+    
+
 	// Use this for initialization
 	void Start () {
 		maxZ = (LevelCreator.LengthConverter(LevelCreator.LEVEL_LENGTH)*64)-32;
+        HitList = new List<HitAccuracy>();
 	}
 	
 	// Update is called once per frame
@@ -128,5 +133,27 @@ public class GUIScript : MonoBehaviour {
     {
         showLinger = true;
         lingerTimer = 0;
+    }
+}
+
+public class HitAccuracy
+{
+    // The charge percent when released
+    public float Accuracy
+    {
+        get;
+        set;
+    }
+
+    // How many enemies were hit with one attack
+    public int NumberOfHits
+    {
+        get;
+        set;
+    }
+
+    public override string ToString()
+    {
+        return "Accuracy: " + Accuracy + ", Number of hits: " + NumberOfHits;
     }
 }

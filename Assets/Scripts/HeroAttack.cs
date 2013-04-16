@@ -11,274 +11,56 @@ public class HeroAttack : MonoBehaviour {
 
     private GameObject selectedEnemy;
     private GUIScript GUI;
-    
 
+    private bool charging;
+    private float chargePercent, chargeTime;
+    public float MaxCharge = 1.5f; // Time in seconds to fully charge
+
+    private List<GameObject> hitableEnemies;
+
+    private float a, b, c;
 
 	// Use this for initialization
 	void Start () {
         AttackList = new List<GameObject>();
         GUI = GameObject.Find("GUI").GetComponent<GUIScript>();
+        hitableEnemies = new List<GameObject>();
       //  Time.timeScale = 0.5f;
+        LstSquQuadRegr solvr = new LstSquQuadRegr();
+        solvr.AddPoints(0, 0);
+        solvr.AddPoints(MaxCharge, 1);
+        solvr.AddPoints(2 * MaxCharge, 0);
+        a = (float)solvr.aTerm();
+        b = (float)solvr.bTerm();
+        c = (float)solvr.cTerm();
+
+        print("a: " + a + ", b: " + b + ", c: " + c);
 	}
-
-    public void AddToList(GameObject go)
-    {
-        AttackList.Add(go);
-        if (AttackList.Count == 1)
-        {
-            // This is the only element in the list
-            setChosen(go);
-          //  go.GetComponent<EnemyAttack>().SetChosen(true);
-        }
-        else
-        {
-            AttackList.Sort((x, y) => x.transform.position.z.CompareTo(y.transform.position.z));
-        }
-    }
-
-    public void RemoveFromList(GameObject go, bool selected)
-    {
-        
-        AttackList.Remove(go);
-        selectedIndex--;
-
-      //  if (selected && AttackList.Count > 0)
-        if (go.Equals(selectedEnemy) && AttackList.Count > 0)
-        {
-            GameObject best = null;
-            float dist = float.MaxValue;
-            foreach (GameObject obj in AttackList)
-            {
-                float tDist = obj.transform.position.z;
-                if (tDist < dist)
-                {
-                    best = obj;
-                    dist = tDist;
-                }
-            }
-            if (best != null)
-            {
-             //   best.GetComponent<EnemyAttack>().SetChosen(true);
-                selectedIndex = 0;
-                setChosen(best);
-            }
-            AttackList.Sort((x, y) => x.transform.position.z.CompareTo(y.transform.position.z));
-        }
-    }
-
-    void setChosen(GameObject obj)
-    {
-        this.selectedEnemy = obj;
-        obj.GetComponent<EnemyAttack>().SetChosen(true);
-    }
-
-    void chooseNext()
-    {
-        int selectedIndex = AttackList.IndexOf(selectedEnemy);
-        if (selectedIndex >= 0)
-        {
-         //   AttackList[selectedIndex].GetComponent<EnemyAttack>().SetChosen(false);
-            this.selectedEnemy.GetComponent<EnemyAttack>().SetChosen(false);
-
-        }
-        selectedIndex++;
-        selectedIndex %= AttackList.Count;
-        setChosen(AttackList[selectedIndex]);       
-    }
 
     void KillEnemy(GameObject enemy)
     {
-        RemoveFromList(enemy, true);
-        Destroy(enemy);
+        
+        enemy.GetComponent<EnemyAttack>().AddExplosion(ObstacleController.PLAYER.GetComponent<HeroMovement>().CurrentSpeed / 4 * 500, ObstacleController.PLAYER.transform.position + Vector3.up);
+
+        enemy.GetComponent<EnemyAttack>().KillSelf();
     }
-
-    bool engaged, firePressed, inEngageBox, inReleaseBox;
-    float engagePercent, releasePercent;
-
-    //private void handleAttack()
-    //{
-    //    if (selectedEnemy != null)
-    //    {
-    //        float p = gameObject.transform.localPosition.z;
-    //        Bounds engageBounds = selectedEnemy.transform.Find("EngageBox").GetComponent<BoxCollider>().bounds;
-    //        Bounds releaseBounds = selectedEnemy.transform.Find("ReleaseBox").GetComponent<BoxCollider>().bounds;
-
-    //        float min = engageBounds.min.z;
-    //        float max = engageBounds.max.z;
-
-    //        if (p > min && p < max)
-    //        {
-    //            // In engage box
-
-    //            float range = max - min;
-
-    //            float dist = p - min;         
-
-    //            float percentage = dist / range * 100;
-    //            handleEngage(percentage);
-    //        }
-    //        else
-    //        {
-                
-    //            min = releaseBounds.min.z;
-    //            max = releaseBounds.max.z;
-
-    //            if (p > min && p < max)
-    //            {
-    //                // In release box
-    //                print("Release");
-    //                float range = max - min;
-    //                float dist = p - min;
-
-    //                float percentage = dist / range * 100;
-    //                handleRelease(percentage);
-    //            }
-               
-    //        }
-    //        if (firePressed && Input.GetButtonUp("Fire1"))
-    //        {
-    //            GUI.ResetBar();
-    //            firePressed = false;
-    //        }
-    //    }
-    //}
-
-    //private void handleEngage(float percentage)
-    //{
-    //    inEngageBox = true;
-    //    GUI.BarActive = true;
-
-    //    GUI.engagePercent = percentage;
-    //    engagePercent = percentage;
-
-    //    if (!firePressed)
-    //    {
-    //        if (Input.GetButtonDown("Fire1"))
-    //        {
-    //            firePressed = true;
-    //            GUI.engageFixed = true;
-    //            GUI.fixedEngagePercent = percentage;
-    //            engaged = true;
-    //        }
-    //    }
-    //    else
-    //    {
-    //        // Too quick release - penalty
-    //        print("Penalty - too quick");
-    //        selectedEnemy.GetComponent<EnemyAttack>().Indicator.renderer.material.color = Color.red;
-    //        firePressed = false;
-    //    }
-    //}
-
-    //private void handleRelease(float percentage)
-    //{
-    //    if (firePressed)
-    //    {
-    //        print("Release");
-    //        GUI.releasePercent = percentage;
-    //        if (Input.GetButtonUp("Fire1"))
-    //        {
-    //            selectedEnemy.GetComponent<EnemyAttack>().KillSelf();
-    //        }
-    //    }
-    //}
-
-    //private void handleAttack2()
-    //{
-    //    float p = gameObject.transform.localPosition.z;
-    //    Bounds engageBounds = selectedEnemy.transform.Find("EngageBox").GetComponent<BoxCollider>().bounds;
-    //    Bounds releaseBounds = selectedEnemy.transform.Find("ReleaseBox").GetComponent<BoxCollider>().bounds;
-
-    //    float eMin = engageBounds.min.z;
-    //    float eMax = engageBounds.max.z;
-    //    float rMax = releaseBounds.max.z;
-
-    //    int c = 0; // 0: Outside boxes, 1: Engage box, 2: Release box, 3: Outside boxes
-
-    //    if (p > eMin)
-    //    {
-    //        c++;
-    //        if (p > eMax)
-    //        {
-    //            c++;
-    //            if (p > rMax)
-    //            {
-    //                c++;
-    //            }
-    //        }            
-    //    }
-
-    //    switch (c)
-    //    {
-    //        case 0:
-    //           // print("Before boxes");
-    //            break;
-    //        case 1:
-    //          //  print("In engage box");
-    //            float min = engageBounds.min.z;
-    //            float max = engageBounds.max.z;
-
-    //            float range = max - min;                                
-
-    //            float dist = p - min;
-    //            //   print("Engage: min: " + min + ", p: " + p + ", max: " + max + ", range: " + range + ", dist: " + dist);
-
-
-    //            float percentage = dist / range * 100;
-
-    //            if (percentage > 0 && percentage < 100)
-    //            {
-    //                inEngageBox = true;
-    //                GUI.BarActive = true;
-
-    //                GUI.engagePercent = percentage;
-    //                engagePercent = percentage;
-    //                if (!firePressed)
-    //                {
-
-    //                    if (Input.GetButtonDown("Fire1"))
-    //                    {
-    //                        firePressed = true;
-    //                        GUI.engageFixed = true;
-    //                        GUI.fixedEngagePercent = percentage;
-    //                        engaged = true;
-    //                    }
-    //                }
-    //                else
-    //                {
-    //                    if (Input.GetButtonUp("Fire1"))
-    //                    {
-    //                        // Too quick release - penalty
-    //                        print("Penalty - too quick");
-    //                        selectedEnemy.GetComponent<EnemyAttack>().Indicator.renderer.material.color = Color.red;
-    //                        firePressed = false;
-    //                    }
-    //                }
-
-    //            }
-    //            break;
-    //        case 2:
-    //          //  print("In release box");
-    //            break;
-    //        case 3:
-    //          //  print("After boxes");
-    //            break;
-    //    }
-    //}
-	
-	// Update is called once per frame
 
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.name.Equals("EngageBox") && other.transform.parent.gameObject.Equals(selectedEnemy))
         {
-            print("Enter engage box");
-            inEngageBox = true;
+       //     print("Enter engage box");
+           
         }
-        if (other.gameObject.name.Equals("ReleaseBox") && other.transform.parent.gameObject.Equals(selectedEnemy))
+        if (other.gameObject.name.Equals("ReleaseBox"))
         {
-            print("Enter release box");
-            inReleaseBox = true;
+        //    print("Enter release box");
+           
+            GameObject enemy = other.transform.parent.gameObject;
+            if (!hitableEnemies.Contains(enemy))
+            {
+                hitableEnemies.Add(enemy);
+            }
         }
 		if (other.gameObject.name.Equals("EnemyBox")) {
 			other.transform.parent.GetComponent<EnemyAttack>().
@@ -297,156 +79,351 @@ public class HeroAttack : MonoBehaviour {
     {
         if (other.gameObject.name.Equals("EngageBox") && other.transform.parent.gameObject.Equals(selectedEnemy))
         {
-            print("Leaving engage box");
-            inEngageBox = false;
+       //     print("Leaving engage box");
+          
         }
-        if (other.gameObject.name.Equals("ReleaseBox") && other.transform.parent.gameObject.Equals(selectedEnemy))
+        if (other.gameObject.name.Equals("ReleaseBox"))
         {
-            print("Leaving release box");
-            inReleaseBox = false;
+         //   print("Leaving release box");
+          
+            GameObject enemy = other.transform.parent.gameObject;
+            if (hitableEnemies.Contains(enemy))
+            {
+                hitableEnemies.Remove(enemy);
+            }
         }
     }
 
-    void CalculateHit()
+    float ChargeSmoothing(float time)
     {
-        if (engagePercent > 0 && releasePercent > 0)
+        if (time > 0 && time < MaxCharge)
         {
-            float engageAccuracy = Math.Abs(engagePercent - 50);
-            float releaseAccuracy = Math.Abs(releasePercent - 50);
-
-            int engageRate = (int)engageAccuracy / 10;
-            int releaseRate = (int)releaseAccuracy / 10;
-
-            int hitRate = engageRate + releaseRate;
-
-            float similarity = Math.Abs(engagePercent - (100 - releasePercent));
-
-            print("Hit rate: " + hitRate + ", similarity: " + similarity);
+            return (a * time * time + b * time + c);
         }
+        return 0;
     }
 
-	void Update () {
-        if (Input.GetButtonUp("Fire2")) // On keyboard: Alt
+    void Update()
+    {
+        if (Input.GetButtonDown("Fire1"))
         {
-            if (AttackList.Count > 1)
-            {
-                chooseNext();                
-            }
+            print("Fire1 down");
+            // Start charging attack
+            charging = true;
+            chargePercent = 0;
+            chargeTime = 0;
+            GUI.BarActive = true;
         }
-       
-        else
+
+        if (charging)
         {
-            if (selectedEnemy != null && !selectedEnemy.GetComponent<EnemyAttack>().AttackDone)
+            if (chargeTime > MaxCharge)
             {
-                if (inEngageBox)
+                // Stop attacking - overcharged
+                charging = false;
+                GUI.ResetBar();
+                GUI.BarActive = false;
+            }
+            else
+            {
+                // Continue charging attack
+                chargeTime += Time.deltaTime;
+
+                if (false)
                 {
-                    //   print("Engaging");
-                    Bounds bounds = selectedEnemy.transform.Find("EngageBox").GetComponent<BoxCollider>().bounds;
+                    chargePercent = chargeTime;
+                }
+                else
+                {
+                    chargePercent = ChargeSmoothing(chargeTime);
+                }
 
+                float percent = chargePercent * 100;
+                print("chargePercent: " + chargePercent + ", percent: " + percent + ", time: " + chargeTime);
+                GUI.engagePercent = percent;
+            }
+        }      
 
-                    float min = bounds.min.z;
-                    float max = bounds.max.z;                  
+        if (Input.GetButtonUp("Fire1"))
+        {
+            print("Fire1 up");
+            // Release attack - hit if in a collider box
+            
+            GUI.ResetBar();
+            GUI.BarActive = false;
+            if (charging)
+            {
+                if (hitableEnemies.Count > 0)
+                {
+                    HitAccuracy ha = new HitAccuracy();
+                    ha.Accuracy = chargePercent;
+                    ha.NumberOfHits = hitableEnemies.Count;
 
-                    //  print("xMin: " + xMin + ", xMax: " + xMax);
+                    print(ha.ToString());
 
-                    float range = max - min;
+                    GUI.HitList.Add(ha);
 
-                    float p = gameObject.transform.localPosition.z;
-
-                    float dist = p - min;
-                    //   print("Engage: min: " + min + ", p: " + p + ", max: " + max + ", range: " + range + ", dist: " + dist);
-
-
-                    float percentage = dist / range * 100;
-
-                    if (percentage > 0 && percentage < 100)
+                    foreach (GameObject enemy in hitableEnemies)
                     {
-
-                        GUI.BarActive = true;
-
-                        GUI.engagePercent = percentage;
-                     //   engagePercent = percentage;
-                        if (!firePressed)
-                        {
-
-                            if (Input.GetButtonDown("Fire1"))
-                            {
-                                firePressed = true;
-                                GUI.engageFixed = true;
-                                GUI.fixedEngagePercent = percentage;
-                                engagePercent = percentage;
-                                engaged = true;
-                            }
-                        }
-                        else
-                        {
-                            if (inEngageBox && Input.GetButtonUp("Fire1"))
-                            {
-                                // Too quick release - penalty
-                                print("Penalty - too quick");
-                                selectedEnemy.GetComponent<EnemyAttack>().AttackDone = true;
-                                firePressed = false;
-                                GUI.ResetBar();
-                            }
-                        }
-
+                        KillEnemy(enemy);
                     }
+                    hitableEnemies.Clear();
                 }
 
             }
-
-
-
-            if (engaged)
-            {
-                if (inReleaseBox)
-                {
-                    Bounds bounds = selectedEnemy.transform.Find("ReleaseBox").GetComponent<BoxCollider>().bounds;
-
-
-                    float min = bounds.min.z;
-                    float max = bounds.max.z;
-
-                    float range = max - min;
-
-                    float p = gameObject.transform.localPosition.z;
-                    float dist = p - min;
-                    //     print("Release: min: " + min + ", p: " + p + ", max: " + max + ", range: " + range + ", dist: " + dist);
-
-
-                    float percentage = dist / range * 100;
-
-                    releasePercent = percentage;
-
-                    if (firePressed && percentage > 0 && percentage < 100)
-                    {
-                        inReleaseBox = true;
-                        GUI.releasePercent = percentage;
-                    }
-                    else
-                    {
-                        inReleaseBox = false;
-                    }
-                    if (firePressed && Input.GetButtonUp("Fire1"))
-                    {
-                        GUI.ResetBar();
-                        firePressed = false;
-                        if (percentage > 0 & percentage < 100)
-                        {
-							selectedEnemy.GetComponent<EnemyAttack>().
-								AddExplosion(ObstacleController.PLAYER.GetComponent<HeroMovement>().CurrentSpeed / 4 * 500, ObstacleController.PLAYER.transform.position + Vector3.up);
-                            selectedEnemy.GetComponent<EnemyAttack>().KillSelf();
-							
-                            engaged = false;
-                            releasePercent = percentage;
-                            CalculateHit();
-                        }
-                    }
-
-                }
-            }
+            charging = false;
         }
+    }   
+}
 
-       
-	}
+public class LstSquQuadRegr
+{
+    /* instance variables */
+    ArrayList pointArray = new ArrayList();
+    private int numOfEntries;
+    private double[] pointpair;
+
+    /*constructor */
+    public LstSquQuadRegr()
+    {
+        numOfEntries = 0;
+        pointpair = new double[2];
+    }
+
+    /*instance methods */
+    /// <summary>
+    /// add point pairs
+    /// </summary>
+    /// <param name="x">x value</param>
+    /// <param name="y">y value</param>
+    public void AddPoints(double x, double y)
+    {
+        pointpair = new double[2];
+        numOfEntries += 1;
+        pointpair[0] = x;
+        pointpair[1] = y;
+        pointArray.Add(pointpair);
+    }
+
+    /// <summary>
+    /// returns the a term of the equation ax^2 + bx + c
+    /// </summary>
+    /// <returns>a term</returns>
+    public double aTerm()
+    {
+        if (numOfEntries < 3)
+        {
+            throw new InvalidOperationException(
+               "Insufficient pairs of co-ordinates");
+        }
+        //notation sjk to mean the sum of x_i^j*y_i^k. 
+        double s40 = getSx4(); //sum of x^4
+        double s30 = getSx3(); //sum of x^3
+        double s20 = getSx2(); //sum of x^2
+        double s10 = getSx();  //sum of x
+        double s00 = numOfEntries;
+        //sum of x^0 * y^0  ie 1 * number of entries
+
+        double s21 = getSx2y(); //sum of x^2*y
+        double s11 = getSxy();  //sum of x*y
+        double s01 = getSy();   //sum of y
+
+        //a = Da/D
+        return (s21 * (s20 * s00 - s10 * s10) -
+                s11 * (s30 * s00 - s10 * s20) +
+                s01 * (s30 * s10 - s20 * s20))
+                /
+                (s40 * (s20 * s00 - s10 * s10) -
+                 s30 * (s30 * s00 - s10 * s20) +
+                 s20 * (s30 * s10 - s20 * s20));
+    }
+
+    /// <summary>
+    /// returns the b term of the equation ax^2 + bx + c
+    /// </summary>
+    /// <returns>b term</returns>
+    public double bTerm()
+    {
+        if (numOfEntries < 3)
+        {
+            throw new InvalidOperationException(
+               "Insufficient pairs of co-ordinates");
+        }
+        //notation sjk to mean the sum of x_i^j*y_i^k.
+        double s40 = getSx4(); //sum of x^4
+        double s30 = getSx3(); //sum of x^3
+        double s20 = getSx2(); //sum of x^2
+        double s10 = getSx();  //sum of x
+        double s00 = numOfEntries;
+        //sum of x^0 * y^0  ie 1 * number of entries
+
+        double s21 = getSx2y(); //sum of x^2*y
+        double s11 = getSxy();  //sum of x*y
+        double s01 = getSy();   //sum of y
+
+        //b = Db/D
+        return (s40 * (s11 * s00 - s01 * s10) -
+                s30 * (s21 * s00 - s01 * s20) +
+                s20 * (s21 * s10 - s11 * s20))
+                /
+                (s40 * (s20 * s00 - s10 * s10) -
+                 s30 * (s30 * s00 - s10 * s20) +
+                 s20 * (s30 * s10 - s20 * s20));
+    }
+
+    /// <summary>
+    /// returns the c term of the equation ax^2 + bx + c
+    /// </summary>
+    /// <returns>c term</returns>
+    public double cTerm()
+    {
+        if (numOfEntries < 3)
+        {
+            throw new InvalidOperationException(
+                       "Insufficient pairs of co-ordinates");
+        }
+        //notation sjk to mean the sum of x_i^j*y_i^k.
+        double s40 = getSx4(); //sum of x^4
+        double s30 = getSx3(); //sum of x^3
+        double s20 = getSx2(); //sum of x^2
+        double s10 = getSx();  //sum of x
+        double s00 = numOfEntries;
+        //sum of x^0 * y^0  ie 1 * number of entries
+
+        double s21 = getSx2y(); //sum of x^2*y
+        double s11 = getSxy();  //sum of x*y
+        double s01 = getSy();   //sum of y
+
+        //c = Dc/D
+        return (s40 * (s20 * s01 - s10 * s11) -
+                s30 * (s30 * s01 - s10 * s21) +
+                s20 * (s30 * s11 - s20 * s21))
+                /
+                (s40 * (s20 * s00 - s10 * s10) -
+                 s30 * (s30 * s00 - s10 * s20) +
+                 s20 * (s30 * s10 - s20 * s20));
+    }
+
+    public double rSquare() // get r-squared
+    {
+        if (numOfEntries < 3)
+        {
+            throw new InvalidOperationException(
+               "Insufficient pairs of co-ordinates");
+        }
+        // 1 - (residual sum of squares / total sum of squares)
+        return 1 - getSSerr() / getSStot();
+    }
+
+
+    /*helper methods*/
+    private double getSx() // get sum of x
+    {
+        double Sx = 0;
+        foreach (double[] ppair in pointArray)
+        {
+            Sx += ppair[0];
+        }
+        return Sx;
+    }
+
+    private double getSy() // get sum of y
+    {
+        double Sy = 0;
+        foreach (double[] ppair in pointArray)
+        {
+            Sy += ppair[1];
+        }
+        return Sy;
+    }
+
+    private double getSx2() // get sum of x^2
+    {
+        double Sx2 = 0;
+        foreach (double[] ppair in pointArray)
+        {
+            Sx2 += Math.Pow(ppair[0], 2); // sum of x^2
+        }
+        return Sx2;
+    }
+
+    private double getSx3() // get sum of x^3
+    {
+        double Sx3 = 0;
+        foreach (double[] ppair in pointArray)
+        {
+            Sx3 += Math.Pow(ppair[0], 3); // sum of x^3
+        }
+        return Sx3;
+    }
+
+    private double getSx4() // get sum of x^4
+    {
+        double Sx4 = 0;
+        foreach (double[] ppair in pointArray)
+        {
+            Sx4 += Math.Pow(ppair[0], 4); // sum of x^4
+        }
+        return Sx4;
+    }
+
+    private double getSxy() // get sum of x*y
+    {
+        double Sxy = 0;
+        foreach (double[] ppair in pointArray)
+        {
+            Sxy += ppair[0] * ppair[1]; // sum of x*y
+        }
+        return Sxy;
+    }
+
+    private double getSx2y() // get sum of x^2*y
+    {
+        double Sx2y = 0;
+        foreach (double[] ppair in pointArray)
+        {
+            Sx2y += Math.Pow(ppair[0], 2) * ppair[1]; // sum of x^2*y
+        }
+        return Sx2y;
+    }
+
+    private double getYMean() // mean value of y
+    {
+        double y_tot = 0;
+        foreach (double[] ppair in pointArray)
+        {
+            y_tot += ppair[1];
+        }
+        return y_tot / numOfEntries;
+    }
+
+    private double getSStot() // total sum of squares
+    {
+        //the sum of the squares of the differences between 
+        //the measured y values and the mean y value
+        double ss_tot = 0;
+        foreach (double[] ppair in pointArray)
+        {
+            ss_tot += Math.Pow(ppair[1] - getYMean(), 2);
+        }
+        return ss_tot;
+    }
+
+    private double getSSerr() // residual sum of squares
+    {
+        //the sum of the squares of te difference between 
+        //the measured y values and the values of y predicted by the equation
+        double ss_err = 0;
+        foreach (double[] ppair in pointArray)
+        {
+            ss_err += Math.Pow(ppair[1] - getPredictedY(ppair[0]), 2);
+        }
+        return ss_err;
+    }
+
+    private double getPredictedY(double x)
+    {
+        //returns value of y predicted by the equation for a given value of x
+        return aTerm() * Math.Pow(x, 2) + bTerm() * x + cTerm();
+    }
 }
