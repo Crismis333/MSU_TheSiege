@@ -131,7 +131,7 @@ public class MapGui : MonoBehaviour {
 		
 		ObstacleController.JUMP_MODIFIER = CurrentGameState.jumpLengthModifier;
 		ObstacleController.MOVEMENT_MODIFIER = CurrentGameState.moveSpeedModifier;
-		ObstacleController.QUICKTIME_MODIFIER = CurrentGameState.slowDownModifier;
+		ObstacleController.CHARGE_MODIFIER = CurrentGameState.slowDownModifier;
 
         CurrentGameState.previousPreviousPosition = CurrentGameState.previousPosition;
         CurrentGameState.previousPosition = current_location.transform.position;
@@ -142,12 +142,6 @@ public class MapGui : MonoBehaviour {
         current_location.ActivateRigidBody();
         //CurrentGameState.completedlevels.Add(current_location.levelID);
         Screen.lockCursor = true;
-		
-		LevelCreator.ROAD_MODULE_LIST.Clear();
-        foreach (GameObject go in current_location.PitModules)
-        {
-            LevelCreator.ROAD_MODULE_LIST.Add(go.name);
-        }
 		
 		LevelCreator.SIDE_MODULE_LIST.Clear();
         foreach (GameObject go in current_location.SideModules)

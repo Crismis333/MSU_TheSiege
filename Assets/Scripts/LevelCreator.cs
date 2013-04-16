@@ -9,8 +9,6 @@ public class LevelCreator : MonoBehaviour {
 	public static int PIT_RATIO = 1;
 
 	public static List<string> SIDE_MODULE_LIST = new List<string>();
-	public static List<string> ROAD_MODULE_LIST = new List<string>();
-
     public static string SPECIAL_MODULE = "";
 	public static string DEFAULT_ROAD = "";
 
@@ -35,11 +33,6 @@ public class LevelCreator : MonoBehaviour {
 		sideModules = new List<GameObject>();
 		foreach(string s in SIDE_MODULE_LIST) {
 			sideModules.Add(Resources.Load("SideModules/Sides/"+s, typeof(GameObject)) as GameObject);
-		}
-		
-		roadModules = new List<GameObject>();
-		foreach(string s in ROAD_MODULE_LIST)	{
-			roadModules.Add(Resources.Load("RoadModules/"+s, typeof(GameObject)) as GameObject);
 		}
 		
 		moduleCount = LengthConverter(LEVEL_LENGTH);
@@ -87,16 +80,8 @@ public class LevelCreator : MonoBehaviour {
 			if (i >= specialModuleIndex && i < specialModuleIndex + SPECIAL_PART_COUNT){	
 				continue;
 			}
-			
-			if (IsDefaultRoad() || i == 0)
-			{
-				tmp = Instantiate(defaultRoad, pos, defaultRoad.transform.rotation) as GameObject;
-			}
-			else
-			{
-				int rIndex = Random.Range(0,roadModules.Count - 1);
-				tmp = Instantiate(roadModules[rIndex],pos,roadModules[rIndex].transform.rotation) as GameObject;
-			}
+
+			tmp = Instantiate(defaultRoad, pos, defaultRoad.transform.rotation) as GameObject;
 			
 			roads.Enqueue(tmp);
 		}
@@ -218,9 +203,5 @@ public class LevelCreator : MonoBehaviour {
 		}
 		
 		return Mathf.RoundToInt(sum/10.0f);
-	}
-	
-	private bool IsDefaultRoad() {
-		return !(Random.Range(1,10) <= PIT_RATIO);
 	}
 }

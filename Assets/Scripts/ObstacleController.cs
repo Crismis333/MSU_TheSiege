@@ -13,7 +13,7 @@ public class ObstacleController : MonoBehaviour {
 	
 	public static float MOVEMENT_MODIFIER = 1;
 	public static float JUMP_MODIFIER = 1;
-	public static float QUICKTIME_MODIFIER = 1;
+	public static float CHARGE_MODIFIER = 1;
 
     void Start()
     {
@@ -23,6 +23,6 @@ public class ObstacleController : MonoBehaviour {
 		PLAYER.GetComponent<HeroMovement>().MoveSpeed *= MOVEMENT_MODIFIER;
 		PLAYER.GetComponent<HeroMovement>().StrafeSpeed *= MOVEMENT_MODIFIER;
 		
-		PLAYER.GetComponent<HeroMovement>().Gravity *= (2 - JUMP_MODIFIER);
+		//PLAYER.GetComponent<HeroMovement>().Gravity *= (2 - JUMP_MODIFIER);
     }
 }

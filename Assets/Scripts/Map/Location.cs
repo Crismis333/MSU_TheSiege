@@ -13,9 +13,8 @@ public class Location : MonoBehaviour {
     public Material Line_Material;
     public List<Modifier> modifiers;
     public Vector3 startLocation;
-	public List<GameObject> PitModules;
+	
 	public List<GameObject> SideModules;
-
 	public GameObject SpecialModule;
     public int SpecialPartCount;
 	public GameObject DefaultRoad;
