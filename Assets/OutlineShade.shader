@@ -92,8 +92,10 @@ ENDCG
 			Name "OUTLINE"
 			Tags { "LightMode" = "Always" }
 			Cull Front
-			ZWrite Off
+			//ZWrite Off
+			ZWrite On
 			ZTest Always
+			//ZTest Never
 			ColorMask RGB
 
 			// you can choose what kind of blending mode you want for the outline

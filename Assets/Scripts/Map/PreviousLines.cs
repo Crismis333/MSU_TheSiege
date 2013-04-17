@@ -4,8 +4,11 @@ using System.Collections;
 public class PreviousLines : MonoBehaviour {
 
     public Material Line_Material;
+    public GameObject origin;
+    public GameObject firstPosition;
     private GameObject[] linerenderes;
     private GameObject herolinerenderer;
+    private GameObject firstlinerenderer;
     //private int offset;
     private Hero hero;
     private Vector3 herostart;
@@ -35,6 +38,13 @@ public class PreviousLines : MonoBehaviour {
             SetupLineRenderer(lr.GetComponent<LineRenderer>(), herostart, hero.transform.position);
             herolinerenderer = lr;
             herolinerenderer.GetComponent<LineRenderer>().enabled = false;
+        }
+        if (origin != null)
+        {
+            lr = new GameObject();
+            lr.AddComponent<LineRenderer>();
+            SetupLineRenderer(lr.GetComponent<LineRenderer>(), origin.transform.position, firstPosition.transform.position);
+            firstlinerenderer = lr;
         }
     }
 
