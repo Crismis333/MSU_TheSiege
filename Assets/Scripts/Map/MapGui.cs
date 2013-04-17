@@ -219,7 +219,8 @@ public class MapGui : MonoBehaviour {
                         if (mapmove != null)
                             mapmove.CenterCamera(CurrentGameState.loc.transform);
                         Time.timeScale = 1;
-                        
+                        GameObject o = GameObject.Find("PreviousLineCreator");
+                        o.GetComponent<PreviousLines>().Init(CurrentGameState.hero);
                         startReset = false;
                         Screen.lockCursor = false;
                     }

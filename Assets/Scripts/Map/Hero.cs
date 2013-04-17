@@ -7,6 +7,7 @@ public class Hero : MonoBehaviour {
     Vector3 endLocation;
     float move;
     bool canmove;
+    Quaternion startrot;
 
     public void LookAtLoc(Location targetLoc)
     {
@@ -26,6 +27,8 @@ public class Hero : MonoBehaviour {
     {
         startLocation = this.transform.position;
         move = 0f;
+        this.transform.Rotate(new Vector3(-90, 0, 0));
+        startrot = this.transform.rotation;
     }
 
     void Update()
@@ -33,7 +36,11 @@ public class Hero : MonoBehaviour {
         if (canmove)
         {
             this.transform.position = Vector3.Lerp(startLocation, endLocation, move);
+            
             move += Time.deltaTime/2;
         }
+
+        this.transform.rotation = startrot;
+
     }
 }

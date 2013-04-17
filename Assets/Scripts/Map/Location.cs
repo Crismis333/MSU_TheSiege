@@ -85,8 +85,6 @@ public class Location : MonoBehaviour {
                 SetupLineRenderer(lr.GetComponent<LineRenderer>(), locations[i]);
                 linerenderes[i] = lr;
             }
-            GameObject o = GameObject.Find("PreviousLineCreator");
-            o.GetComponent<PreviousLines>().Init();
         }
         else 
         {
