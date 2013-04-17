@@ -20,9 +20,10 @@ public class CurrentGameState : MonoBehaviour {
     public static List<Vector3> completedLevelLocations = new List<Vector3>();
     public static Hero hero;
     public static Vector3 previousPosition, previousPreviousPosition;
+    public static long currentScore;
     private static List<Modifier> wins;
     private static int nextLevel;
-    private static long currentScore;
+    private static LinkedList<HighScoreElement> highscore;
     
 
     public static void CreateHero()
@@ -36,6 +37,7 @@ public class CurrentGameState : MonoBehaviour {
             hero.LookAtLoc(loc.locations[0]);
         }
     }
+
     public static void SetWinModifiers(List<Modifier> modifiers, int levelID)
     {
         wins = modifiers;
@@ -60,13 +62,49 @@ public class CurrentGameState : MonoBehaviour {
         jumpLengthModifier = moveSpeedModifier = slowDownModifier = 1.0f;
         completedlevels = new List<int>();
         completedLevelLocations = new List<Vector3>();
+        highscore = new LinkedList<HighScoreElement>();
         hero = null;
         wins = null;
         nextLevel = 0;
         currentScore = 0;
     }
 
+    public static void AddHighscoreElement(HighScoreElement hse)
+    {
+        LinkedListNode<HighScoreElement> node = highscore.First;
+        while (node != null)
+            if (node.Value.score < hse.score)
+            {
+                highscore.AddBefore(node,hse);
+                return;
+            }
+            else
+                node = node.Next;
+        if (highscore.Count < 10)
+            highscore.AddLast(hse);
+    }
 
+    public static void UpdateHighscore()
+    {
+        LinkedListNode<HighScoreElement> node = highscore.First;
+        int i = 0;
+        while (node != null)
+        {
+            i++;
+            PlayerPrefs.SetString("Highscore" + i + "Name", node.Value.user);
+            PlayerPrefs.SetString("Highscore" + i + "Score", node.Value.score.ToString());
+            node = node.Next;
+        }
+        PlayerPrefs.Save();
+    }
+
+    public static long MinimumHighscoreRequirement()
+    {
+        if (highscore.Count < 10)
+            return 0;
+        else
+            return highscore.Last.Value.score+1;
+    }
 
 
     private static void IncreaseModifier(Modifier mod) 

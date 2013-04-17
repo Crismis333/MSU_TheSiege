@@ -9,7 +9,7 @@ public class GUIScript2 : MonoBehaviour
     public bool engageFixed, releaseFixed;
 
     GUIStyle style = new GUIStyle();
-    GUIStyle bar = new GUIStyle();
+    //GUIStyle bar = new GUIStyle();
     public Texture2D texture;
     public bool BarActive;
 
