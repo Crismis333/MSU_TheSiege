@@ -24,7 +24,7 @@ public class MapGui : MonoBehaviour {
 
         if (current_location != null)
         {
-            GUI.Label(new Rect(5, 5, 350, 50), current_location.name);
+            GUI.Label(new Rect(5, 5, 350, 50), current_location.LevelName);
             GUI.Label(new Rect(15 + 215, 5, 128, 128), "Length: " + toNumerals(current_location.difficulty_length));
             Vector2 sizeOfLabel = GUI.skin.GetStyle("Label").CalcSize(new GUIContent(current_location.description));
             if (sizeOfLabel.y > 150)

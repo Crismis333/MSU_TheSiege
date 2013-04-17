@@ -4,7 +4,7 @@ using System.Collections;
 [RequireComponent(typeof(Location))]
 public class FigurineFader : MonoBehaviour {
 
-    private static float duration = 10f;
+    //private static float duration = 10f;
     //private float lerp;
     private int counter;
 	// Use this for initialization

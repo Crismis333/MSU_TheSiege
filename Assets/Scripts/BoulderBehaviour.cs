@@ -13,7 +13,6 @@ public class BoulderBehaviour : MonoBehaviour {
 
     void Start()
     {
-        GetComponent<ObjectFader>().FadeIn(40f);
 		ps = gameObject.GetComponentInChildren<ParticleSystem>();
 		ps.Stop();
     }

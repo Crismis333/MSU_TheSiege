@@ -6,13 +6,13 @@ public class PreviousLines : MonoBehaviour {
     public Material Line_Material;
     private GameObject[] linerenderes;
     private GameObject herolinerenderer;
-    private int offset;
+    //private int offset;
     private Hero hero;
     private Vector3 herostart;
 
 	// Use this for initialization
 	void Start () {
-        offset = 0;
+        //offset = 0;
 	}
 
     public void Init(Hero hero)

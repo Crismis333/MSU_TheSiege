@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class EnemyAttack : MonoBehaviour {
 
     private GameObject player;
-    private bool inRange, isChosen, isDone;
+    private bool isChosen; //inRange, isDone
 
     public float AwareRange;
     public GameObject Indicator;
@@ -51,8 +51,8 @@ public class EnemyAttack : MonoBehaviour {
 
     public void KillSelf()
     {
-        inRange = false;
-        isDone = true;
+        //inRange = false;
+        //isDone = true;
      //   player.GetComponent<HeroAttack>().RemoveFromList(gameObject, isChosen);
         Destroy(selectedIndicator);
     }
@@ -69,8 +69,8 @@ public class EnemyAttack : MonoBehaviour {
 			
 			foreach (Collider c in gameObject.GetComponentsInChildren<Collider>())
 			{
-				if (c.enabled && ObstacleController.PLAYER.collider.enabled)
-					Physics.IgnoreCollision(c,ObstacleController.PLAYER.collider);
+				if (c.enabled && player.collider.enabled)
+					Physics.IgnoreCollision(c,player.collider);
 			}
 		}
 		
@@ -94,14 +94,14 @@ public class EnemyAttack : MonoBehaviour {
         //}
         //else
         //{
-        if (gameObject.transform.position.z < player.transform.position.z)
-        {
-            inRange = false;
-            isDone = true;
+        //if (gameObject.transform.position.z < player.transform.position.z)
+        //{
+            //inRange = false;
+            //isDone = true;
         //    player.GetComponent<HeroAttack>().RemoveFromList(gameObject, isChosen);
         //    Destroy(selectedIndicator);
             
-        }
+        //}
     }
         
 	

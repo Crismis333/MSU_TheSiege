@@ -9,7 +9,6 @@ public class EnemyMovement : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         player = ObstacleController.PLAYER;
-        GetComponent<ObjectFader>().FadeIn(40f);
 	}
 	
 	// Update is called once per frame

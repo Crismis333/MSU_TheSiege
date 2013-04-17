@@ -8,47 +8,45 @@ public class ObjectFader : MonoBehaviour
     private Renderer[] rendererObjects;
     private bool startFade;
 
-    public void FadeIn(float fadingSpeed)
-	{
-        //fadingOutSpeed = fadingSpeed;
-        //startFade = true;
-        //alphaValue = 0.0f;
-	}
-
     void Start()
     {
         rendererObjects = GetComponentsInChildren<Renderer>();
         startFade = true;
         for (int i = 0; i < rendererObjects.Length; i++)
         {
-            Color newColor = rendererObjects[i].material.color;
-            newColor.a = 0f;
-            rendererObjects[i].material.SetColor("_Color", newColor);
+			if (rendererObjects[i].material.HasProperty("_Color")) {
+  	          	Color newColor = rendererObjects[i].material.color;
+    	        newColor.a = 0f;
+        	    rendererObjects[i].material.SetColor("_Color", newColor);
+			}
         }
     }
 
-	// These are for testing only. 
-		void Update()
-		{
-            if (startFade && alphaValue < 1)
-            {
-                alphaValue += Time.deltaTime * fadingOutSpeed;
+	void Update()
+	{
+        if (startFade && alphaValue < 1)
+        {
+            alphaValue += Time.deltaTime * fadingOutSpeed;
 
-                for (int i = 0; i < rendererObjects.Length; i++)
-                {
-                    Color newColor = rendererObjects[i].material.color;
-                    newColor.a = alphaValue;//Mathf.Min ( newColor.a, alphaValue ); 
-                    newColor.a = Mathf.Lerp(0.0f, 255.0f, alphaValue);
-                    //newColor.a = 0.2f;
-                    rendererObjects[i].material.SetColor("_Color", newColor);
-                }
+            for (int i = 0; i < rendererObjects.Length; i++)
+            {
+				if (rendererObjects[i].material.HasProperty("_Color")) {
+                	Color newColor = rendererObjects[i].material.color;
+                	newColor.a = alphaValue;//Mathf.Min ( newColor.a, alphaValue ); 
+                	newColor.a = Mathf.Lerp(0.0f, 255.0f, alphaValue);
+                	//newColor.a = 0.2f;
+                	rendererObjects[i].material.SetColor("_Color", newColor);
+				}
             }
-            else
-                for (int i = 0; i < rendererObjects.Length; i++)
-                {
+        }
+        else
+            for (int i = 0; i < rendererObjects.Length; i++)
+            {
+				if (rendererObjects[i].material.HasProperty("_Color")) {
                     Color newColor = rendererObjects[i].material.color;
-                    rendererObjects[i].material.SetColor("_Color", newColor);
-                }
-		}
+                	rendererObjects[i].material.SetColor("_Color", newColor);
+				}
+            }
+	}
  
 }

@@ -35,7 +35,7 @@ public class HeroMovement : MonoBehaviour {
     private bool jumping = false;
     private bool jumpingReachedApex = false;
     private float lastJumpTime = -1.0f;
-    private float lastJumpStartHeight = 0.0f;
+    //private float lastJumpStartHeight = 0.0f;
     private float lastJumpButtonTime = -10.0f;
     private float jumpRepeatTime = 0.05f;
     private float jumpTimeout = 0.15f;
@@ -170,7 +170,7 @@ public class HeroMovement : MonoBehaviour {
         jumping = true;
         jumpingReachedApex = false;
         lastJumpTime = Time.time;
-        lastJumpStartHeight = transform.position.y;
+        //lastJumpStartHeight = transform.position.y;
         lastJumpButtonTime -= 10;
 
         //State = jumping;
