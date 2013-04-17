@@ -93,8 +93,6 @@ public class LevelCreator : MonoBehaviour {
 		int randomSide = 0;
 		int variationCounter = 0;
 		int variationCap = 7;
-		bool end = false;
-		bool start = false;
 		for (int i = 0; i < moduleCount; i++) {
 			GameObject tmp;
 			Vector3 pos = transform.position;
@@ -146,7 +144,6 @@ public class LevelCreator : MonoBehaviour {
 					break;
 				case 0: 
 					side = Resources.Load("SideModules/SideStarts/"+prevName+"_start", typeof(GameObject)) as GameObject;
-					end = true;
 					transitionState++;
 					break;
 				case 1:
@@ -156,7 +153,6 @@ public class LevelCreator : MonoBehaviour {
 				case 2:
 					side = Resources.Load("SideModules/SideStarts/"+tmpName+"_start", typeof(GameObject)) as GameObject;
 					transitionState++;
-					start = true;
 					break;
 				case 3:
                     side = Resources.Load("SideModules/Sides/" + realName, typeof(GameObject)) as GameObject;
@@ -166,14 +162,11 @@ public class LevelCreator : MonoBehaviour {
 				
 				tmp = Instantiate(side,pos,side.transform.rotation) as GameObject;
 				
-				if ((end && left) || (start && !left)) {
+				if (((transitionState == 1 || transitionState == 2) && left) || (transitionState == 3 && !left)) {
 					Vector3 tmpScale = tmp.transform.localScale;
 					tmpScale.y = -1;
 					tmp.transform.localScale = tmpScale;
 				}
-				
-				end = false;
-				start = false;
 			}
 			else {
 				tmp = Instantiate(sideModules[randomSide],pos,sideModules[randomSide].transform.rotation) as GameObject;
