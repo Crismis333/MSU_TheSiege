@@ -21,8 +21,6 @@ public class ObstacleBehaviour : MonoBehaviour {
 
     void Start()
     {
-        GetComponent<ObjectFader>().FadeIn(40f);
-
         ps = gameObject.GetComponentInChildren<ParticleSystem>();
         if (ps != null)
             ps.Pause();

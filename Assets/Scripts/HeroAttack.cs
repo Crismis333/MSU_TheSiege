@@ -9,7 +9,6 @@ public class HeroAttack : MonoBehaviour {
 
     private int selectedIndex;
 
-    private GameObject selectedEnemy;
     private GUIScript GUI;
 
     private bool charging;
@@ -47,11 +46,6 @@ public class HeroAttack : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.name.Equals("EngageBox") && other.transform.parent.gameObject.Equals(selectedEnemy))
-        {
-       //     print("Enter engage box");
-           
-        }
         if (other.gameObject.name.Equals("ReleaseBox"))
         {
         //    print("Enter release box");
@@ -71,11 +65,6 @@ public class HeroAttack : MonoBehaviour {
 
     void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.name.Equals("EngageBox") && other.transform.parent.gameObject.Equals(selectedEnemy))
-        {
-       //     print("Leaving engage box");
-          
-        }
         if (other.gameObject.name.Equals("ReleaseBox"))
         {
          //   print("Leaving release box");
@@ -123,14 +112,14 @@ public class HeroAttack : MonoBehaviour {
                 // Continue charging attack
                 chargeTime += Time.deltaTime;
 
-                if (false)
-                {
-                    chargePercent = chargeTime;
-                }
-                else
-                {
+                //if (false)
+                //{
+                //    chargePercent = chargeTime;
+                //}
+                //else
+                //{
                     chargePercent = ChargeSmoothing(chargeTime);
-                }
+                //}
 
                 float percent = chargePercent * 100;
                 print("chargePercent: " + chargePercent + ", percent: " + percent + ", time: " + chargeTime);

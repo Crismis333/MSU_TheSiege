@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class Location : MonoBehaviour {
 
     public int levelID;
-    public string name;
+    public string LevelName;
     [Multiline]
     public string description;
     public int difficulty_soldier, difficulty_length, difficulty_pits, difficulty_obstacles, difficulty_catapults;
