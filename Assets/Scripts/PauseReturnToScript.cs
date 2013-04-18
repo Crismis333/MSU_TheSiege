@@ -65,7 +65,9 @@ public class PauseReturnToScript : MonoBehaviour {
         }
         else
         {
-            CurrentGameState.previousPosition = CurrentGameState.previousPreviousPosition;
+            // Wins, doesn't reset. Change when game is final
+            //CurrentGameState.previousPosition = CurrentGameState.previousPreviousPosition;
+            CurrentGameState.SetWin();
             Application.LoadLevel(1);
         }
     }

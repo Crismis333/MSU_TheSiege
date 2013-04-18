@@ -60,6 +60,7 @@
      <None Include="Assets\Imported Unity Assets\Skyboxes\_skybox info.txt" />
      <None Include="Assets\Imported Unity Assets\ATS\readme_billboardShader.txt" />
      <None Include="Assets\OutlineShade.shader" />
+     <None Include="Assets\TransparencyShaderSpecular.shader" />
      <None Include="Assets\Imported Unity Assets\ATS\readme_terrainBumpShader.txt" />
      <None Include="Assets\Imported Unity Assets\Water (Basic)\Sources\Shaders\FX-Water Simple.shader" />
      <None Include="Assets\Imported Unity Assets\Tessellation Shaders\BumpedSpecularDisplacement.shader" />

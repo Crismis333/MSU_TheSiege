@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class Location : MonoBehaviour {
 
     public int levelID;
+    public int layer;
     public string LevelName;
     [Multiline]
     public string description;
@@ -12,17 +13,21 @@ public class Location : MonoBehaviour {
     public Location[] locations;
     public Material Line_Material;
     public List<Modifier> modifiers;
+    [HideInInspector]
     public Vector3 startLocation;
 	
 	public List<GameObject> SideModules;
 	public GameObject SpecialModule;
     public int SpecialPartCount;
 	public GameObject DefaultRoad;
-	
+
+    [HideInInspector]
+    public bool RB_activated;
+
     private GameObject[] linerenderes;
     private int offset;
-    public bool RB_activated;
-    public bool pushed;
+    
+    private bool pushed;
 
     void Update()
     {
@@ -88,7 +93,16 @@ public class Location : MonoBehaviour {
         }
         else 
         {
-            linerenderes = new GameObject[0];
+            //linerenderes = new GameObject[0];
+            GameObject lr;
+            linerenderes = new GameObject[locations.Length];
+            for (int i = 0; i < locations.Length; i++)
+            {
+                lr = new GameObject();
+                lr.AddComponent<LineRenderer>();
+                SetupLineRenderer(lr.GetComponent<LineRenderer>(), locations[i]);
+                linerenderes[i] = lr;
+            }
         }
         if (CurrentGameState.completedlevels.Contains(this.levelID))
             ActivateRigidBody();
