@@ -12,11 +12,16 @@ Library/expandedItems
 Library/metadata
 Library/previews
 Library/guidmapper
+Library/InspectorExpandedItems
 
 Temp
 *.csproj
 *.pidb
 *.sln
 build
+.unityproj
+.suo
 
 ############
+
+Assets/Assets/Textures/
