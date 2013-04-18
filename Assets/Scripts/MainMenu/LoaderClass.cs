@@ -4,6 +4,7 @@ using System.Collections;
 public class LoaderClass : MonoBehaviour {
 
 	void Start () {
+        CurrentGameState.Restart();
         if (!PlayerPrefs.HasKey("MusicVolume"))
             PlayerPrefs.SetFloat("MusicVolume", 0.5f);
         else
@@ -60,10 +61,11 @@ public class LoaderClass : MonoBehaviour {
         {
             if (long.TryParse(PlayerPrefs.GetString("Highscore" + i + "Score"), out result))
             {
-                HighScoreElement hse = new HighScoreElement();
-                hse.user = PlayerPrefs.GetString("Highscore" + i + "Name");
-                hse.score = result;
-                CurrentGameState.AddHighscoreElement(hse);
+                GameObject ob = new GameObject();
+                ob.AddComponent<HighScoreElement>();
+                ob.GetComponent<HighScoreElement>().user = PlayerPrefs.GetString("Highscore" + i + "Name");
+                ob.GetComponent<HighScoreElement>().score = result;
+                CurrentGameState.AddHighscoreElement(ob);
             }
 
         }

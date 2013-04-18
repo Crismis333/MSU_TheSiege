@@ -7,6 +7,8 @@ public class MapGui : MonoBehaviour {
     [HideInInspector]
     public Location current_location;
     public Texture2D black;
+    public Texture2D backgroundScroll;
+    public Vector2 scrollOffset;
     public MapMovementController mapmove;
     [HideInInspector]
     public bool stopped,started;
@@ -18,75 +20,102 @@ public class MapGui : MonoBehaviour {
 
     void Map_Main()
     {
+
         //print("Timescale:" + Time.timeScale + " Countdown: " + countdown + " prevloc: " + CurrentGameState.previousPosition.x);
-        GUI.BeginGroup(new Rect(Screen.width - 400 , Screen.height - 500, Screen.width, Screen.height));
-        GUI.Box(new Rect(0, 0, 350, 200), "");
+        if (backgroundScroll != null)
+        {
+            GUI.BeginGroup(new Rect(Screen.width - backgroundScroll.width + scrollOffset.x, Screen.height - backgroundScroll.height + scrollOffset.y, backgroundScroll.width, backgroundScroll.height));
+            GUI.DrawTexture(new Rect(0, 0, backgroundScroll.width, backgroundScroll.height), backgroundScroll);
+            GUI.EndGroup();
+        }
+
+        //GUI.BeginGroup(new Rect(Screen.width - 400, Screen.height - 530, 350, 530));
+        //GUI.Box(new Rect(0, 0, 350, 530), "");
+        //GUI.EndGroup();
+
+        GUI.BeginGroup(new Rect(Screen.width - 400 , Screen.height - 520, Screen.width, Screen.height));
+        //GUI.Box(new Rect(0, 0, 350, 200), "");
 
         if (current_location != null)
         {
-            GUI.Label(new Rect(5, 5, 350, 50), current_location.LevelName);
-            GUI.Label(new Rect(15 + 215, 5, 128, 128), "Length: " + toNumerals(current_location.difficulty_length));
-            Vector2 sizeOfLabel = GUI.skin.GetStyle("Label").CalcSize(new GUIContent(current_location.description));
+            
+            GUI.color = Color.black;
+            GUI.skin.label.fontSize = 24;
+            GUI.Label(new Rect(35, 5, 350, 50), current_location.LevelName);
+            GUI.skin.label.fontSize = 10;
+            GUI.Label(new Rect(15 + 255, 25, 128, 128), "Length: " + toNumerals(current_location.difficulty_length));
+            GUI.color = Color.white;
+            Vector2 sizeOfLabel = GUI.skin.label.CalcSize(new GUIContent(current_location.description));
             if (sizeOfLabel.y > 150)
             {
-                scrollPos = GUI.BeginScrollView(new Rect(0, 50, 350, 150), scrollPos, new Rect(0, 0, 0, sizeOfLabel.y), false, true);
+                scrollPos = GUI.BeginScrollView(new Rect(10, 70+20, 330, 140), scrollPos, new Rect(0, 0, 0, sizeOfLabel.y), false, true);
+                GUI.color = Color.black;
                 GUI.Label(new Rect(15, 0, 335, sizeOfLabel.y), current_location.description);
+                GUI.color = Color.white;
                 GUI.EndScrollView();
             }
             else
-                GUI.Label(new Rect(15, 50, 335, sizeOfLabel.y), current_location.description);
+                GUI.Label(new Rect(15, 50 + 20, 335, sizeOfLabel.y), current_location.description);
         }
-        GUI.Box(new Rect(0, 200, 350, 250), "");
-        GUI.Label(new Rect(15 + 40, 215, 128, 128), "Difficulty:");
-        
-        GUI.Label(new Rect(15 + 15, 215 + 1 * 20, 128, 128), "Soldiers:");
-        GUI.Label(new Rect(15 + 15, 215 + 2 * 20, 128, 128), "Pits:");
-        GUI.Label(new Rect(15 + 15, 215 + 3 * 20, 128, 128), "Obstacles:");
-        GUI.Label(new Rect(15 + 15, 215 + 4 * 20, 128, 128), "Catapults:");
+        //GUI.Box(new Rect(0, 200, 350, 250), "");
+        GUI.color = Color.black;
+        GUI.Label(new Rect(15 + 40, 215 + 20, 128, 128), "Difficulty:");
 
-        GUI.Label(new Rect(15 + 40, 215 + 6 * 20, 128, 128), "Stats:");
-        GUI.Label(new Rect(15 + 15, 215 + 7 * 20, 128, 128), "Jump Length:");
-        GUI.Label(new Rect(15 + 15, 215 + 8 * 20, 128, 128), "Running Speed:");
-        GUI.Label(new Rect(15 + 15, 215 + 9 * 20, 128, 128), "Adrenaline Rush:");
+        GUI.Label(new Rect(15 + 15, 215 + 20 + 1 * 20, 128, 128), "Soldiers:");
+        //GUI.Label(new Rect(15 + 15, 215 + 20 + 2 * 20, 128, 128), "Pits:");
+        GUI.Label(new Rect(15 + 15, 215 + 20 + 2 * 20, 128, 128), "Obstacles:");
+        GUI.Label(new Rect(15 + 15, 215 + 20 + 3 * 20, 128, 128), "Catapults:");
+
+        GUI.Label(new Rect(15 + 40, 215 + 20 + 5 * 20, 128, 128), "Stats:");
+        GUI.Label(new Rect(15 + 15, 215 + 20 + 6 * 20, 128, 128), "Jump Length:");
+        GUI.Label(new Rect(15 + 15, 215 + 20 + 7 * 20, 128, 128), "Running Speed:");
+        GUI.Label(new Rect(15 + 15, 215 + 20 + 8 * 20, 128, 128), "Adrenaline Rush:");
 
         GUI.color = Color.red;
         if (CurrentGameState.soldierModifier > 0)
-            GUI.Label(new Rect(15 + 40 + 100, 215 + 1 * 20, 128, 128), "- " + toNumerals(CurrentGameState.soldierModifier));
-        if (CurrentGameState.pitModifier > 0)
-            GUI.Label(new Rect(15 + 40 + 100, 215 + 2 * 20, 128, 128), "- " + toNumerals(CurrentGameState.pitModifier));
+            GUI.Label(new Rect(15 + 40 + 100, 215 + 20 + 1 * 20, 128, 128), "  " + toNumerals(CurrentGameState.soldierModifier));
+        //if (CurrentGameState.pitModifier > 0)
+            //GUI.Label(new Rect(15 + 40 + 100, 215 + 20 + 2 * 20, 128, 128), "- " + toNumerals(CurrentGameState.pitModifier));
         if (CurrentGameState.obstacleModifier > 0)
-            GUI.Label(new Rect(15 + 40 + 100, 215 + 3 * 20, 128, 128), "- " + toNumerals(CurrentGameState.obstacleModifier));
+            GUI.Label(new Rect(15 + 40 + 100, 215 + 20 + 2 * 20, 128, 128), "  " + toNumerals(CurrentGameState.obstacleModifier));
         if (CurrentGameState.catapultModifier > 0)
-            GUI.Label(new Rect(15 + 40 + 100, 215 + 4 * 20, 128, 128), "- " + toNumerals(CurrentGameState.catapultModifier));
-        GUI.Label(new Rect(15 + 40 + 100, 215 + 7 * 20, 128, 128), "  " + toNumerals(fromFloatToInt(CurrentGameState.jumpLengthModifier)));
-        GUI.Label(new Rect(15 + 40 + 100, 215 + 8 * 20, 128, 128), "  " + toNumerals(fromFloatToInt(CurrentGameState.moveSpeedModifier)));
-        GUI.Label(new Rect(15 + 40 + 100, 215 + 9 * 20, 128, 128), "  " + toNumerals(fromFloatToInt(CurrentGameState.slowDownModifier)));
+            GUI.Label(new Rect(15 + 40 + 100, 215 + 20 + 3 * 20, 128, 128), "  " + toNumerals(CurrentGameState.catapultModifier));
+        
+        if (fromFloatToInt(CurrentGameState.jumpLengthModifier) != 0)
+            GUI.Label(new Rect(15 + 40 + 100, 215 + 20 + 6 * 20, 128, 128), "  " + toNumerals(fromFloatToInt(CurrentGameState.jumpLengthModifier)));
+        if (fromFloatToInt(CurrentGameState.moveSpeedModifier) != 0)
+            GUI.Label(new Rect(15 + 40 + 100, 215 + 20 + 7 * 20, 128, 128), "  " + toNumerals(fromFloatToInt(CurrentGameState.moveSpeedModifier)));
+        if (fromFloatToInt(CurrentGameState.slowDownModifier) != 0)
+            GUI.Label(new Rect(15 + 40 + 100, 215 + 20 + 8 * 20, 128, 128), "  " + toNumerals(fromFloatToInt(CurrentGameState.slowDownModifier)));
         if (current_location != null)
         {
-            GUI.color = Color.white;
-            GUI.Label(new Rect(15 + 100, 215 + 1 * 20, 128, 128), toNumerals(current_location.difficulty_soldier));
-            GUI.Label(new Rect(15 + 100, 215 + 2 * 20, 128, 128), toNumerals(current_location.difficulty_pits));
-            GUI.Label(new Rect(15 + 100, 215 + 3 * 20, 128, 128), toNumerals(current_location.difficulty_obstacles));
-            GUI.Label(new Rect(15 + 100, 215 + 4 * 20, 128, 128), toNumerals(current_location.difficulty_catapults));
-
+            SetColor(CurrentGameState.soldierModifier);
+            GUI.Label(new Rect(15 + 100, 215 + 20 + 1 * 20, 128, 128), toNumerals(current_location.difficulty_soldier - CurrentGameState.soldierModifier));
+            //SetColor(CurrentGameState.pitModifier);
+            //GUI.Label(new Rect(15 + 100, 215 + 20 + 2 * 20, 128, 128), toNumerals(current_location.difficulty_pits));
+            SetColor(CurrentGameState.obstacleModifier);
+            GUI.Label(new Rect(15 + 100, 215 + 20 + 2 * 20, 128, 128), toNumerals(current_location.difficulty_obstacles-CurrentGameState.obstacleModifier));
+            SetColor(CurrentGameState.catapultModifier);
+            GUI.Label(new Rect(15 + 100, 215 + 20 + 3 * 20, 128, 128), toNumerals(current_location.difficulty_catapults -CurrentGameState.catapultModifier));
+            CurrentGameState.soldierModifier = 8;
             GUI.color = Color.red;
             if ((current_location.modifiers.Contains(Modifier.Soldier)))
-                GUI.Label(new Rect(15, 215 + 1 * 20, 128, 128), "-");
+                GUI.Label(new Rect(15 + 40 + 100 + 40, 215 + 20 + 1 * 20, 128, 128), "+");
             if ((current_location.modifiers.Contains(Modifier.Pit)))
-                GUI.Label(new Rect(15, 215 + 2 * 20, 128, 128), "-");
+                GUI.Label(new Rect(15 + 40 + 100 + 40, 215 + 20 + 2 * 20, 128, 128), "+");
             if ((current_location.modifiers.Contains(Modifier.Obstacle)))
-                GUI.Label(new Rect(15, 215 + 3 * 20, 128, 128), "-");
+                GUI.Label(new Rect(15 + 40 + 100 + 40, 215 + 20 + 3 * 20, 128, 128), "+");
             if ((current_location.modifiers.Contains(Modifier.Catapult)))
-                GUI.Label(new Rect(15, 215 + 4 * 20, 128, 128), "-");
+                GUI.Label(new Rect(15 + 40 + 100 + 40, 215 + 20 + 4 * 20, 128, 128), "+");
             if ((current_location.modifiers.Contains(Modifier.Jump)))
-                GUI.Label(new Rect(15, 215 + 7 * 20, 128, 128), "+");
+                GUI.Label(new Rect(15 + 40 + 100 + 40, 215 + 20 + 6 * 20, 128, 128), "+");
             if ((current_location.modifiers.Contains(Modifier.MoveSpeed)))
-                GUI.Label(new Rect(15, 215 + 8 * 20, 128, 128), "+");
+                GUI.Label(new Rect(15 + 40 + 100 + 40, 215 + 20 + 7 * 20, 128, 128), "+");
             if ((current_location.modifiers.Contains(Modifier.SlowDown)))
-                GUI.Label(new Rect(15, 215 + 9 * 20, 128, 128), "+");
+                GUI.Label(new Rect(15 + 40 + 100 + 40, 215 + 20 + 8 * 20, 128, 128), "+");
             GUI.color = Color.white;
-            
-            if (GUI.Button(new Rect(200, 215 + 10 * 20, 80, 30), "to battle!")) { Battle_Pressed(); }
+
+            if (GUI.Button(new Rect(155, 35 + 20 + 10 * 20, 190, 190), "")) { Battle_Pressed(); }
 
         }
         GUI.color = Color.white;
@@ -242,9 +271,17 @@ public class MapGui : MonoBehaviour {
         }
     }
 
+    void SetColor(int modifier)
+    {
+        if (modifier == 0)
+            GUI.color = Color.black;
+        else
+            GUI.color = Color.red;
+    }
+
     int fromFloatToInt(float val)
     {
-        return ((int)((val - 1.0f) * 10)+1);
+        return ((int)((val - 1.0f) * 5));
     }
 
     string toNumerals(int val)

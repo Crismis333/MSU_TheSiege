@@ -13,12 +13,10 @@ public class MainMenuScript : MonoBehaviour {
 
 	void Menu_Main() {
         GUI.BeginGroup(new Rect(0, Screen.height / 2 - 100, Screen.width, Screen.height));
-
-        if (GUI.Button(new Rect(0, 0*70, Screen.width-30, 64), "Start Game")) { Menu_Main_Start_Game(); }
-        if (GUI.Button(new Rect(0, 1*70, Screen.width-30, 64), "Options")) { Menu_Main_Options(); }
-        if (GUI.Button(new Rect(0, 2*70, Screen.width - 30, 64), "Highscores")) { Menu_Main_Highscores(); }
-        if (GUI.Button(new Rect(0, 3*70, Screen.width-30, 64), "Quit")) { Menu_Main_Quit(); }
-		
+        if (GUI.Button(new Rect(0, 0 * 70, Screen.width - 30, 64), "Start Game")) { Menu_Main_Start_Game(); }
+        if (GUI.Button(new Rect(0, 1 * 70, Screen.width - 30, 64), "Options")) { Menu_Main_Options(); }
+        if (GUI.Button(new Rect(0, 2 * 70, Screen.width - 30, 64), "Highscores")) { Menu_Main_Highscores(); }
+        if (GUI.Button(new Rect(0, 3 * 70, Screen.width - 30, 64), "Quit")) { Menu_Main_Quit(); }	
 		GUI.EndGroup();
         if (stopped)
         {

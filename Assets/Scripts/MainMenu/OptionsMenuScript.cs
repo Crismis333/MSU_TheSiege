@@ -5,6 +5,8 @@ using System;
 public class OptionsMenuScript : MonoBehaviour {
 	
 	public GUISkin gSkin;
+    public Texture2D backgroundScroll;
+    public Vector2 scrollOffset;
     public bool pauseMenu;
     private float musicvol, effectvol, resolution, quality;
     private bool fullscreen;
@@ -19,24 +21,34 @@ public class OptionsMenuScript : MonoBehaviour {
             for (int i = 0; i < res.Length; i++)
                 if (res[i].width < 800 || res[i].height < 600)
                     f += 1.0f;
+        if (backgroundScroll != null) {
+            GUI.BeginGroup(new Rect(Screen.width / 2 - backgroundScroll.width / 2 + scrollOffset.x, Screen.height / 2 - backgroundScroll.height / 2 + scrollOffset.y, backgroundScroll.width, backgroundScroll.height));
+            GUI.DrawTexture(new Rect(0,0,backgroundScroll.width, backgroundScroll.height), backgroundScroll);
+            GUI.EndGroup();
+        }
+        
         GUI.BeginGroup(new Rect(Screen.width/2-395, Screen.height / 2 - 3*70, 790, 6*70));
-        GUI.Box(new Rect(0, 0, 790, 6 * 70), "");
+        GUI.color = Color.black;
         GUI.Label(new Rect(0, 0*70, 790, 64), "Music volume");
-        musicvol = GUI.HorizontalSlider(new Rect(250, 0 * 70, 512, 64), musicvol, 0.0f, 1.0f);
         GUI.Label(new Rect(0, 1 * 70, 790, 64), "Effect volume");
-        effectvol = GUI.HorizontalSlider(new Rect(250, 1 * 70, 512, 64), effectvol, 0.0f, 1.0f);
-        GUI.Label(new Rect(0, 2 * 70, 790, 64), "FullScreen");
-        fullscreen = GUI.Toggle(new Rect(350, 2 * 70, 64, 64),fullscreen, " ");
+        GUI.Label(new Rect(0, 2 * 70, 790, 64), "Fullscreen");
         GUI.Label(new Rect(0, 3 * 70, 790, 64), "Resolution");
+        GUI.Label(new Rect(0, 4 * 70, 790, 64), "Quality");
+        GUI.color = Color.white;
+        musicvol = GUI.HorizontalSlider(new Rect(250, 0 * 70, 512, 64), musicvol, 0.0f, 1.0f);
+        effectvol = GUI.HorizontalSlider(new Rect(250, 1 * 70, 512, 64), effectvol, 0.0f, 1.0f);
+        fullscreen = GUI.Toggle(new Rect(350, 2 * 70, 64, 64),fullscreen, " ");
         resolution = GUI.HorizontalSlider(new Rect(250, 3 * 70, 512, 64), resolution, f, (float)res.Length - 1);
         resolution = ((int)resolution + 0.5f);
         mres = res[(int)(resolution)];
-        GUI.Label(new Rect(0, 4 * 70, 790, 64), "Quality");
+        
         quality = GUI.HorizontalSlider(new Rect(250, 4 * 70, 512, 64), quality, 0.0f, 5.0f);
         quality = ((int)quality + 0.5f);
+        if (GUI.Button(new Rect(60, 5 * 70, 730, 64), "Accept")) { Menu_Options_Back(); }
+        GUI.color = Color.red;
         GUI.Label(new Rect(450, 3 * 70, 340, 64), mres.width + "x" + mres.height);
         GUI.Label(new Rect(450, 4 * 70, 340, 64), QualitySettings.names[(int)quality]);
-        if (GUI.Button(new Rect(0, 5 * 70, 790, 64), "Accept")) { Menu_Options_Back(); }
+        
 
 		GUI.EndGroup();
         if (musicvolstart != musicvol)

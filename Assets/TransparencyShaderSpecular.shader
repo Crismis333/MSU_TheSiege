@@ -7,7 +7,7 @@ Shader "Transparent/Specular VertexLit with Z" {
 	}
  
 	SubShader {
-	    Tags {"RenderType"="Transparent" "Queue"="Geometry"}
+	    Tags {"RenderType"="Transparent" "Queue"="Transparent-1"}
 	    // Render into depth buffer only
 	    Pass {
 	        ColorMask 0

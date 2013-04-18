@@ -69,8 +69,9 @@ public class CurrentGameState : MonoBehaviour {
         currentScore = 0;
     }
 
-    public static void AddHighscoreElement(HighScoreElement hse)
+    public static void AddHighscoreElement(GameObject go)
     {
+        HighScoreElement hse = go.GetComponent<HighScoreElement>();
         LinkedListNode<HighScoreElement> node = highscore.First;
         while (node != null)
             if (node.Value.score < hse.score)
@@ -118,19 +119,19 @@ public class CurrentGameState : MonoBehaviour {
             case Modifier.Jump:
                 {
                     if (jumpLengthModifier < 1.5f)
-                        jumpLengthModifier += 0.1f; 
+                        jumpLengthModifier += 0.05f; 
                     break;
                 }
             case Modifier.MoveSpeed:
                 {
                     if (moveSpeedModifier < 1.5f)
-                        moveSpeedModifier += 0.1f;
+                        moveSpeedModifier += 0.05f;
                     break;
                 }
             case Modifier.SlowDown:
                 {
                     if (moveSpeedModifier < 1.5f)
-                        moveSpeedModifier += 0.1f;
+                        moveSpeedModifier += 0.05f;
                     break;
                 }
         }
