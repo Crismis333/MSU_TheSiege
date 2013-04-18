@@ -19,8 +19,8 @@ Temp
 *.pidb
 *.sln
 build
-.unityproj
-.suo
+*.unityproj
+*.suo
 
 ############
 
