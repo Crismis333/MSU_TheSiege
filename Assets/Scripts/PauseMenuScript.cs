@@ -4,32 +4,39 @@ using System.Collections;
 public class PauseMenuScript : MonoBehaviour {
 
     public GUISkin gSkin;
+    public Texture2D backgroundScroll;
+    public Vector2 scrollOffset;
     public bool onMap;
 
     void Menu_Options()
     {
-        
 
+        if (backgroundScroll != null)
+        {
+            GUI.BeginGroup(new Rect(Screen.width / 2 - backgroundScroll.width / 2 + scrollOffset.x, Screen.height / 2 - backgroundScroll.height / 2 + scrollOffset.y, backgroundScroll.width, backgroundScroll.height));
+            GUI.DrawTexture(new Rect(0, 0, backgroundScroll.width, backgroundScroll.height), backgroundScroll);
+            GUI.EndGroup();
+        }
         if (onMap)
         {
             GUI.BeginGroup(new Rect(Screen.width / 2 - 395, Screen.height / 2 - 3 * 70, 790, 6 * 70));
-            GUI.Box(new Rect(0, 0, 790, 6 * 70), "");
-            if (GUI.Button(new Rect(0, 0 * 70, 790, 64), "Options")) { Pause_Options(); }
-            if (GUI.Button(new Rect(0, 1 * 70, 790, 64), "Controls")) { }
-            if (GUI.Button(new Rect(0, 2 * 70, 790, 64), "Main Menu")) { Pause_MainMenu(); }
-            if (GUI.Button(new Rect(0, 3 * 70, 790, 64), "Quit")) { Pause_Quit(); }
-            if (GUI.Button(new Rect(0, 5 * 70, 790, 64), "Return")) { Pause_Back(); }
+            //GUI.Box(new Rect(0, 0, 790, 6 * 70), "");
+            if (GUI.Button(new Rect(60, 0 * 70, 650, 64), "Options")) { Pause_Options(); }
+            if (GUI.Button(new Rect(60, 1 * 70, 650, 64), "Controls")) { }
+            if (GUI.Button(new Rect(60, 2 * 70, 650, 64), "Main Menu")) { Pause_MainMenu(); }
+            if (GUI.Button(new Rect(60, 3 * 70, 650, 64), "Quit")) { Pause_Quit(); }
+            if (GUI.Button(new Rect(60, 5 * 70, 650, 64), "Return")) { Pause_Back(); }
         }
         else
         {
             GUI.BeginGroup(new Rect(Screen.width / 2 - 395, Screen.height / 2 - 3.5f * 70, 790, 7 * 70));
-            GUI.Box(new Rect(0, 0, 790, 7 * 70), "");
-            if (GUI.Button(new Rect(0, 0 * 70, 790, 64), "Options")) { Pause_Options(); }
-            if (GUI.Button(new Rect(0, 1 * 70, 790, 64), "Controls")) { }
-            if (GUI.Button(new Rect(0, 2 * 70, 790, 64), "Map")) { Pause_Map(); }
-            if (GUI.Button(new Rect(0, 3 * 70, 790, 64), "Restart")) { Pause_Restart(); }
-            if (GUI.Button(new Rect(0, 4 * 70, 790, 64), "Quit")) { Pause_Quit(); }
-            if (GUI.Button(new Rect(0, 6 * 70, 790, 64), "Return")) { Pause_Back(); }
+            //GUI.Box(new Rect(0, 0, 790, 7 * 70), "");
+            if (GUI.Button(new Rect(60, 0 * 70, 650, 64), "Options")) { Pause_Options(); }
+            if (GUI.Button(new Rect(60, 1 * 70, 650, 64), "Controls")) { }
+            if (GUI.Button(new Rect(60, 2 * 70, 650, 64), "Map")) { Pause_Map(); }
+            if (GUI.Button(new Rect(60, 3 * 70, 650, 64), "Restart")) { Pause_Restart(); }
+            if (GUI.Button(new Rect(60, 4 * 70, 650, 64), "Quit")) { Pause_Quit(); }
+            if (GUI.Button(new Rect(60, 6 * 70, 650, 64), "Return")) { Pause_Back(); }
         }
         GUI.EndGroup();
     }
@@ -88,9 +95,9 @@ public class PauseMenuScript : MonoBehaviour {
     void Pause_Options()
     {
         this.enabled = false;
-        if (onMap)
-        {
+        //if (onMap)
+        //{
             GetComponent<OptionsMenuScript>().enabled = true;
-        }
+        //}
     }
 }

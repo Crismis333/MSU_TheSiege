@@ -21,6 +21,7 @@ public class CurrentGameState : MonoBehaviour {
     public static Hero hero;
     public static Vector3 previousPosition, previousPreviousPosition;
     public static long currentScore;
+    public static long previousScore;
     private static List<Modifier> wins;
     private static int nextLevel;
     private static LinkedList<HighScoreElement> highscore;

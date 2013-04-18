@@ -232,6 +232,21 @@ public class MapGui : MonoBehaviour {
             CurrentGameState.CreateHero();
             CurrentGameState.hero.transform.position = CurrentGameState.previousPosition;
             CurrentGameState.hero.MoveToLoc(CurrentGameState.loc);
+
+            foreach (Location loc1 in CurrentGameState.loc.locations)
+            {
+                loc1.GetComponent<CapsuleCollider>().enabled = true;
+                foreach (MeshRenderer mr in loc1.GetComponentsInChildren<MeshRenderer>())
+                    mr.enabled = true;
+                foreach (Location loc2 in loc1.locations)
+                {
+                    loc2.GetComponent<CapsuleCollider>().enabled = true;
+                    foreach (MeshRenderer mr in loc2.GetComponentsInChildren<MeshRenderer>())
+                        mr.enabled = true;
+                }
+
+
+            }
         }
         if (stopped || started)
         {
@@ -247,6 +262,7 @@ public class MapGui : MonoBehaviour {
                     {
                         if (mapmove != null)
                             mapmove.CenterCamera(CurrentGameState.loc.transform);
+
                         Time.timeScale = 1;
                         GameObject o = GameObject.Find("PreviousLineCreator");
                         o.GetComponent<PreviousLines>().Init(CurrentGameState.hero);

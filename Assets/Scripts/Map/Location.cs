@@ -44,9 +44,7 @@ public class Location : MonoBehaviour {
             if (Camera.mainCamera.GetComponent<MapGui>().stopped)
             {
                 for (int i = 0; i < linerenderes.Length; i++)
-                {
                     linerenderes[i].SetActive(false);
-                }
                 linerenderes = new GameObject[0];
             }
             for (int i = 0; i < linerenderes.Length; i++)
@@ -65,12 +63,12 @@ public class Location : MonoBehaviour {
         offset = 0;
         RB_activated = false;
         pushed = false;
-        if (levelID == 0)
-        {
-            this.GetComponent<CapsuleCollider>().enabled = false;
-            foreach (MeshRenderer mr in this.GetComponentsInChildren<MeshRenderer>())
-                mr.enabled = false;
-        }
+        //if (levelID == 0)
+        //{
+        //    this.GetComponent<CapsuleCollider>().enabled = false;
+        //    foreach (MeshRenderer mr in this.GetComponentsInChildren<MeshRenderer>())
+        //        mr.enabled = false;
+        //}
         if (CurrentGameState.JustStarted && levelID == 0)
         {
             CurrentGameState.JustStarted = false;
@@ -93,6 +91,8 @@ public class Location : MonoBehaviour {
         }
         else 
         {
+            linerenderes = new GameObject[0];
+            /*
             //linerenderes = new GameObject[0];
             GameObject lr;
             linerenderes = new GameObject[locations.Length];
@@ -102,10 +102,16 @@ public class Location : MonoBehaviour {
                 lr.AddComponent<LineRenderer>();
                 SetupLineRenderer(lr.GetComponent<LineRenderer>(), locations[i]);
                 linerenderes[i] = lr;
-            }
+            }*/
         }
         if (CurrentGameState.completedlevels.Contains(this.levelID))
             ActivateRigidBody();
+        else
+        {
+            this.GetComponent<CapsuleCollider>().enabled = false;
+            foreach (MeshRenderer mr in this.GetComponentsInChildren<MeshRenderer>())
+                mr.enabled = false;
+        }
     }
 
     private void SetupLineRenderer(LineRenderer lr, Location lo)
@@ -147,6 +153,8 @@ public class Location : MonoBehaviour {
         if (!RB_activated)
         {
             this.gameObject.AddComponent<Rigidbody>();
+            this.GetComponent<Rigidbody>().drag = 0;
+            this.GetComponent<Rigidbody>().angularDrag = 10;
             RB_activated = true;
         }
     }
